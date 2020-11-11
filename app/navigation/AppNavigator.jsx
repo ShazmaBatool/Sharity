@@ -11,13 +11,13 @@ export default function AppNavigator() {
     <RootStack.Navigator>
       {isAuth ? (
         <RootStack.Screen
-          name="Home"
+          name="UserHome"
           component={HomeNavigation}
           options={{ headerShown: false }}
         />
       ) : (
         <RootStack.Screen
-          name="Auth"
+          name="UserAuthorization"
           component={AuthNavigation}
           options={{ headerShown: false }}
         />
@@ -25,11 +25,5 @@ export default function AppNavigator() {
     </RootStack.Navigator>
   );
 }
-
-{
-  /* <>
-          {" "}
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="SignUpScreen" component={SignUpScreen} />{" "}
-        </> */
-}
+// import { createStackNavigator } from "@react-navigation/stack"; { createStackNavigator } and { NavigationContainer }
+// RootStack as we are using it in <RootStack>, Caps reason?

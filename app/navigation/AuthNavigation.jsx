@@ -1,15 +1,15 @@
-import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
 
-import LoginScreen from "../LoginScreen";
+import SignInScreen from "../SignInScreen";
 import SignUpScreen from "../SignUpScreen";
 
 export default function AuthNavigation() {
   const Stack = createStackNavigator();
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="SignIn">
       <Stack.Screen name="SignUp" component={SignUpScreen} />
-      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="SignIn" component={SignInScreen} />
     </Stack.Navigator>
   );
 }

@@ -7,7 +7,7 @@ export default function SignUpScreen({ navigation }) {
       <Text>SignUp Screen</Text>
       <Button
         title="Go to SignIn Screen"
-        onPress={() => navigation.navigate("SignInScreen")}
+        onPress={() => navigation.navigate("SignIn")}
       />
     </View>
   );

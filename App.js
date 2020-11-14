@@ -1,14 +1,38 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-
+import { AuthContext } from "./context";
 import AppNavigator from "./app/navigation/AppNavigator";
+import SplashScreen from "./app/screens/SplashScreen";
 
 export default function App() {
+  const [isAuth, setIsAuth] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const authContext = React.useMemo(() => {
+    return {
+      signIn: () => {
+        setIsAuth("SignIn");
+      },
+      signUp: () => {
+        setIsAuth("SignUp");
+      },
+      signOut: () => {
+        setIsAuth(null);
+      },
+    };
+  }, []);
+  React.useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+  }, []);
+  if (isLoading) {
+    return <SplashScreen />;
+  }
   return (
-    <NavigationContainer>
-      {/* this <NavigationContainer> is built-in component or class and we just have to call it. */}
-      {/* As it is in curly brackets {} so is this a class? just like we write {component} */}
-      <AppNavigator />
-    </NavigationContainer>
+    <AuthContext.Provider value={authContext}>
+      <NavigationContainer>
+        <AppNavigator isAuth={isAuth} />
+      </NavigationContainer>
+    </AuthContext.Provider>
   );
 }

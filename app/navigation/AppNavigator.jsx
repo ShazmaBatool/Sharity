@@ -4,8 +4,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import AuthNavigation from "./AuthNavigation";
 import HomeNavigation from "./HomeNavigation";
 
-export default function AppNavigator() {
-  const isAuth = false;
+export default function AppNavigator({ isAuth }) {
+  // const isAuth = false;
   const RootStack = createStackNavigator();
   return (
     <RootStack.Navigator>

@@ -3,20 +3,15 @@ import React from "react";
 import HomeScreen from "../screens/HomeScreen";
 import DetailsScreen from "../screens/DetailsScreen";
 import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 export default function HomeNavigation() {
   const Stack = createStackNavigator();
+  const DrawerStack = createDrawerNavigator();
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
-    </Stack.Navigator>
+    <DrawerStack.Navigator>
+      <DrawerStack.Screen name="HomeScreen" component={HomeScreen} />
+      <DrawerStack.Screen name="DetailsScreen" component={DetailsScreen} />
+    </DrawerStack.Navigator>
   );
 }
-
-// You have to specifically set false for the headerShown else it will appear as your first screen name
-// even if you have not declared initialRouteName=ScreenNamee

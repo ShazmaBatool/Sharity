@@ -10,10 +10,10 @@ import {
   createReactNavigationReduxMiddleware,
   reduxifyNavigator,
 } from "react-navigation-redux-helpers";
-import HomeScreen from "../screensOrg";
-import SignInScreen from "../screensOrg";
-import SignUpScreen from "../screensOrg";
-import WelcomeScreen from "../screensOrg";
+import HomeScreen from "../screens/screensOrg";
+import SignInScreen from "../screens/screensOrg";
+import SignUpScreen from "../screens/screensOrg";
+import WelcomeScreen from "../screens/screensOrg";
 
 import { Configuration } from "../Configuration";
 import DrawerContainer from "../components/DrawerContainer";

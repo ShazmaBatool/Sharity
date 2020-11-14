@@ -1,12 +1,11 @@
 import React from "react";
 
-import HomeScreen from "../screens/HomeScreen";
+import HomeScreen from "../screens/screensOrg/HomeScreen";
 import DetailsScreen from "../screens/DetailsScreen";
-import { createStackNavigator } from "@react-navigation/stack";
+
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 export default function HomeNavigation() {
-  const Stack = createStackNavigator();
   const DrawerStack = createDrawerNavigator();
   return (
     <DrawerStack.Navigator>

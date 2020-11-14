@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "react-native-button";
 import { Text, View, StyleSheet } from "react-native";
-import { AppStyles } from "../AppStyles";
+
 import { AsyncStorage, ActivityIndicator } from "react-native";
 import firebase from "react-native-firebase";
 

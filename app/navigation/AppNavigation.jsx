@@ -14,7 +14,7 @@ import HomeScreen from "../screensOrg";
 import SignInScreen from "../screensOrg";
 import SignUpScreen from "../screensOrg";
 import WelcomeScreen from "../screensOrg";
-import { AppIcon, AppStyles } from "../AppStyles";
+
 import { Configuration } from "../Configuration";
 import DrawerContainer from "../components/DrawerContainer";
 

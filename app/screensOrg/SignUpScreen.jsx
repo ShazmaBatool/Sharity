@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import Button from "react-native-button";
-import { AppStyles } from "../AppStyles";
+
 import firebase from "react-native-firebase";
 
 class SignUpScreen extends React.Component {

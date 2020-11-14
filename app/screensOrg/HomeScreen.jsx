@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 import FastImage from "react-native-fast-image";
 import { connect } from "react-redux";
-import { AppIcon, AppStyles } from "../AppStyles";
+
 import { Configuration } from "../Configuration";
 
 class HomeScreen extends React.Component {

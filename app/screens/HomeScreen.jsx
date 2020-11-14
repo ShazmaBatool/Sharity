@@ -1,6 +1,10 @@
 import React from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
+import FastImage from "react-native-fast-image";
+import { connect } from "react-redux";
 import { AuthContext } from "../../context";
+import { AppIcon, AppStyles } from "../AppStyles";
+import { Configuration } from "../Configuration";
 
 export default function HomeScreen(props) {
   const { signOut } = React.useContext(AuthContext);

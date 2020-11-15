@@ -28,7 +28,7 @@ export default function AddDriver() {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="Enter your full name"
+          placeholder="Enter name as per CNIC"
           keyboardType="default"
           onChangeText={(text) => setName(text)}
           value={name}
@@ -39,7 +39,7 @@ export default function AddDriver() {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="033xxxxxxxx"
+          placeholder="03xxxxxxxxx"
           keyboardType="phone-pad"
           onChangeText={(text) => setContactInfo(text)}
           value={contactInfo}
@@ -50,7 +50,7 @@ export default function AddDriver() {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="Enter your vehicle information"
+          placeholder="Enter the assigned vehicle ID"
           keyboardType="default"
           onChangeText={(text) => setVehicleID(text)}
           value={vehicleID}

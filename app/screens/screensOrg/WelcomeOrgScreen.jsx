@@ -3,7 +3,7 @@ import Button from "react-native-button";
 import { View, Text, ActivityIndicator, StyleSheet, Image } from "react-native";
 import { Customization } from "../../config/Customization";
 
-export default function WelcomeScreen(props) {
+export default function WelcomeOrgScreen(props) {
   const [isLoading, setIsLoading] = React.useState(true);
   React.useEffect(() => {
     setTimeout(() => {

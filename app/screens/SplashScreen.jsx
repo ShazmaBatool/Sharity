@@ -1,10 +1,10 @@
 import React from "react";
-import { StyleSheet, View, ActivityIndicator } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 
 const SplashScreen = () => {
   return (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color="#bb2265" />
+      <Image source={require("../../assets/logo.png")} style={styles.logo} />
     </View>
   );
 };
@@ -17,7 +17,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  spinner: {
-    marginTop: 200,
+  logo: {
+    height: 150,
+    width: 150,
+    borderRadius: 150 / 2,
   },
 });

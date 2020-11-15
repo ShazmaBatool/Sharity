@@ -1,10 +1,19 @@
 import React from "react";
 import Button from "react-native-button";
 import { View, Text, ActivityIndicator, StyleSheet, Image } from "react-native";
-import { Customization } from "../../config/Customization";
+import { Customization } from "../config/Customization";
+import { Picker } from "@react-native-community/picker";
 
 export default function WelcomeScreen(props) {
   const [isLoading, setIsLoading] = React.useState(true);
+  const [user, setUser] = React.useState("");
+  const handleClick = () => {
+    if (user === "donor") {
+      navigation.navigate("DonorScreen", { user });
+    } else {
+      navigation.navigate("OrgScreen", { user });
+    }
+  };
   React.useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
@@ -35,6 +44,25 @@ export default function WelcomeScreen(props) {
       >
         Sign In
       </Button>
+      <Button
+        containerStyle={styles.loginContainer}
+        style={styles.loginText}
+        onPress={() => props.navigation.navigate("SignUp")}
+      >
+        Sign Up
+      </Button>
+
+      <View style={styles.buttonContainer}>
+        <Picker
+          selectedValue={user}
+          style={{ height: 200, width: 150 }}
+          onValueChange={(itemValue, itemIndex) => setUser(itemValue)}
+        >
+          <Picker.Item label="Donor" value="donor" color="#fff" />
+          <Picker.Item label="Organization" value="org" color="#fff" />
+        </Picker>
+        <Button title="Choose One" color="#fff" onPress={handleClick} />
+      </View>
     </View>
   );
 }
@@ -83,6 +111,40 @@ const styles = StyleSheet.create({
     color: Customization.color.tint,
   },
   spinner: {
-    marginTop: 200,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  background: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    backgroundColor: "#01010abf",
+  },
+  logo: {
+    width: 150,
+    height: 150,
+  },
+  tagline: {
+    marginTop: 5,
+    fontSize: 17,
+    fontWeight: "600",
+    color: "#fff",
+  },
+  guideline: {
+    marginTop: 5,
+    fontSize: 17,
+    fontWeight: "600",
+    color: "#fff",
+  },
+  logoContainer: {
+    position: "absolute",
+    alignItems: "center",
+    top: 70,
+  },
+  buttonContainer: {
+    alignItems: "center",
+    paddingBottom: 50,
+    width: "100%",
   },
 });

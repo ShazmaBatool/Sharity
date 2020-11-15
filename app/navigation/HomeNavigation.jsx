@@ -14,9 +14,8 @@ export default function HomeNavigation() {
       overlayColor="#01010abf"
       drawerContent={(props) => <Sidebar {...props} />}
     >
-      <DrawerStack.Screen name="Donor Details" component={HomeScreen} />
-      <DrawerStack.Screen name="Add Driver" component={AddDriver} />
       <DrawerStack.Screen name="Driver Details" component={DriversDetails} />
+      <DrawerStack.Screen name="Add Driver" component={AddDriver} />
     </DrawerStack.Navigator>
   );
 }

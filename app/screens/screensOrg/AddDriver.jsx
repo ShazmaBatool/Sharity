@@ -1,40 +1,37 @@
 import React from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
-import { Customization } from "../../config/Customization";
+import { View, Text, StyleSheet, TextInput } from "react-native";
 import Button from "react-native-button";
-import { AuthContext } from "../../../context";
+import { Customization } from "../../config/Customization";
 import firebase from "firebase";
-import firebaseConfig from "../../../Firebase";
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-export default function SignInScreen() {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const { signIn } = React.useContext(AuthContext);
-  const onPressLogin = async () => {
-    try {
-      await firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(function (user) {
-          console.log(user);
-          signIn();
-        });
-    } catch (error) {
-      console.log("loginUser -> error", error.toString());
+export default function AddDriver() {
+  const [name, setName] = React.useState("");
+  const [contactInfo, setContactInfo] = React.useState("");
+  const [vehicleID, setVehicleID] = React.useState("");
+  const database = firebase.database();
+
+  const onPressAddDriver = () => {
+    if (contactInfo.length == 11) {
+      database.ref("Drivers/").push({
+        driverName: name,
+        driverContactInfo: contactInfo,
+        driverVehicleInfo: vehicleID,
+      });
+    } else if (contactInfo.length > 11 || contactInfo.length < 11) {
+      alert("Please enter 11-digits phone number.");
+      return;
     }
   };
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, styles.leftTitle]}>Sign In</Text>
+      <Text style={[styles.title, styles.leftTitle]}>Add Driver</Text>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="E-mail or phone number"
-          onChangeText={(text) => setEmail(text)}
-          value={email}
+          placeholder="Enter your full name"
+          keyboardType="default"
+          onChangeText={(text) => setName(text)}
+          value={name}
           placeholderTextColor={Customization.color.grey}
           underlineColorAndroid="transparent"
         />
@@ -42,10 +39,21 @@ export default function SignInScreen() {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          secureTextEntry={true}
-          placeholder="Password"
-          onChangeText={(text) => setPassword(text)}
-          value={password}
+          placeholder="033xxxxxxxx"
+          keyboardType="phone-pad"
+          onChangeText={(text) => setContactInfo(text)}
+          value={contactInfo}
+          placeholderTextColor={Customization.color.grey}
+          underlineColorAndroid="transparent"
+        />
+      </View>
+      <View style={styles.InputContainer}>
+        <TextInput
+          style={styles.body}
+          placeholder="Enter your vehicle information"
+          keyboardType="default"
+          onChangeText={(text) => setVehicleID(text)}
+          value={vehicleID}
           placeholderTextColor={Customization.color.grey}
           underlineColorAndroid="transparent"
         />
@@ -53,9 +61,9 @@ export default function SignInScreen() {
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        onPress={onPressLogin}
+        onPress={onPressAddDriver}
       >
-        Log in
+        Add Driver
       </Button>
     </View>
   );

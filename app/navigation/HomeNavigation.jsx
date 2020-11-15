@@ -1,16 +1,22 @@
 import React from "react";
 
 import HomeScreen from "../screens/screensOrg/HomeScreen";
-import DetailsScreen from "../screens/DetailsScreen";
+import DriversDetails from "../screens/screensOrg/DriversDetails";
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import Sidebar from "../common/Sidebar";
+import AddDriver from "../screens/screensOrg/AddDriver";
 
 export default function HomeNavigation() {
   const DrawerStack = createDrawerNavigator();
   return (
-    <DrawerStack.Navigator>
-      <DrawerStack.Screen name="HomeScreen" component={HomeScreen} />
-      <DrawerStack.Screen name="DetailsScreen" component={DetailsScreen} />
+    <DrawerStack.Navigator
+      overlayColor="#01010abf"
+      drawerContent={(props) => <Sidebar {...props} />}
+    >
+      <DrawerStack.Screen name="Donor Details" component={HomeScreen} />
+      <DrawerStack.Screen name="Add Driver" component={AddDriver} />
+      <DrawerStack.Screen name="Driver Details" component={DriversDetails} />
     </DrawerStack.Navigator>
   );
 }

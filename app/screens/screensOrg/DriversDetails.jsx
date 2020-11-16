@@ -1,37 +1,35 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import firebase from "firebase";
-import { ScrollView } from "react-native-gesture-handler";
 
 export default function DriversDetails({ navigation }) {
-  const [driverData, setdriverData] = React.useState([]);
+  const [driverData, setDriverData] = React.useState([]);
   const database = firebase.database();
-  const gettingdriverData = () => {
+  const gettingDriverData = () => {
     database
       .ref("/Drivers/")
       .once("value")
       .then(function (snapshot) {
         var result = Object.values(snapshot.val());
         console.log(result);
-        setdriverData(result);
+        setDriverData(result);
       });
   };
 
   React.useEffect(() => {
-    gettingdriverData();
+    gettingDriverData();
     return () => {
       null;
     };
   }, []);
   return (
     <View style={styles.container}>
-      {/* <Header name="Donor Details" openDrawer={navigation.openDrawer} /> */}
       <Image
-        source={require("../../../assets/donate.png")}
+        source={require("../../assets/donate.png")}
         style={{ width: "80%", height: "30%" }}
-        resizeMode="contain"
+        resizeMode='contain'
       />
-      <ScrollView>
+      <ScrollView style={styles.scrollView}>
         {driverData.map((driver) => (
           <View style={styles.detailsContainer} key={driver.driverName}>
             <Text style={styles.detailsText}>
@@ -66,6 +64,9 @@ const styles = StyleSheet.create({
   },
   detailsText: {
     margin: 5,
+  },
+  scrollView: {
+    marginBottom: 15,
   },
 });
 // Status of Drivers: Available/ Busy

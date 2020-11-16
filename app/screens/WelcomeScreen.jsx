@@ -1,17 +1,33 @@
 import React from "react";
-import Button from "react-native-button";
-import { View, Text, ActivityIndicator, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+  Image,
+  Button,
+} from "react-native";
+import firebase from "firebase";
+
 import { Customization } from "../config/Customization";
 import { Picker } from "@react-native-community/picker";
 
-export default function WelcomeScreen(props) {
+export default function WelcomeScreen({ navigation }) {
   const [isLoading, setIsLoading] = React.useState(true);
-  const [user, setUser] = React.useState("");
+  const [user, setUser] = React.useState("donor");
+  const database = firebase.database();
+
   const handleClick = () => {
     if (user === "donor") {
-      navigation.navigate("DonorScreen", { user });
+      database.ref("UserType/").set({
+        userType: user,
+      });
+      navigation.replace("Donor");
     } else {
-      navigation.navigate("OrgScreen", { user });
+      database.ref("UserType/").set({
+        userType: user,
+      });
+      navigation.replace("Org");
     }
   };
   React.useEffect(() => {
@@ -23,45 +39,24 @@ export default function WelcomeScreen(props) {
     return (
       <ActivityIndicator
         style={styles.spinner}
-        size="large"
+        size='large'
         color={Customization.color.tint}
       />
     );
   }
   return (
     <View style={styles.container}>
-      <View>
-        <Image
-          style={styles.logo}
-          source={require("../../../assets/logo.png")}
-        />
-      </View>
+      <Image style={styles.logo} source={require("../assets/logo.png")} />
       <Text style={styles.title}>Welcome to Sharity</Text>
-      <Button
-        containerStyle={styles.loginContainer}
-        style={styles.loginText}
-        onPress={() => props.navigation.navigate("SignIn")}
-      >
-        Sign In
-      </Button>
-      <Button
-        containerStyle={styles.loginContainer}
-        style={styles.loginText}
-        onPress={() => props.navigation.navigate("SignUp")}
-      >
-        Sign Up
-      </Button>
-
       <View style={styles.buttonContainer}>
         <Picker
           selectedValue={user}
-          style={{ height: 200, width: 150 }}
-          onValueChange={(itemValue, itemIndex) => setUser(itemValue)}
-        >
-          <Picker.Item label="Donor" value="donor" color="#fff" />
-          <Picker.Item label="Organization" value="org" color="#fff" />
+          style={{ width: 150 }}
+          onValueChange={(itemValue) => setUser(itemValue)}>
+          <Picker.Item label='Donor' value='donor' color='#000' />
+          <Picker.Item label='Organization' value='org' color='#000' />
         </Picker>
-        <Button title="Choose One" color="#fff" onPress={handleClick} />
+        <Button title='Choose One' color='#000' onPress={handleClick} />
       </View>
     </View>
   );
@@ -71,12 +66,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 150,
-  },
-  logo: {
-    width: 150,
-    height: 150,
-    borderRadius: 150 / 2,
   },
   title: {
     fontSize: Customization.fontSize.title,
@@ -111,6 +100,7 @@ const styles = StyleSheet.create({
     color: Customization.color.tint,
   },
   spinner: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -124,6 +114,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 150,
     height: 150,
+    borderRadius: 150 / 2,
   },
   tagline: {
     marginTop: 5,

@@ -1,22 +1,13 @@
 import React from "react";
 import Button from "react-native-button";
 import { View, Text, ActivityIndicator, StyleSheet, Image } from "react-native";
-import firebase from "firebase";
 
 import { Customization } from "../../config/Customization";
 
-export default function WelcomeOrgScreen(props) {
+export default function WelcomeDonorScreen(props) {
   const [isLoading, setIsLoading] = React.useState(true);
-  const database = firebase.database();
 
   React.useEffect(() => {
-    database
-      .ref("/UserType/")
-      .once("value")
-      .then(function (snapshot) {
-        var result = snapshot.val();
-        console.log("result", result.userType);
-      });
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
@@ -35,12 +26,18 @@ export default function WelcomeOrgScreen(props) {
       <View>
         <Image style={styles.logo} source={require("../../assets/logo.png")} />
       </View>
-      <Text style={styles.title}>Sign In as Organization</Text>
+      <Text style={styles.title}>Giving is Caring</Text>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        onPress={() => props.navigation.navigate("SignIn")}>
+        onPress={() => props.navigation.navigate("SignInDonor")}>
         Sign In
+      </Button>
+      <Button
+        containerStyle={styles.signupContainer}
+        style={styles.signupText}
+        onPress={() => props.navigation.navigate("SignUpDonor")}>
+        Sign Up
       </Button>
     </View>
   );
@@ -50,7 +47,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 150,
   },
   logo: {
     width: 150,

@@ -1,37 +1,22 @@
 import React from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { StyleSheet, Text, View, TextInput } from "react-native";
 import Button from "react-native-button";
+
 import { Customization } from "../../config/Customization";
-import firebase from "firebase";
 
-export default function AddDriver() {
-  const [name, setName] = React.useState("");
-  const [contactInfo, setContactInfo] = React.useState("");
-  const [vehicleID, setVehicleID] = React.useState("");
-  const database = firebase.database();
-
-  const onPressAddDriver = () => {
-    if (contactInfo.length == 11) {
-      database.ref("Drivers/").push({
-        driverName: name,
-        driverContactInfo: contactInfo,
-        driverVehicleInfo: vehicleID,
-      });
-    } else if (contactInfo.length > 11 || contactInfo.length < 11) {
-      alert("Please enter 11-digits phone number.");
-      return;
-    }
-  };
+export default function SignUpDonor({ navigation }) {
+  const [fullName, setFullName] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, styles.leftTitle]}>Add Driver</Text>
+      <Text style={[styles.title, styles.leftTitle]}>Create new account</Text>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='Enter name as per CNIC'
-          keyboardType='default'
-          onChangeText={(text) => setName(text)}
-          value={name}
+          placeholder='Full Name'
+          value={fullName}
           placeholderTextColor={Customization.color.grey}
           underlineColorAndroid='transparent'
         />
@@ -39,10 +24,8 @@ export default function AddDriver() {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='03xxxxxxxxx'
-          keyboardType='phone-pad'
-          onChangeText={(text) => setContactInfo(text)}
-          value={contactInfo}
+          placeholder='Phone Number'
+          value={phone}
           placeholderTextColor={Customization.color.grey}
           underlineColorAndroid='transparent'
         />
@@ -50,32 +33,45 @@ export default function AddDriver() {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='Enter the assigned vehicle ID'
-          keyboardType='default'
-          onChangeText={(text) => setVehicleID(text)}
-          value={vehicleID}
+          placeholder='E-mail Address'
+          value={email}
+          placeholderTextColor={Customization.color.grey}
+          underlineColorAndroid='transparent'
+        />
+      </View>
+      <View style={styles.InputContainer}>
+        <TextInput
+          style={styles.body}
+          placeholder='Password'
+          secureTextEntry={true}
+          value={password}
           placeholderTextColor={Customization.color.grey}
           underlineColorAndroid='transparent'
         />
       </View>
       <Button
-        containerStyle={styles.loginContainer}
-        style={styles.loginText}
-        onPress={onPressAddDriver}>
-        Add Driver
+        containerStyle={[styles.facebookContainer, { marginTop: 50 }]}
+        style={styles.facebookText}>
+        Sign Up
       </Button>
+      <Text
+        style={styles.or}
+        onPress={() => navigation.navigate("SignInDonor")}>
+        Already have an account, Sign In here!
+      </Text>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
   },
   or: {
-    fontFamily: Customization.fontName.main,
     color: "black",
-    marginTop: 40,
+    marginTop: 10,
     marginBottom: 10,
   },
   title: {
@@ -87,7 +83,7 @@ const styles = StyleSheet.create({
   },
   leftTitle: {
     alignSelf: "stretch",
-    textAlign: "left",
+    textAlign: "center",
     marginLeft: 20,
   },
   content: {
@@ -127,7 +123,7 @@ const styles = StyleSheet.create({
   },
   facebookContainer: {
     width: Customization.buttonWidth.main,
-    backgroundColor: Customization.color.facebook,
+    backgroundColor: Customization.color.tint,
     borderRadius: Customization.borderRadius.main,
     padding: 10,
     marginTop: 30,

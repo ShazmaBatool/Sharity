@@ -1,37 +1,41 @@
 import React from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, TextInput, StyleSheet } from "react-native";
 import Button from "react-native-button";
+
 import { Customization } from "../../config/Customization";
+import { AuthContext } from "../../../context";
 import firebase from "firebase";
+import firebaseConfig from "../../../Firebase";
 
-export default function AddDriver() {
-  const [name, setName] = React.useState("");
-  const [contactInfo, setContactInfo] = React.useState("");
-  const [vehicleID, setVehicleID] = React.useState("");
-  const database = firebase.database();
-
-  const onPressAddDriver = () => {
-    if (contactInfo.length == 11) {
-      database.ref("Drivers/").push({
-        driverName: name,
-        driverContactInfo: contactInfo,
-        driverVehicleInfo: vehicleID,
-      });
-    } else if (contactInfo.length > 11 || contactInfo.length < 11) {
-      alert("Please enter 11-digits phone number.");
-      return;
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+export default function SignInDonor({ navigation }) {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const { signIn } = React.useContext(AuthContext);
+  const onPressLogin = async () => {
+    try {
+      await firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(function (user) {
+          console.log(user);
+          signIn();
+        });
+    } catch (error) {
+      console.log("loginUser -> error", error.toString());
     }
   };
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, styles.leftTitle]}>Add Driver</Text>
+      <Text style={[styles.title, styles.leftTitle]}>Sign In</Text>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='Enter name as per CNIC'
-          keyboardType='default'
-          onChangeText={(text) => setName(text)}
-          value={name}
+          placeholder='E-mail or phone number'
+          onChangeText={(text) => setEmail(text)}
+          value={email}
           placeholderTextColor={Customization.color.grey}
           underlineColorAndroid='transparent'
         />
@@ -39,21 +43,10 @@ export default function AddDriver() {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='03xxxxxxxxx'
-          keyboardType='phone-pad'
-          onChangeText={(text) => setContactInfo(text)}
-          value={contactInfo}
-          placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid='transparent'
-        />
-      </View>
-      <View style={styles.InputContainer}>
-        <TextInput
-          style={styles.body}
-          placeholder='Enter the assigned vehicle ID'
-          keyboardType='default'
-          onChangeText={(text) => setVehicleID(text)}
-          value={vehicleID}
+          secureTextEntry={true}
+          placeholder='Password'
+          onChangeText={(text) => setPassword(text)}
+          value={password}
           placeholderTextColor={Customization.color.grey}
           underlineColorAndroid='transparent'
         />
@@ -61,8 +54,15 @@ export default function AddDriver() {
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        onPress={onPressAddDriver}>
-        Add Driver
+        onPress={onPressLogin}>
+        Log in
+      </Button>
+      <Text style={styles.or}>OR</Text>
+      <Button
+        containerStyle={styles.facebookContainer}
+        style={styles.facebookText}
+        onPress={() => navigation.navigate("SignUpDonor")}>
+        Don't have an account
       </Button>
     </View>
   );
@@ -71,9 +71,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
   },
   or: {
-    fontFamily: Customization.fontName.main,
     color: "black",
     marginTop: 40,
     marginBottom: 10,
@@ -87,8 +87,7 @@ const styles = StyleSheet.create({
   },
   leftTitle: {
     alignSelf: "stretch",
-    textAlign: "left",
-    marginLeft: 20,
+    textAlign: "center",
   },
   content: {
     paddingLeft: 50,

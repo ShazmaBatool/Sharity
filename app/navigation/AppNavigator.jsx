@@ -1,23 +1,22 @@
 import React from "react";
-
 import { createStackNavigator } from "@react-navigation/stack";
+
 import AuthNavigation from "./AuthNavigation";
 import HomeNavigation from "./HomeNavigation";
 
 export default function AppNavigator({ isAuth }) {
-  // const isAuth = false;
   const RootStack = createStackNavigator();
   return (
     <RootStack.Navigator>
       {isAuth ? (
         <RootStack.Screen
-          name="UserHome"
+          name='UserHome'
           component={HomeNavigation}
           options={{ headerShown: false }}
         />
       ) : (
         <RootStack.Screen
-          name="UserAuthorization"
+          name='UserAuthorization'
           component={AuthNavigation}
           options={{ headerShown: false }}
         />

@@ -32,29 +32,28 @@ export default function SignInScreen() {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="E-mail or phone number"
+          placeholder='E-mail or phone number'
           onChangeText={(text) => setEmail(text)}
           value={email}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
         />
       </View>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
           secureTextEntry={true}
-          placeholder="Password"
+          placeholder='Password'
           onChangeText={(text) => setPassword(text)}
           value={password}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
         />
       </View>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        onPress={onPressLogin}
-      >
+        onPress={onPressLogin}>
         Log in
       </Button>
     </View>
@@ -81,8 +80,7 @@ const styles = StyleSheet.create({
   },
   leftTitle: {
     alignSelf: "stretch",
-    textAlign: "left",
-    marginLeft: 20,
+    textAlign: "center",
   },
   content: {
     paddingLeft: 50,

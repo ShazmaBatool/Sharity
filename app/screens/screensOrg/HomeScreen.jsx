@@ -7,12 +7,6 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text>Home Screen</Text>
-      {/* <Header name="Donor Details" openDrawer={navigation.openDrawer} /> */}
-      {/* <Image
-        source={require("../../assets/donate.png")}
-        style={{ width: "80%", height: "30%" }}
-        resizeMode="contain"
-      /> */}
     </View>
   );
 }

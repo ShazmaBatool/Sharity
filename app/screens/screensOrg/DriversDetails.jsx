@@ -11,7 +11,6 @@ export default function DriversDetails({ navigation }) {
       .once("value")
       .then(function (snapshot) {
         var result = Object.values(snapshot.val());
-        console.log(result);
         setDriverData(result);
       });
   };

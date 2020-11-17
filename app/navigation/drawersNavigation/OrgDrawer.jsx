@@ -1,14 +1,14 @@
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import AddDriver from "../screens/screensOrg/AddDriver";
-import DriversDetails from "../screens/screensOrg/DriversDetails";
-import Sidebar from "../common/Sidebar";
-import OrgDrawer from "./drawersNavigation/OrgDrawer";
+import AddDriver from "../../screens/screensOrg/AddDriver";
+import DriversDetails from "../../screens/screensOrg/DriversDetails";
+import Sidebar from "../../common/Sidebar";
 
-export default function HomeNavigation() {
+export default function OrgDrawer() {
   const DrawerStack = createDrawerNavigator();
-  const OrgDrawerNavigator = () => (
+
+  return (
     <DrawerStack.Navigator
       overlayColor='#01010abf'
       initialRouteName='Donor Details'
@@ -18,5 +18,4 @@ export default function HomeNavigation() {
       <DrawerStack.Screen name='Add Driver' component={AddDriver} />
     </DrawerStack.Navigator>
   );
-  return <OrgDrawer />;
 }

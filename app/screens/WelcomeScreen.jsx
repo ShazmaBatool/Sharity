@@ -23,11 +23,16 @@ export default function WelcomeScreen({ navigation }) {
         userType: user,
       });
       navigation.replace("Donor");
-    } else {
+    } else if (user === "org") {
       database.ref("UserType/").set({
         userType: user,
       });
       navigation.replace("Org");
+    } else {
+      database.ref("UserType/").set({
+        userType: user,
+      });
+      navigation.replace("driver");
     }
   };
   React.useEffect(() => {
@@ -55,6 +60,7 @@ export default function WelcomeScreen({ navigation }) {
           onValueChange={(itemValue) => setUser(itemValue)}>
           <Picker.Item label='Donor' value='donor' color='#000' />
           <Picker.Item label='Organization' value='org' color='#000' />
+          <Picker.Item label='Driver' value='driver' color='#000' />
         </Picker>
         <Button title='Choose One' color='#000' onPress={handleClick} />
       </View>

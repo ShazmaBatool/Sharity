@@ -1,9 +1,11 @@
 import React from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
-import { Customization } from "../../config/Customization";
-import Button from "react-native-button";
-import { AuthContext } from "../../../context";
 import firebase from "firebase";
+import Button from "react-native-button";
+import { View, Text, TextInput, StyleSheet } from "react-native";
+import SyncStorage from "sync-storage";
+
+import { Customization } from "../../config/Customization";
+import { AuthContext } from "../../../context";
 import firebaseConfig from "../../../Firebase";
 
 if (!firebase.apps.length) {
@@ -18,8 +20,10 @@ export default function SignInScreen() {
       await firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
-        .then(function (user) {
-          console.log(user);
+        .then(async function (user) {
+          console.log("user -> SignInScreen org", user);
+          SyncStorage.set("@userEmail", user.user.email);
+          SyncStorage.set("@userPassword", password);
           signIn();
         });
     } catch (error) {

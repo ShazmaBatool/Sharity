@@ -12,22 +12,23 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { AuthContext } from "../../context";
 
-const Sidebar = ({ navigation }) => {
-  const [routes] = React.useState([
-    {
-      name: "Driver Details",
-      icon: "ios-document",
-    },
-    {
-      name: "Add Driver",
-      icon: "md-add-circle",
-    },
+const Sidebar = ({ navigation, routes, email }) => {
+  console.log("Sidebar -> email", email);
+  //  const [routes] = React.useState([
+  //   {
+  //     name: "Driver Details",
+  //     icon: "ios-document",
+  //   },
+  //   {
+  //     name: "Add Driver",
+  //     icon: "md-add-circle",
+  //   },
 
-    {
-      name: "Settings",
-      icon: "ios-settings",
-    },
-  ]);
+  //   {
+  //     name: "Settings",
+  //     icon: "ios-settings",
+  //   },
+  // ]);
   const { signOut } = React.useContext(AuthContext);
 
   return (
@@ -42,7 +43,9 @@ const Sidebar = ({ navigation }) => {
       <Text style={{ fontWeight: "bold", fontSize: 16, marginTop: 10 }}>
         Janna Doe
       </Text>
-      <Text style={{ color: "gray", marginBottom: 10 }}>janna@doe.com</Text>
+      <Text style={{ color: "gray", marginBottom: 10 }}>
+        {email ? email : "janna@doe.com"}
+      </Text>
       <View style={styles.sidebarDivider}></View>
       <FlatList
         style={{ width: "100%", marginLeft: 30 }}
@@ -71,8 +74,7 @@ const Sidebar = ({ navigation }) => {
             ],
             { cancelable: false }
           )
-        }
-      >
+        }>
         <Text style={{ margin: 16, fontWeight: "bold", color: "#000" }}>
           Logout
         </Text>
@@ -84,8 +86,7 @@ function Item({ item, navigate }) {
   return (
     <TouchableOpacity
       style={styles.listItem}
-      onPress={() => navigate(item.name)}
-    >
+      onPress={() => navigate(item.name)}>
       <Ionicons name={item.icon} size={32} />
       <Text style={styles.title}>{item.name}</Text>
     </TouchableOpacity>

@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import Button from "react-native-button";
+import SyncStorage from "sync-storage";
 
 import { Customization } from "../../config/Customization";
 import { AuthContext } from "../../../context";
@@ -20,7 +21,8 @@ export default function SignInDonor({ navigation }) {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then(function (user) {
-          console.log(user);
+          SyncStorage.set("@userEmail", user.user.email);
+          SyncStorage.set("@userPassword", password);
           signIn();
         });
     } catch (error) {
@@ -33,6 +35,7 @@ export default function SignInDonor({ navigation }) {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
+          keyboardType='email-address'
           placeholder='E-mail or phone number'
           onChangeText={(text) => setEmail(text)}
           value={email}

@@ -17,14 +17,17 @@ export default function SignUpDonor({ navigation }) {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(function (user) {
+          console.log(user);
           if (user)
             database.ref("Users/" + "Donor").push({
-              driverName: name,
-              driverContactInfo: contactInfo,
-              driverVehicleInfo: vehicleID,
+              donorName: fullName,
+              donorContactInfo: phone,
+              donorEmail: email,
+              donorPassword: password,
             });
         });
     } catch (error) {
+      alert(error.toString());
       console.log("signUpWithEmail -> error", error);
     }
   };

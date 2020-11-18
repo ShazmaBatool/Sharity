@@ -16,6 +16,9 @@
     "@react-navigation/native": "^5.8.6",
     "@react-navigation/stack": "^5.12.3",
     "expo": "~39.0.2",
+    "expo-constants": "~9.2.0",
+    "expo-image-picker": "~9.1.1",
+    "expo-permissions": "~9.3.0",
     "expo-status-bar": "~1.0.2",
     "firebase": "7.9.0",
     "react": "16.13.1",
@@ -23,14 +26,14 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.4.tar.gz",
     "react-native-button": "^3.0.1",
     "react-native-gesture-handler": "~1.7.0",
-    "react-native-reanimated": "~1.13.0",
+    "react-native-paper": "^4.4.0",
+    "react-native-reanimated": "^1.13.2",
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
+    "react-native-vector-icons": "^7.1.0",
     "react-native-web": "~0.13.12",
-    "sync-storage": "^0.4.2",
-    "expo-constants": "~9.2.0",
-    "expo-permissions": "~9.3.0",
-    "expo-image-picker": "~9.1.1"
+    "reanimated-bottom-sheet": "^1.0.0-alpha.22",
+    "sync-storage": "^0.4.2"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

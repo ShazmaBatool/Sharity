@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, TextInput } from "react-native";
 import Button from "react-native-button";
+import firebase from "firebase";
 
 import { Customization } from "../../config/Customization";
 
@@ -9,6 +10,24 @@ export default function SignUpDonor({ navigation }) {
   const [phone, setPhone] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const database = firebase.database();
+  const handleSignUp = async () => {
+    try {
+      await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(function (user) {
+          if (user)
+            database.ref("Users/" + "Donor").push({
+              driverName: name,
+              driverContactInfo: contactInfo,
+              driverVehicleInfo: vehicleID,
+            });
+        });
+    } catch (error) {
+      console.log("signUpWithEmail -> error", error);
+    }
+  };
   return (
     <View style={styles.container}>
       <Text style={[styles.title, styles.leftTitle]}>Create new account</Text>
@@ -56,6 +75,7 @@ export default function SignUpDonor({ navigation }) {
       <Button
         containerStyle={[styles.facebookContainer, { marginTop: 50 }]}
         style={styles.facebookText}
+        onPress={handleSignUp}
       >
         Sign Up
       </Button>

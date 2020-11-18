@@ -13,7 +13,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "../../context";
 
 const Sidebar = ({ navigation, routes, email }) => {
-  console.log("Sidebar -> email", email);
   //  const [routes] = React.useState([
   //   {
   //     name: "Driver Details",

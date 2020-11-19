@@ -9,6 +9,8 @@ import Icon from "react-native-vector-icons/Feather";
 export default function DonorHomeScreen() {
   const [donorLoc, setDonorLoc] = React.useState("");
   const [country, setCountry] = React.useState(["Pakistan"]);
+  const [amount, setAmount] = React.useState();
+  // const [donationType, setDonationType] = React.useState("");
 
   const SendRequest = () => {
     console.log(SendRequest);
@@ -26,59 +28,84 @@ export default function DonorHomeScreen() {
           underlineColorAndroid="transparent"
         />
       </View>
+      <view>
+        <Text style={styles.title}>Donation Type</Text>
+        <DropDownPicker
+          items={[
+            {
+              label: "CHILDREN",
+              value: "children",
+              icon: () => <Icon name="FontAwesome" size={18} color="#900" />,
+              hidden: true,
+            },
+            {
+              label: "MEN",
+              value: "men",
+              icon: () => <Icon name="Entypo" size={18} color="#900" />,
+            },
+            {
+              label: "WOMEN",
+              value: "women",
+              icon: () => <Icon name="Ionicons" size={18} color="#900" />,
+            },
+          ]}
+          defaultValue="Clothes"
+          containerStyle={{ height: 40, width: 150 }}
+          style={styles.dropDown}
+          itemStyle={{
+            justifyContent: "flex-start",
+          }}
+          dropDownStyle={{ backgroundColor: "#fafafa" }}
+          onChangeItem={(item) =>
+            setState({
+              organization: item.value,
+            })
+          }
+        />
+        <DropDownPicker
+          items={[
+            {
+              label: "CHILDREN",
+              value: "children",
+              icon: () => <Icon name="" size={18} color="#900" />,
+              hidden: true,
+            },
+            {
+              label: "MEN",
+              value: "men",
+              icon: () => <Icon name="" size={18} color="#900" />,
+            },
+            {
+              label: "WOMEN",
+              value: "women",
+              icon: () => <Icon name="" size={18} color="#900" />,
+            },
+          ]}
+          defaultValue="Shoes"
+          containerStyle={{ height: 40, width: 150 }}
+          style={styles.dropDown}
+          itemStyle={{
+            justifyContent: "flex-start",
+          }}
+          dropDownStyle={{ backgroundColor: "#fafafa" }}
+          onChangeItem={(item) =>
+            setState({
+              organization: item.value,
+            })
+          }
+        />
+        <View style={styles.InputContainer}>
+          <TextInput
+            style={styles.body}
+            placeholder="Enter amount"
+            onChangeText={(text) => setAmount(text)}
+            value={amount}
+            placeholderTextColor={Customization.color.grey}
+            underlineColorAndroid="transparent"
+          />
+        </View>
+      </view>
 
-      <Text style={styles.title}>Donation Type</Text>
-      <DropDownPicker
-        items={[
-          {
-            label: "CHILDREN",
-            value: "children",
-            icon: () => <Icon name="" size={18} color="#900" />,
-            hidden: true,
-          },
-          {
-            label: "MEN",
-            value: "men",
-            icon: () => <Icon name="flag" size={18} color="#900" />,
-          },
-          {
-            label: "WOMEN",
-            value: "women",
-            icon: () => <Icon name="flag" size={18} color="#900" />,
-          },
-          {
-            label: "MISC",
-            value: "misc",
-            icon: () => <Icon name="flag" size={18} color="#900" />,
-          },
-        ]}
-        defaultValue=""
-        containerStyle={{ height: 40, width: 150 }}
-        style={styles.dropDown}
-        itemStyle={{
-          justifyContent: "flex-start",
-        }}
-        dropDownStyle={{ backgroundColor: "#fafafa" }}
-        onChangeItem={(item) =>
-          setState({
-            organization: item.value,
-          })
-        }
-      />
-      {/* <Button
-    containerStyle={styles.clothesContainer}
-    style={styles.clothesText}
-    onPress={() => props.navigation.navigate("")}
-  >
-    Clothes
-  </Button>
-  <Button
-    containerStyle={styles.moneyContainer}
-    style={styles.moneyText}
-    onPress={() => props.navigation.navigate("")}
-  >
-    Money
- </Button> */}
       <View>
         <Button color={Customization.color.tint} onPress={SendRequest}>
           Send Request

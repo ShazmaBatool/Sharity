@@ -3,10 +3,14 @@ import { StyleSheet, Text, View, TextInput, Image } from "react-native";
 // import firebase from "firebase";
 import Button from "react-native-button";
 import DropDownPicker from "react-native-dropdown-picker";
-import Icon from "react-native-vector-icons/Feather";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import * as Location from "expo-location";
 
-import { Customization } from "../../config/Customization";
+export default function DonorHomeScreen() {
+  const [donorLoc, setDonorLoc] = React.useState("");
+  // const [country, setCountry] = React.useState(["Pakistan"]);
+  const [amount, setAmount] = React.useState(null);
+  // const [donationType, setDonationType] = React.useState("");
 
 export default function DonorHomeScreen() {
   const [donorLoc, setDonorLoc] = React.useState("");
@@ -28,22 +32,31 @@ export default function DonorHomeScreen() {
       setDonorLoc(`${res[0].street}, ${res[0].city}`);
     }
   };
+  const getCurrentLoc = async () => {
+    let { status } = await Location.requestPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+    }
 
+    let location = await Location.getCurrentPositionAsync({});
+
+    if (location) {
+      const loc = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      const result = await Location.reverseGeocodeAsync(loc);
+      setDonorLoc(`${result[0].street}, ${result[0].city}`);
+    }
+  };
   React.useEffect(() => {
-    getCurrentPos();
-    // navigator.geolocation.getCurrentPosition(function (position) {
-    //   console.log(
-    //     "navigator.geolocation.getCurrentPosition -> position",
-    //     position
-    //   );
-    // });
+    getCurrentLoc();
   }, []);
-
   return (
     <View style={styles.container}>
       <View style={styles.InputContainer}>
         <Image
-          source={require("../../assets/location.png")}
+          source={require("../../assets/pin.png")}
           style={{ width: 30, height: 30, marginTop: 6, marginLeft: 7 }}
         />
         <TextInput
@@ -57,38 +70,186 @@ export default function DonorHomeScreen() {
           underlineColorAndroid='transparent'
         />
       </View>
+      <View>
+        <Text style={styles.title}>Clothes</Text>
+        <View style={styles.dropDownContainer}>
+          <DropDownPicker
+            items={[
+              {
+                label: "CHILDREN",
+                value: "children",
+                icon: () => <AntDesign name="inbox" size={18} color="#900" />,
+                hidden: true,
+              },
+              {
+                label: "MEN",
+                value: "men",
+                // icon: () => <Icon name="Entypo" size={18} color="#900" />,
+              },
+              {
+                label: "WOMEN",
+                value: "women",
+                // icon: () => <Icon name="Ionicons" size={18} color="#900" />,
+              },
+            ]}
+            defaultValue="children"
+            containerStyle={{ height: 40, width: 150 }}
+            style={styles.dropDown}
+            itemStyle={{
+              justifyContent: "flex-start",
+            }}
+            dropDownStyle={{ backgroundColor: "#fafafa" }}
+            // onChangeItem={(item) =>
+            //   setState({
+            //     organization: item.value,
+            //   })
+            // }
+          />
+          <DropDownPicker
+            items={[
+              {
+                label: "1",
+                value: "children",
+                // icon: () => <Icon name="FontAwesome" size={18} color="#900" />,
+                hidden: false,
+              },
+              {
+                label: "MEN",
+                value: "men",
+                // icon: () => <Icon name="Entypo" size={18} color="#900" />,
+              },
+              {
+                label: "WOMEN",
+                value: "women",
+                // icon: () => <Icon name="Ionicons" size={18} color="#900" />,
+              },
+            ]}
+            defaultValue="children"
+            containerStyle={{ height: 40, width: 150 }}
+            style={styles.dropDown}
+            itemStyle={{
+              justifyContent: "flex-start",
+            }}
+            dropDownStyle={{ backgroundColor: "#fafafa" }}
+            // onChangeItem={(item) =>
+            //   setState({
+            //     organization: item.value,
+            //   })
+            // }
+          />
+        </View>
+        <Text style={styles.title}>Shoes</Text>
+        <View style={styles.dropDownContainer}>
+          <DropDownPicker
+            items={[
+              {
+                label: "CHILDREN",
+                value: "children",
+                // icon: () => <Icon name="" size={18} color="#900" />,
+                hidden: true,
+              },
+              {
+                label: "MEN",
+                value: "men",
+                // icon: () => <Icon name="" size={18} color="#900" />,
+              },
+              {
+                label: "WOMEN",
+                value: "women",
+                // icon: () => <Icon name="" size={18} color="#900" />,
+              },
+            ]}
+            defaultValue=""
+            containerStyle={{ height: 40, width: 150 }}
+            style={styles.dropDown}
+            itemStyle={{
+              justifyContent: "flex-start",
+            }}
+            dropDownStyle={{ backgroundColor: "#fafafa" }}
+            // onChangeItem={(item) =>
+            //   setState({
+            //     organization: item.value,
+            //   })
+            // }
+          />
 
-      <Text style={styles.title}>Donation Type</Text>
-      <DropDownPicker
-        items={[
-          {
-            label: "USA",
-            value: "usa",
-            icon: () => <Icon name='flag' size={18} color='#900' />,
-            hidden: true,
-          },
-          {
-            label: "UK",
-            value: "uk",
-            icon: () => <Icon name='flag' size={18} color='#900' />,
-          },
-          {
-            label: "France",
-            value: "france",
-            icon: () => <Icon name='flag' size={18} color='#900' />,
-          },
-        ]}
-        defaultValue=''
-        containerStyle={{ height: 40, width: 150 }}
-        style={styles.dropdown}
-        itemStyle={{
-          justifyContent: "flex-start",
-        }}
-        dropDownStyle={{ backgroundColor: "#fafafa" }}
-        onChangeItem={(item) => console.log(item.label, item.value)}
-      />
+          <DropDownPicker
+            items={[
+              {
+                label: "1",
+                value: "children",
+                // icon: () => <Icon name="" size={18} color="#900" />,
+                hidden: true,
+              },
+              {
+                label: "2",
+                value: "men",
+                // icon: () => <Icon name="" size={18} color="#900" />,
+              },
+              {
+                label: "3",
+                value: "women",
+                // icon: () => <Icon name="" size={18} color="#900" />,
+              },
+            ]}
+            defaultValue=""
+            containerStyle={{ height: 40, width: 150 }}
+            style={styles.dropDown}
+            itemStyle={{
+              justifyContent: "flex-start",
+            }}
+            dropDownStyle={{ backgroundColor: "#fafafa" }}
+            // onChangeItem={(item) =>
+            //   setState({
+            //     organization: item.value,
+            //   })
+            // }
+          />
+        </View>
+        <Text style={styles.title}>Amount</Text>
+        <View style={{ alignItems: "center", marginLeft: 10 }}>
+          <DropDownPicker
+            items={[
+              {
+                label: "CHILDREN",
+                value: "children",
+                // icon: () => <Icon name="" size={18} color="#900" />,
+                hidden: true,
+              },
+              {
+                label: "MEN",
+                value: "men",
+                // icon: () => <Icon name="" size={18} color="#900" />,
+              },
+              {
+                label: "WOMEN",
+                value: "women",
+                // icon: () => <Icon name="" size={18} color="#900" />,
+              },
+            ]}
+            defaultValue=""
+            containerStyle={{ height: 40, width: 150 }}
+            style={styles.dropDown}
+            itemStyle={{
+              justifyContent: "flex-start",
+            }}
+            dropDownStyle={{ backgroundColor: "#fafafa" }}
+            // onChangeItem={(item) =>
+            //   setState({
+            //     organization: item.value,
+            //   })
+            // }
+          />
+        </View>
+      </View>
+
       <View style={styles.requestButton}>
-        <Button color={Customization.color.tint} onPress={SendRequest}>
+        <Button
+          containerStyle={styles.loginContainer}
+          style={styles.loginText}
+          color={Customization.color.tint}
+          onPress={SendRequest}
+        >
           Send Request
         </Button>
       </View>
@@ -100,6 +261,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    // justifyContent: "center",
   },
   title: {
     fontSize: Customization.fontSize.title,
@@ -112,11 +274,10 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   InputContainer: {
-    borderBottomColor: "#000",
+    width: Customization.textInputWidth.main,
+    marginTop: 30,
     borderBottomWidth: 1,
     flexDirection: "row",
-    marginTop: 30,
-    width: Customization.textInputWidth.main,
   },
   body: {
     height: 42,
@@ -124,35 +285,26 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     color: Customization.color.text,
   },
-  dropdown: {
+  dropDown: {
     backgroundColor: "#fafafa",
+    width: 150,
+  },
+  dropDownContainer: {
+    flexDirection: "row",
   },
   requestButton: {
     flex: 1,
     justifyContent: "flex-end",
-    alignItems: "center",
     marginBottom: 50,
   },
-  // clothesContainer: {
-  //   width: Customization.buttonWidth.main,
-  //   backgroundColor: Customization.color.tint,
-  //   borderRadius: Customization.borderRadius.main,
-  //   padding: 10,
-  //   marginTop: 30,
-  // },
-  // clothesText: {
-  //   color: Customization.color.white,
-  // },
-  // moneyContainer: {
-  //   width: Customization.buttonWidth.main,
-  //   backgroundColor: Customization.color.white,
-  //   borderRadius: Customization.borderRadius.main,
-  //   padding: 8,
-  //   borderWidth: 1,
-  //   borderColor: Customization.color.tint,
-  //   marginTop: 15,
-  // },
-  // moneyText: {
-  //   color: Customization.color.tint,
-  // },
+  loginContainer: {
+    width: Customization.buttonWidth.main,
+    backgroundColor: Customization.color.tint,
+    borderRadius: Customization.borderRadius.main,
+    padding: 10,
+    marginTop: 30,
+  },
+  loginText: {
+    color: Customization.color.white,
+  },
 });

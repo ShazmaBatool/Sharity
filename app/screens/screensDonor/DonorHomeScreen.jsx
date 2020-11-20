@@ -4,7 +4,9 @@ import { StyleSheet, Text, View, TextInput, Image } from "react-native";
 import { Customization } from "../../config/Customization";
 import Button from "react-native-button";
 import DropDownPicker from "react-native-dropdown-picker";
-import AntDesign from "react-native-vector-icons/AntDesign";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+
+import Ionicons from "react-native-vector-icons/Ionicons";
 import * as Location from "expo-location";
 
 export default function DonorHomeScreen() {
@@ -60,27 +62,30 @@ export default function DonorHomeScreen() {
               {
                 label: "CHILDREN",
                 value: "children",
-                icon: () => <AntDesign name="inbox" size={18} color="#900" />,
+                icon: () => <FontAwesome name="child" size={18} color="#900" />,
                 hidden: true,
               },
               {
                 label: "MEN",
                 value: "men",
-                // icon: () => <Icon name="Entypo" size={18} color="#900" />,
+                icon: () => <FontAwesome name="male" size={18} color="#900" />,
               },
               {
                 label: "WOMEN",
                 value: "women",
-                // icon: () => <Icon name="Ionicons" size={18} color="#900" />,
+                icon: () => (
+                  <FontAwesome name="female" size={18} color="#900" />
+                ),
               },
             ]}
-            defaultValue="children"
+            defaultValue=""
             containerStyle={{ height: 40, width: 150 }}
             style={styles.dropDown}
             itemStyle={{
               justifyContent: "flex-start",
             }}
             dropDownStyle={{ backgroundColor: "#fafafa" }}
+            zIndex={30}
             // onChangeItem={(item) =>
             //   setState({
             //     organization: item.value,
@@ -91,22 +96,18 @@ export default function DonorHomeScreen() {
             items={[
               {
                 label: "1",
-                value: "children",
-                // icon: () => <Icon name="FontAwesome" size={18} color="#900" />,
-                hidden: false,
+                value: "1",
               },
               {
-                label: "MEN",
-                value: "men",
-                // icon: () => <Icon name="Entypo" size={18} color="#900" />,
+                label: "2",
+                value: "2",
               },
               {
-                label: "WOMEN",
-                value: "women",
-                // icon: () => <Icon name="Ionicons" size={18} color="#900" />,
+                label: "3",
+                value: "3",
               },
             ]}
-            defaultValue="children"
+            defaultValue=""
             containerStyle={{ height: 40, width: 150 }}
             style={styles.dropDown}
             itemStyle={{
@@ -127,8 +128,6 @@ export default function DonorHomeScreen() {
               {
                 label: "CHILDREN",
                 value: "children",
-                // icon: () => <Icon name="" size={18} color="#900" />,
-                hidden: true,
               },
               {
                 label: "MEN",
@@ -193,19 +192,19 @@ export default function DonorHomeScreen() {
           <DropDownPicker
             items={[
               {
-                label: "CHILDREN",
-                value: "children",
+                label: "200",
+                value: "200",
                 // icon: () => <Icon name="" size={18} color="#900" />,
                 hidden: true,
               },
               {
-                label: "MEN",
-                value: "men",
+                label: "400",
+                value: "400",
                 // icon: () => <Icon name="" size={18} color="#900" />,
               },
               {
-                label: "WOMEN",
-                value: "women",
+                label: "600",
+                value: "600",
                 // icon: () => <Icon name="" size={18} color="#900" />,
               },
             ]}

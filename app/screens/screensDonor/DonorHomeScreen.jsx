@@ -1,125 +1,96 @@
 import React from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { StyleSheet, Text, View, TextInput, Image } from "react-native";
 // import firebase from "firebase";
-import { Customization } from "../../config/Customization";
 import Button from "react-native-button";
 import DropDownPicker from "react-native-dropdown-picker";
 import Icon from "react-native-vector-icons/Feather";
+import * as Location from "expo-location";
+
+import { Customization } from "../../config/Customization";
 
 export default function DonorHomeScreen() {
-  const [donorLoc, setDonorLoc] = React.useState([]);
-  const [country, setCountry] = React.useState(["Pakistan"]);
-  const [value, setValue] = React.useState("pakistan");
-  const [items, setItems] = React.useState([
-    {
-      label: "CHILDREN",
-      value: "children",
-      icon: () => <Icon name="" size={18} color="#900" />,
-      hidden: true,
-    },
-    {
-      label: "MEN",
-      value: "men",
-      icon: () => <Icon name="flag" size={18} color="#900" />,
-    },
-    {
-      label: "WOMEN",
-      value: "women",
-      icon: () => <Icon name="flag" size={18} color="#900" />,
-    },
-    {
-      label: "MISC",
-      value: "misc",
-      icon: () => <Icon name="flag" size={18} color="#900" />,
-    },
-  ]);
-  let controller;
-
+  const [donorLoc, setDonorLoc] = React.useState("");
   const SendRequest = () => {
-    console.log(SendRequest);
+    console.log("SendRequest");
   };
+  const getCurrentPos = async () => {
+    let { status } = await Location.requestPermissionsAsync();
+    if (status !== "granted") {
+      alert("Permission to access location was denied");
+    }
+    let location = await Location.getCurrentPositionAsync({});
+    if (location) {
+      const loc = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      const res = await Location.reverseGeocodeAsync(loc);
+      setDonorLoc(`${res[0].street}, ${res[0].city}`);
+    }
+  };
+
+  React.useEffect(() => {
+    getCurrentPos();
+    // navigator.geolocation.getCurrentPosition(function (position) {
+    //   console.log(
+    //     "navigator.geolocation.getCurrentPosition -> position",
+    //     position
+    //   );
+    // });
+  }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.InputContainer}>
+        <Image
+          source={require("../../assets/location.png")}
+          style={{ width: 30, height: 30, marginTop: 6, marginLeft: 7 }}
+        />
         <TextInput
           style={styles.body}
-          placeholder="Enter your location"
+          placeholder='Your current location..'
           onChangeText={(text) => setDonorLoc(text)}
           value={donorLoc}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
+          inlineImageLeft='ic_menu_black_24dp'
+          inlineImagePadding={2}
+          underlineColorAndroid='transparent'
         />
       </View>
-      <DropDownPicker
-        items={items}
-        controller={(instance) => (controller = instance)}
-        onChangeList={(items, callback) => {
-          new Promise((resolve, reject) => resolve(setItems(items)))
-            .then(() => callback())
-            .catch(() => {});
-        }}
-        defaultValue={value}
-        onChangeItem={(item) => setValue(item.value)}
-      />
+
       <Text style={styles.title}>Donation Type</Text>
-      {/* <DropDownPicker
+      <DropDownPicker
         items={[
           {
-            label: "CHILDREN",
-            value: "children",
-            icon: () => <Icon name="" size={18} color="#900" />,
+            label: "USA",
+            value: "usa",
+            icon: () => <Icon name='flag' size={18} color='#900' />,
             hidden: true,
           },
           {
-            label: "MEN",
-            value: "men",
-            icon: () => <Icon name="flag" size={18} color="#900" />,
+            label: "UK",
+            value: "uk",
+            icon: () => <Icon name='flag' size={18} color='#900' />,
           },
           {
-            label: "WOMEN",
-            value: "women",
-            icon: () => <Icon name="flag" size={18} color="#900" />,
-          },
-          {
-            label: "MISC",
-            value: "misc",
-            icon: () => <Icon name="flag" size={18} color="#900" />,
+            label: "France",
+            value: "france",
+            icon: () => <Icon name='flag' size={18} color='#900' />,
           },
         ]}
-        defaultValue={state.organization}
-        containerStyle={{ height: 40 }}
-        style={{ backgroundColor: "#fafafa" }}
+        defaultValue=''
+        containerStyle={{ height: 40, width: 150 }}
+        style={styles.dropdown}
         itemStyle={{
           justifyContent: "flex-start",
         }}
         dropDownStyle={{ backgroundColor: "#fafafa" }}
-        onChangeItem={(item) =>
-          setState({
-            organization: item.value,
-          })
-        }
-      /> */}
-      {/* <Button
-    containerStyle={styles.clothesContainer}
-    style={styles.clothesText}
-    onPress={() => props.navigation.navigate("")}
-  >
-    Clothes
-  </Button>
-  <Button
-    containerStyle={styles.moneyContainer}
-    style={styles.moneyText}
-    onPress={() => props.navigation.navigate("")}
-  >
-    Money
- </Button> */}
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Send Request"
-          color={Customization.color.tint}
-          onPress={SendRequest}
-        />
+        onChangeItem={(item) => console.log(item.label, item.value)}
+      />
+      <View style={styles.requestButton}>
+        <Button color={Customization.color.tint} onPress={SendRequest}>
+          Send Request
+        </Button>
       </View>
     </View>
   );
@@ -129,7 +100,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
   },
   title: {
     fontSize: Customization.fontSize.title,
@@ -140,6 +110,28 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginLeft: 20,
     marginRight: 20,
+  },
+  InputContainer: {
+    borderBottomColor: "#000",
+    borderBottomWidth: 1,
+    flexDirection: "row",
+    marginTop: 30,
+    width: Customization.textInputWidth.main,
+  },
+  body: {
+    height: 42,
+    paddingLeft: 20,
+    paddingRight: 20,
+    color: Customization.color.text,
+  },
+  dropdown: {
+    backgroundColor: "#fafafa",
+  },
+  requestButton: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginBottom: 50,
   },
   // clothesContainer: {
   //   width: Customization.buttonWidth.main,

@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  KeyboardAvoidingView,
+} from "react-native";
 import Button from "react-native-button";
 import firebase from "firebase";
 
@@ -32,63 +38,61 @@ export default function SignUpDonor({ navigation }) {
     }
   };
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container}>
       <Text style={[styles.title, styles.leftTitle]}>Create new account</Text>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="Full Name"
+          placeholder='Full Name'
           value={fullName}
           onChangeText={(text) => setFullName(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
         />
       </View>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="Phone Number"
+          placeholder='Phone Number'
           value={phone}
           onChangeText={(text) => setPhone(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
         />
       </View>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="E-mail Address"
+          placeholder='E-mail Address'
           value={email}
           onChangeText={(text) => setEmail(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
         />
       </View>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="Password"
+          placeholder='Password'
           secureTextEntry={true}
           value={password}
           onChangeText={(text) => setPassword(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
         />
       </View>
       <Button
         containerStyle={[styles.facebookContainer, { marginTop: 50 }]}
         style={styles.facebookText}
-        onPress={handleSignUp}
-      >
+        onPress={handleSignUp}>
         Sign Up
       </Button>
       <Text
         style={styles.or}
-        onPress={() => navigation.navigate("SignInDonor")}
-      >
+        onPress={() => navigation.navigate("SignInDonor")}>
         Already have an account, Sign In here!
       </Text>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

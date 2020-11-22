@@ -5,8 +5,6 @@ import { Customization } from "../../config/Customization";
 import Button from "react-native-button";
 import DropDownPicker from "react-native-dropdown-picker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-
-import Ionicons from "react-native-vector-icons/Ionicons";
 import * as Location from "expo-location";
 
 export default function DonorHomeScreen() {

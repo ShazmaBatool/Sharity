@@ -35,36 +35,39 @@ export default function SignInDonor({ navigation }) {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          keyboardType='email-address'
-          placeholder='E-mail or phone number'
+          keyboardType="email-address"
+          placeholder="E-mail Address"
           onChangeText={(text) => setEmail(text)}
           value={email}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid='transparent'
+          underlineColorAndroid="transparent"
         />
       </View>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
           secureTextEntry={true}
-          placeholder='Password'
+          placeholder="Password"
           onChangeText={(text) => setPassword(text)}
           value={password}
+          keyboardType="default"
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid='transparent'
+          underlineColorAndroid="transparent"
         />
       </View>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        onPress={onPressLogin}>
+        onPress={onPressLogin}
+      >
         Log in
       </Button>
       <Text style={styles.or}>OR</Text>
       <Button
         containerStyle={styles.facebookContainer}
         style={styles.facebookText}
-        onPress={() => navigation.navigate("SignUpDonor")}>
+        onPress={() => navigation.navigate("SignUpDonor")}
+      >
         Don't have an account
       </Button>
     </View>

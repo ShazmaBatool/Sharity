@@ -10,6 +10,7 @@ export default function SignUpDonor({ navigation }) {
   const [phone, setPhone] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [gender, setGender] = React.useState("");
   const database = firebase.database();
   const handleSignUp = async () => {
     try {
@@ -24,6 +25,7 @@ export default function SignUpDonor({ navigation }) {
               donorContactInfo: phone,
               donorEmail: email,
               donorPassword: password,
+              donorGender: gender,
             });
         });
     } catch (error) {
@@ -33,12 +35,13 @@ export default function SignUpDonor({ navigation }) {
   };
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, styles.leftTitle]}>Create new account</Text>
+      <Text style={[styles.title, styles.leftTitle]}>Create New Account</Text>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="Full Name"
+          placeholder="Full Name as per CNIC"
           value={fullName}
+          keyboardType="name-phone-pad"
           onChangeText={(text) => setFullName(text)}
           placeholderTextColor={Customization.color.grey}
           underlineColorAndroid="transparent"
@@ -47,8 +50,9 @@ export default function SignUpDonor({ navigation }) {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="Phone Number"
+          placeholder="Phone Number e.g. 03xxxxxxxxx"
           value={phone}
+          keyboardType="phone-pad"
           onChangeText={(text) => setPhone(text)}
           placeholderTextColor={Customization.color.grey}
           underlineColorAndroid="transparent"
@@ -59,6 +63,7 @@ export default function SignUpDonor({ navigation }) {
           style={styles.body}
           placeholder="E-mail Address"
           value={email}
+          keyboardType="email-address"
           onChangeText={(text) => setEmail(text)}
           placeholderTextColor={Customization.color.grey}
           underlineColorAndroid="transparent"
@@ -70,7 +75,20 @@ export default function SignUpDonor({ navigation }) {
           placeholder="Password"
           secureTextEntry={true}
           value={password}
+          keyboardType="default"
           onChangeText={(text) => setPassword(text)}
+          placeholderTextColor={Customization.color.grey}
+          underlineColorAndroid="transparent"
+        />
+      </View>
+      <View style={styles.InputContainer}>
+        <TextInput
+          style={styles.body}
+          placeholder="Specify gender"
+          secureTextEntry={true}
+          value={gender}
+          keyboardType="name-phone-pad"
+          onChangeText={(text) => setGender(text)}
           placeholderTextColor={Customization.color.grey}
           underlineColorAndroid="transparent"
         />

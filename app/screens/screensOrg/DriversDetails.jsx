@@ -26,7 +26,7 @@ export default function DriversDetails({ navigation }) {
       <Image
         source={require("../../assets/donate.png")}
         style={{ width: "80%", height: "30%" }}
-        resizeMode='contain'
+        resizeMode="contain"
       />
       <ScrollView style={styles.scrollView}>
         {driverData.map((driver) => (
@@ -40,12 +40,20 @@ export default function DriversDetails({ navigation }) {
             <Text style={styles.detailsText}>
               Driver VehicleID: {driver.driverVehicleInfo}
             </Text>
+            <Button
+              containerStyle={styles.loginContainer}
+              style={styles.loginText}
+              onPress={onPressAddDriver}
+            >
+              Assign Task
+            </Button>
           </View>
         ))}
       </ScrollView>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",

@@ -44,7 +44,7 @@ export default function WelcomeScreen({ navigation }) {
     return (
       <ActivityIndicator
         style={styles.spinner}
-        size='large'
+        size="large"
         color={Customization.color.tint}
       />
     );
@@ -53,16 +53,24 @@ export default function WelcomeScreen({ navigation }) {
     <View style={styles.container}>
       <Image style={styles.logo} source={require("../assets/logo.png")} />
       <Text style={styles.title}>Welcome to Sharity</Text>
+      <Text style={styles.content}>Please Select One to Proceed</Text>
       <View style={styles.buttonContainer}>
         <Picker
           selectedValue={user}
           style={{ width: 150 }}
-          onValueChange={(itemValue) => setUser(itemValue)}>
-          <Picker.Item label='Donor' value='donor' color='#000' />
-          <Picker.Item label='Organization' value='org' color='#000' />
-          <Picker.Item label='Driver' value='driver' color='#000' />
+          onValueChange={(itemValue) => setUser(itemValue)}
+        >
+          <Picker.Item label="Donor" value="donor" color="#bb2265" />
+          <Picker.Item label="Organization" value="org" color="#bb2265" />
+          <Picker.Item label="Driver" value="driver" color="#bb2265" />
         </Picker>
-        <Button title='Choose One' color='#000' onPress={handleClick} />
+        <Button
+          containerStyle={styles.loginContainer}
+          style={styles.loginText}
+          title="Confirm"
+          color="#bb2265"
+          onPress={handleClick}
+        />
       </View>
     </View>
   );
@@ -75,6 +83,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: Customization.fontSize.title,
+    fontWeight: "bold",
+    color: Customization.color.tint,
+    marginTop: 20,
+    textAlign: "center",
+    marginBottom: 20,
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  content: {
+    fontSize: Customization.fontSize.content,
     fontWeight: "bold",
     color: Customization.color.tint,
     marginTop: 20,

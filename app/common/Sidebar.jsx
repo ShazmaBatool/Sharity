@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   Alert,
   View,
@@ -13,6 +13,22 @@ import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "../../context";
 
 const Sidebar = ({ navigation, routes, email }) => {
+  const [displayName, setDisplayName] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [photoURL, setPhotoURL] = React.useState("");
+  const userInfo = () => {
+    const user = firebase.auth().currentUser;
+    setDisplayName(user.displayName);
+    setPhoneNumber(user.phoneNumber);
+    setPhotoURL(user.photoURL);
+  };
+  React.useEffect(() => {
+    userInfo();
+    return () => {
+      null;
+    };
+  }, []);
+
   //  const [routes] = React.useState([
   //   {
   //     name: "Driver Details",
@@ -34,16 +50,17 @@ const Sidebar = ({ navigation, routes, email }) => {
     <View style={styles.container}>
       <Image
         source={{
-          uri:
-            "https://res.cloudinary.com/wfdns6x2g6/image/upload/v1509007989/user_psolwi.png",
+          uri: photoURL
+            ? photoURL
+            : "https://res.cloudinary.com/wfdns6x2g6/image/upload/v1509007989/user_psolwi.png",
         }}
         style={styles.profileImg}
       />
       <Text style={{ fontWeight: "bold", fontSize: 16, marginTop: 10 }}>
-        Janna Doe
+        {displayName}
       </Text>
       <Text style={{ color: "gray", marginBottom: 10 }}>
-        {email ? email : "janna@doe.com"}
+        {phoneNumber ? phoneNumber : ""}
       </Text>
       <View style={styles.sidebarDivider}></View>
       <FlatList
@@ -57,25 +74,26 @@ const Sidebar = ({ navigation, routes, email }) => {
       <TouchableOpacity
         onPress={() =>
           Alert.alert(
-            "Log out",
-            "Do you want to logout?",
+            "Sign out",
+            "Do you want to sign out?",
             [
               {
-                text: "Cancel",
+                text: "No",
                 onPress: () => {
                   return null;
                 },
               },
               {
-                text: "Confirm",
+                text: "Yes",
                 onPress: () => signOut(),
               },
             ],
             { cancelable: false }
           )
-        }>
+        }
+      >
         <Text style={{ margin: 16, fontWeight: "bold", color: "#000" }}>
-          Logout
+          Sign Out
         </Text>
       </TouchableOpacity>
     </View>
@@ -85,7 +103,8 @@ function Item({ item, navigate }) {
   return (
     <TouchableOpacity
       style={styles.listItem}
-      onPress={() => navigate(item.name)}>
+      onPress={() => navigate(item.name)}
+    >
       <Ionicons name={item.icon} size={32} />
       <Text style={styles.title}>{item.name}</Text>
     </TouchableOpacity>

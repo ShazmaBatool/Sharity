@@ -5,6 +5,7 @@ import SyncStorage from "sync-storage";
 import DonorHomeScreen from "../../screens/screensDonor/DonorHomeScreen";
 import DonorSettings from "../../screens/screensDonor/DonorSettings";
 import Sidebar from "../../common/Sidebar";
+import EditProfileDonor from "../../screens/screensDonor/EditProfileDonor";
 
 export default function DonorDrawer() {
   const DrawerStack = createDrawerNavigator();
@@ -26,15 +27,21 @@ export default function DonorDrawer() {
   const email = SyncStorage.get("@userEmail");
   return (
     <DrawerStack.Navigator
-      overlayColor='#01010abf'
-      initialRouteName='Donor Details'
-      headerMode='none'
+      overlayColor="#01010abf"
+      initialRouteName="Donor Details"
+      headerMode="none"
       drawerContent={(props) => (
         <Sidebar {...props} routes={routes} email={email} />
-      )}>
-      <DrawerStack.Screen name='Donor Details' component={DonorHomeScreen} />
-      <DrawerStack.Screen name='Add Donor' component={DonorHomeScreen} />
-      <DrawerStack.Screen name='Settings' component={DonorSettings} />
+      )}
+    >
+      <DrawerStack.Screen name="Donor Details" component={DonorHomeScreen} />
+      <DrawerStack.Screen name="Add Donor" component={DonorHomeScreen} />
+      <DrawerStack.Screen name="Settings" component={DonorSettings} />
+      <DrawerStack.Screen
+        name="EditProfileDonor"
+        component={EditProfileDonor}
+        options={{ headerShown: false }}
+      />
     </DrawerStack.Navigator>
   );
 }

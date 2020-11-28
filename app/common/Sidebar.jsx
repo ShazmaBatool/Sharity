@@ -9,10 +9,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import Icons from "react-native-vector-icons/FontAwesome";
+import { Customization } from "../config/Customization";
 
 import { AuthContext } from "../../context";
+import firebase from "firebase";
 
-const Sidebar = ({ navigation, routes, email }) => {
+const Sidebar = ({ navigation, routes }) => {
   const [displayName, setDisplayName] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [photoURL, setPhotoURL] = React.useState("");
@@ -27,7 +30,7 @@ const Sidebar = ({ navigation, routes, email }) => {
     return () => {
       null;
     };
-  }, []);
+  });
 
   //  const [routes] = React.useState([
   //   {
@@ -105,7 +108,7 @@ function Item({ item, navigate }) {
       style={styles.listItem}
       onPress={() => navigate(item.name)}
     >
-      <Ionicons name={item.icon} size={32} />
+      <Icons name={item.icon} size={32} color={Customization.color.tint} />
       <Text style={styles.title}>{item.name}</Text>
     </TouchableOpacity>
   );

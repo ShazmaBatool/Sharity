@@ -46,7 +46,7 @@ export default function EditProfileDonor({ navigation }) {
   const userInfo = () => {
     const user = firebase.auth().currentUser;
     setDisplayName(user.displayName);
-    setPhoneNumber(user.phoneNumber);
+    // setPhoneNumber(user.phoneNumber);
     setEmail(user.email);
     setPhotoURL(user.photoURL);
   };
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    marginTop: Platform.OS === "ios" ? 0 : -12,
+    // marginTop: Platform.OS === "ios" ? 0 : -12,
     paddingLeft: 10,
     color: "#05375a",
   },

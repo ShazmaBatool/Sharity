@@ -53,7 +53,7 @@ export default function WelcomeScreen({ navigation }) {
     <View style={styles.container}>
       <Image style={styles.logo} source={require("../assets/logo.png")} />
       <Text style={styles.title}>Welcome to Sharity</Text>
-      <Text style={styles.content}>Please Select One to Proceed</Text>
+      {/* <Text style={styles.content}>Please Select One to Proceed</Text> */}
       <View style={styles.buttonContainer}>
         <Picker
           selectedValue={user}
@@ -67,7 +67,7 @@ export default function WelcomeScreen({ navigation }) {
         <Button
           containerStyle={styles.loginContainer}
           style={styles.loginText}
-          title="Confirm"
+          title="NEXT"
           color="#bb2265"
           onPress={handleClick}
         />
@@ -91,16 +91,16 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
   },
-  content: {
-    fontSize: Customization.fontSize.content,
-    fontWeight: "bold",
-    color: Customization.color.tint,
-    marginTop: 20,
-    textAlign: "center",
-    marginBottom: 20,
-    marginLeft: 20,
-    marginRight: 20,
-  },
+  // content: {
+  //   fontSize: Customization.fontSize.content,
+  //   // fontWeight: "bold",
+  //   color: Customization.color.tint,
+  //   marginTop: 20,
+  //   textAlign: "center",
+  //   marginBottom: 20,
+  //   marginLeft: 20,
+  //   marginRight: 20,
+  // },
   loginContainer: {
     width: Customization.buttonWidth.main,
     backgroundColor: Customization.color.tint,
@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 30,
   },
+
   loginText: {
     color: Customization.color.white,
   },

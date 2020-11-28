@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
 import Button from "react-native-button";
 import SyncStorage from "sync-storage";
 
@@ -7,56 +7,58 @@ import { Customization } from "../../config/Customization";
 import { AuthContext } from "../../../context";
 import firebase from "firebase";
 import firebaseConfig from "../../../Firebase";
+import { Link } from "@react-navigation/native";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 export default function SignInDonor({ navigation }) {
-  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const { signIn } = React.useContext(AuthContext);
   const [error, setError] = React.useState({
-    phoneNumber: "",
+    email: "",
     password: "",
   });
 
   // const database = firebase.database();
   const onPressLogin = async () => {
-    if (!error.phoneNumber && !error.password) {
+    console.log("Click");
+    if (!error.email && !error.password) {
       try {
         await firebase
           .auth()
-          .signInWithphoneNumberAndPassword(phoneNumber, password)
+          .signInWithEmailAndPassword(email, password)
           .then(function (user) {
-            SyncStorage.set("@userphoneNumber", user.user.phoneNumber);
-            SyncStorage.set("@userPassword", password);
+            // SyncStorage.set("@userphoneNumber", user.user.phoneNumber);
+            // SyncStorage.set("@userPassword", password);
             signIn();
           });
       } catch (error) {
-        console.log("loginUser -> error", error.toString());
+        Alert.alert(error.toString());
       }
     } else {
       Alert.alert("Please enter the correct data.");
     }
   };
-  const validatePhoneNumber = (text) => {
+  const validateEmail = (text) => {
     if (text === "") {
-      setError({ phoneNumber: "Phone number is required." });
-    } else if (text.length !== 11) {
-      setError({ phoneNumber: "Phone must be 11 digits." });
-    } else if (/^\d{10}$/) {
-      setError({ phoneNumber: "Phone must be 11 digits." });
+      setError({ email: "email is required." });
+    } else if (
+      !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+        text
+      )
+    ) {
+      setError({ email: "Please enter valid email-address" });
     } else {
-      setError({ phoneNumber: "" });
-      setPhone(text);
+      setError({ email: "" });
+      setEmail(text);
     }
-    setPhoneNumber(text);
+    setEmail(text);
   };
   const validatePassword = (text) => {
     if (text === "") {
       setError({ password: "Password is required." });
-    } else if (text.length < 6) {
-      setError({ password: "Password must be greater than 6 characters." });
     } else {
       setError({ password: "" });
       setPassword(text);
@@ -69,15 +71,15 @@ export default function SignInDonor({ navigation }) {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="Phone Number e.g. 03xxxxxxxxx"
-          value={phoneNumber}
-          keyboardType="phone-pad"
-          onChangeText={(text) => validatePhoneNumber(text)}
+          placeholder="e.g. example@address.com"
+          value={email}
+          keyboardType="email-address"
+          onChangeText={(text) => validateEmail(text)}
           placeholderTextColor={Customization.color.grey}
           underlineColorAndroid="transparent"
         />
       </View>
-      <Text style={styles.error}>{error.phone}</Text>
+      <Text style={styles.error}>{error.email}</Text>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
@@ -98,6 +100,18 @@ export default function SignInDonor({ navigation }) {
       >
         Sign In
       </Button>
+
+      <Text
+        onPress={() => navigation.navigate("ForgotPassword")}
+        styles={{
+          marginBottom: 12,
+          fontStyle: "italic",
+          textDecorationLine: "underline",
+          borderBottomWidth: 1,
+        }}
+      >
+        FORGOT YOUR PASSWORD?
+      </Text>
       <Text style={styles.or}>OR</Text>
       <Button
         containerStyle={styles.facebookContainer}
@@ -117,8 +131,10 @@ const styles = StyleSheet.create({
   },
   or: {
     color: "black",
+
     marginTop: 40,
     marginBottom: 10,
+    fontSize: Customization.fontSize.content,
   },
   title: {
     fontSize: Customization.fontSize.title,
@@ -168,13 +184,13 @@ const styles = StyleSheet.create({
   },
   facebookContainer: {
     width: Customization.buttonWidth.main,
-    backgroundColor: Customization.color.facebook,
+    backgroundColor: Customization.color.white,
     borderRadius: Customization.borderRadius.main,
     padding: 10,
     marginTop: 30,
   },
   facebookText: {
-    color: Customization.color.white,
+    color: Customization.color.tint,
   },
   error: {
     marginRight: "auto",

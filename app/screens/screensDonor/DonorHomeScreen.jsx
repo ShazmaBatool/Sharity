@@ -1,6 +1,14 @@
 import React from "react";
-import { StyleSheet, Text, View, TextInput, Image } from "react-native";
-// import firebase from "firebase";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Image,
+  Alert,
+  Platform,
+} from "react-native";
+import firebase from "firebase";
 import { Customization } from "../../config/Customization";
 import Button from "react-native-button";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -12,30 +20,45 @@ export default function DonorHomeScreen() {
   // const [country, setCountry] = React.useState(["Pakistan"]);
   const [amount, setAmount] = React.useState(null);
   // const [donationType, setDonationType] = React.useState("");
+  const [verifiedEmail, setVerifiedEmail] = React.useState(false);
 
   const SendRequest = () => {
     console.log(SendRequest);
   };
   const getCurrentLoc = async () => {
-    let { status } = await Location.requestPermissionsAsync();
-    if (status !== "granted") {
-      setErrorMsg("Permission to access location was denied");
-    }
+    const user = firebase.auth().currentUser;
+    console.log(user.emailVerified);
+    if (user.emailVerified == true) {
+      setVerifiedEmail(true);
+      let { status } = await Location.requestPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+      }
 
-    let location = await Location.getCurrentPositionAsync({});
+      let location = await Location.getCurrentPositionAsync({});
 
-    if (location) {
-      const loc = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      };
-      const result = await Location.reverseGeocodeAsync(loc);
-      setDonorLoc(`${result[0].street}, ${result[0].city}`);
+      if (location) {
+        const loc = {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        };
+        const result = await Location.reverseGeocodeAsync(loc);
+        setDonorLoc(`${result[0].street}, ${result[0].city}`);
+      }
+    } else {
+      Alert.alert("Please verify your email first.");
     }
   };
   React.useEffect(() => {
     getCurrentLoc();
-  }, []);
+  });
+  if (!verifiedEmail) {
+    return (
+      <View>
+        <Text> Verify your email first. </Text>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <View style={styles.InputContainer}>
@@ -52,7 +75,46 @@ export default function DonorHomeScreen() {
           underlineColorAndroid="transparent"
         />
       </View>
-      <View>
+      <View style={{ zIndex: Platform.OS === "ios" ? 40 : 60 }}>
+        <Text style={styles.title}>Organization List</Text>
+
+        <DropDownPicker
+          items={[
+            {
+              label: "CHILDREN",
+              value: "children",
+              icon: () => <FontAwesome name="child" size={18} color="#900" />,
+              hidden: true,
+            },
+            {
+              label: "MEN",
+              value: "men",
+              icon: () => <FontAwesome name="male" size={18} color="#900" />,
+            },
+            {
+              label: "WOMEN",
+              value: "women",
+              icon: () => <FontAwesome name="female" size={18} color="#900" />,
+            },
+          ]}
+          defaultValue=""
+          placeholder="Select Organization"
+          containerStyle={{ height: 40, width: 200 }}
+          style={{ width: 200 }}
+          itemStyle={{
+            justifyContent: "flex-start",
+          }}
+          dropDownStyle={{ backgroundColor: "#fafafa" }}
+
+          // onChangeItem={(item) =>
+          //   setState({
+          //     organization: item.value,
+          //   })
+          // }
+        />
+      </View>
+
+      <View style={{ zIndex: Platform.OS === "ios" ? 30 : 40 }}>
         <Text style={styles.title}>Clothes</Text>
         <View style={styles.dropDownContainer}>
           <DropDownPicker
@@ -119,6 +181,8 @@ export default function DonorHomeScreen() {
             // }
           />
         </View>
+      </View>
+      <View style={{ zIndex: Platform.OS === "ios" ? 20 : 30 }}>
         <Text style={styles.title}>Shoes</Text>
         <View style={styles.dropDownContainer}>
           <DropDownPicker
@@ -185,6 +249,8 @@ export default function DonorHomeScreen() {
             // }
           />
         </View>
+      </View>
+      <View style={{ zIndex: Platform.OS === "ios" ? 10 : 20 }}>
         <Text style={styles.title}>Amount</Text>
         <View style={{ alignItems: "center", marginLeft: 10 }}>
           <DropDownPicker
@@ -249,8 +315,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: "center",
     marginBottom: 20,
-    marginLeft: 20,
-    marginRight: 20,
+    // marginLeft: 20,
+    // marginRight: 20, For Center
   },
   InputContainer: {
     width: Customization.textInputWidth.main,

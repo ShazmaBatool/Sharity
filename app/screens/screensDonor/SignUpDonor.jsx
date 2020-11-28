@@ -9,13 +9,13 @@ import { Customization } from "../../config/Customization";
 export default function SignUpDonor({ navigation }) {
   const [fullName, setFullName] = React.useState("");
   const [phone, setPhone] = React.useState("");
-  // const [email, setemail] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [gender, setGender] = React.useState("");
   const [error, setError] = React.useState({
     fullName: "",
     phone: "",
-    // email: "",
+    email: "",
     password: "",
   });
 
@@ -35,16 +35,20 @@ export default function SignUpDonor({ navigation }) {
       try {
         await firebase
           .auth()
-          .createUserWithphoneAndPassword(phone, password)
-          .then(function (user) {
-            if (user)
-              database.ref("Users/" + "Donor").push({
-                donorName: fullName,
-                donorContactInfo: phone,
-                // donoremail: email,
-                donorPassword: password,
-                donorGender: genderValue,
+          .createUserWithEmailAndPassword(email, password)
+          .then(function (userData) {
+            if (userData) {
+              userData.user.sendEmailVerification().then(function () {
+                Alert.alert("Please verify your email.");
               });
+            }
+            database.ref("Users/" + "Donor").push({
+              donorName: fullName,
+              donorContactInfo: phone,
+              donorEmail: email,
+              donorPassword: password,
+              donorGender: genderValue,
+            });
           });
       } catch (error) {
         Alert.alert(error.toString());
@@ -58,10 +62,10 @@ export default function SignUpDonor({ navigation }) {
       setError({ fullName: "Name is required." });
     } else if (text.length < 3) {
       setError({ fullName: "Name must be greater than 3 characters." });
-    } else if (text.length > 10) {
-      setError({ fullName: "Name must be less than 10 characters." });
-    } else if (text.match(/^[A-Za-z]+$/)) {
-      Alert.alert("Please input alphabet characters only.");
+    } else if (text.length > 35) {
+      setError({ fullName: "Name must be less than 35 characters." });
+    } else if (!text.match(/^[A-Za-z]+$/) && text.trim() === " ") {
+      setError({ fullName: "Please input alphabet characters only." });
       // valid integer (positive or negative)
     } else {
       setError({ fullName: "" });
@@ -72,28 +76,35 @@ export default function SignUpDonor({ navigation }) {
   const validatePhone = (text) => {
     if (text === "") {
       setError({ phone: "Phone number is required." });
-    } else if (text.length !== 11) {
-      setError({ phone: "Phone must be 11 digits." });
-    } else if (/^\d{10}$/) {
-      setError({ phone: "Phone must be 11 digits." });
+    } else if (text.length < 11 && text.length > 11) {
+      setError({ phone: "Phone number must be equal to 11 digits." });
+    } else if (!/^\d{10}$/) {
+      setError({ phone: "Please input digit-characters only." });
+      // } else (text.length == 11){
     } else {
       setError({ phone: "" });
       setPhone(text);
     }
     setPhone(text);
   };
-  // const validateemail = (text) => {
-  //   var pattern = new RegExp(
-  //     /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+))|("[\w-\s]+")([\w-]+(?:\.[\w-]+)))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
-  //   );
-  //   if (text === "") {
-  //     setError({ email: "email is required." });
-  //   } else {
-  //     setError({ email: "" });
-  //     setemail(text);
-  //   }
-  //   setemail(text);
-  // };
+
+  const validateEmail = (text) => {
+    // var pattern =
+    //   "/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)$/";
+    if (text === "") {
+      setError({ email: "Email is required." });
+    } else if (
+      !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+        text
+      )
+    ) {
+      setError({ email: "Please enter valid email-address" });
+    } else {
+      setError({ email: "" });
+      setEmail(text);
+    }
+    setEmail(text);
+  };
   const validatePassword = (text) => {
     if (text === "") {
       setError({ password: "Password is required." });
@@ -132,18 +143,18 @@ export default function SignUpDonor({ navigation }) {
         />
       </View>
       <Text style={styles.error}>{error.phone}</Text>
-      {/* <View style={styles.InputContainer}>
+      <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="E-mail Address"
+          placeholder="E-mail Address e.g. ...@gmail.com"
           value={email}
           keyboardType="email-address"
-          onChangeText={(text) => validateemail(text)}
+          onChangeText={(text) => validateEmail(text)}
           placeholderTextColor={Customization.color.grey}
           underlineColorAndroid="transparent"
         />
       </View>
-      <Text style={styles.error}>{error.email}</Text> */}
+      <Text style={styles.error}>{error.email}</Text>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
@@ -185,7 +196,6 @@ export default function SignUpDonor({ navigation }) {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -196,6 +206,7 @@ const styles = StyleSheet.create({
     color: "black",
     marginTop: 10,
     marginBottom: 10,
+    fontSize: Customization.fontSize.content,
   },
   title: {
     fontSize: Customization.fontSize.title,

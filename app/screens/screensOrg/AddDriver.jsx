@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput, Alert } from "react-native";
 import Button from "react-native-button";
 import { Customization } from "../../config/Customization";
 import firebase from "firebase";
@@ -18,8 +18,12 @@ export default function AddDriver() {
         driverContactInfo: contactInfo,
         driverVehicleInfo: vehicleID,
       });
+      setName("");
+      setContactInfo("");
+      setVehicleID("");
+      Alert.alert("Driver added successfully!");
     } else if (contactInfo.length > 11 || contactInfo.length < 11) {
-      alert("Please enter 11-digits phone number.");
+      Alert.alert("Please enter 11-digits phone number.");
       return;
     }
   };

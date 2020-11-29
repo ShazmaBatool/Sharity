@@ -14,18 +14,19 @@ export default function SignInDriver({ navigation }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const { signIn } = React.useContext(AuthContext);
-  const onPressLogin = async () => {
-    try {
-      await firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(function (user) {
-          console.log(user);
-          signIn();
-        });
-    } catch (error) {
-      console.log("loginUser -> error", error.toString());
-    }
+  const onPressLogin = () => {
+    signIn();
+    // try {
+    //   await firebase
+    //     .auth()
+    //     .signInWithEmailAndPassword(email, password)
+    //     .then(function (user) {
+    //       console.log(user);
+    //       signIn();
+    //     });
+    // } catch (error) {
+    //   console.log("loginUser -> error", error.toString());
+    // }
   };
   return (
     <View style={styles.container}>

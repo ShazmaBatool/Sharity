@@ -8,9 +8,9 @@ import {
   Button,
 } from "react-native";
 import firebase from "firebase";
+import { Picker } from "@react-native-community/picker";
 
 import { Customization } from "../config/Customization";
-import { Picker } from "@react-native-community/picker";
 
 export default function WelcomeScreen({ navigation }) {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -32,7 +32,7 @@ export default function WelcomeScreen({ navigation }) {
       database.ref("UserType/").set({
         userType: user,
       });
-      navigation.replace("driver");
+      navigation.replace("Driver");
     }
   };
   React.useEffect(() => {

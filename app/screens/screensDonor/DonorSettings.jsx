@@ -1,304 +1,251 @@
 import React from "react";
+import { View, SafeAreaView, StyleSheet, Alert } from "react-native";
 import {
-  StyleSheet,
+  Avatar,
+  Title,
+  Caption,
   Text,
-  View,
-  SafeAreaView,
-  Image,
-  ScrollView,
-  TouchableHighlight,
-} from "react-native";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
+  TouchableRipple,
+} from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import DialogInput from "react-native-dialog-input";
+import firebase from "firebase";
 
-import Screen from "../../common/Screen";
+import { AuthContext } from "../../../context";
+import { Customization } from "../../config/Customization";
 
-export default function DonorSettings() {
-  const [imageUri, setImageUri] = React.useState("");
-  const handleEditPic = async () => {
-    try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 0.5,
-      });
-      if (!result.cancelled) setImageUri(result.uri);
-    } catch (error) {
-      console.log("handleEditPic -> error", error);
-    }
+export default function DonorSettings({ navigation }) {
+  const [displayName, setDisplayName] = React.useState("Julia");
+  const [email, setEmail] = React.useState("");
+  const [photoURL, setPhotoURL] = React.useState("");
+  const [isDialogVisible, setIsDialogVisible] = React.useState(false);
+  const { signOut } = React.useContext(AuthContext);
+
+  const userInfo = () => {
+    const user = firebase.auth().currentUser;
+    setDisplayName(user.displayName);
+    setEmail(user.email);
+    setPhotoURL(user.photoURL);
   };
+  React.useEffect(() => {
+    userInfo();
+    return () => {
+      null;
+    };
+  });
 
-  const requestPermission = async () => {
-    const { granted } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    if (!granted) alert("You need to enable permission to access library!");
+  const alertDelete = () => {
+    Alert.alert(
+      "Delete Account",
+      "You will not be able to recover it.",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {
+            return null;
+          },
+        },
+        {
+          text: "Confirm",
+          onPress: () => deleteUser(),
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+  const deleteUser = () => {
+    var user = firebase.auth().currentUser;
+    user
+      .delete()
+      .then(function () {
+        navigation.replace("WelcomeDonor");
+      })
+      .catch(function (error) {
+        Alert.alert(error.toString());
+      });
+  };
+  const changeUserPassword = (newPassword) => {
+    var user = firebase.auth().currentUser;
+
+    user
+      .updatePassword(newPassword)
+      .then(function () {
+        // Update successful.
+        setIsDialogVisible(false);
+      })
+      .catch(function (error) {
+        // An error happened.
+        Alert.alert(error.toString());
+      });
   };
 
   return (
-    <Screen style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* <View style={styles.titleBar}>
-          <Ionicons name='ios-arrow-back' size={24} color='#52575D'></Ionicons>
-          <Ionicons name='md-more' size={24} color='#52575D'></Ionicons>
-        </View> */}
-
-        <View style={{ alignSelf: "center", marginTop: 15 }}>
-          <View style={styles.profileImage}>
-            <Image
-              source={{
-                uri: imageUri
-                  ? imageUri
-                  : "https://res.cloudinary.com/wfdns6x2g6/image/upload/v1509007989/user_psolwi.png",
-              }}
-              style={styles.image}
-              resizeMode='cover'
-            />
-          </View>
-          {/* <View style={styles.dm}>
-            <MaterialIcons
-              name='chat'
-              size={18}
-              color='#DFD8C8'></MaterialIcons>
-          </View> */}
-          <View style={styles.active} />
-          <View style={styles.add}>
-            <Ionicons
-              name='ios-add'
-              size={40}
-              color='#DFD8C8'
-              // style={{ marginTop: 6, marginLeft: 2 }}
-              onPress={handleEditPic}
-            />
-          </View>
-        </View>
-
-        <View style={styles.infoContainer}>
-          <TouchableHighlight
-            activeOpacity={0.6}
-            underlayColor='#01010abf'
-            onPress={() => alert("Pressed!")}>
-            <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
-              Julie
-            </Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-            activeOpacity={0.6}
-            underlayColor='#01010abf'
-            onPress={() => alert("Pressed!")}>
-            <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
-              Photographer
-            </Text>
-          </TouchableHighlight>
-        </View>
-
-        <View style={styles.statsContainer}>
-          <View style={styles.statsBox}>
-            <Text style={[styles.text, { fontSize: 24 }]}>4</Text>
-            <Text style={[styles.text, styles.subText]}>Donations</Text>
-          </View>
-          <View
-            style={[
-              styles.statsBox,
-              {
-                borderColor: "#DFD8C8",
-                borderLeftWidth: 1,
-                borderRightWidth: 1,
-              },
-            ]}>
-            <Text style={[styles.text, { fontSize: 24 }]}>2</Text>
-            <Text style={[styles.text, styles.subText]}>Pending</Text>
-          </View>
-          <View style={styles.statsBox}>
-            <Text style={[styles.text, { fontSize: 24 }]}>3</Text>
-            <Text style={[styles.text, styles.subText]}>Request</Text>
-          </View>
-        </View>
-
-        <View style={{ marginTop: 32 }}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={styles.mediaImageContainer}>
-              <Image
-                source={require("../../assets/media1.jpg")}
-                style={styles.image}
-                resizeMode='cover'></Image>
-            </View>
-            <View style={styles.mediaImageContainer}>
-              <Image
-                source={require("../../assets/media2.jpg")}
-                style={styles.image}
-                resizeMode='cover'></Image>
-            </View>
-            <View style={styles.mediaImageContainer}>
-              <Image
-                source={require("../../assets/media3.jpg")}
-                style={styles.image}
-                resizeMode='cover'></Image>
-            </View>
-          </ScrollView>
-          <View style={styles.mediaCount}>
-            <Text
+    <SafeAreaView style={styles.container}>
+      <View style={styles.userInfoSection}>
+        <View style={{ flexDirection: "row", marginTop: 15 }}>
+          <Avatar.Image
+            source={{
+              uri: photoURL
+                ? photoURL
+                : "https://res.cloudinary.com/wfdns6x2g6/image/upload/v1509007989/user_psolwi.png",
+            }}
+            size={80}
+            style={{ backgroundColor: Customization.color.tint }}
+          />
+          <View style={{ marginLeft: 20 }}>
+            <Title
               style={[
-                styles.text,
-                { fontSize: 24, color: "#DFD8C8", fontWeight: "300" },
+                styles.title,
+                {
+                  marginTop: 15,
+                  marginBottom: 5,
+                },
               ]}>
-              70
-            </Text>
-            <Text
-              style={[
-                styles.text,
-                { fontSize: 12, color: "#DFD8C8", textTransform: "uppercase" },
-              ]}>
-              Media
-            </Text>
+              {displayName}
+            </Title>
+            <Caption style={styles.caption}>{email}</Caption>
           </View>
         </View>
-        <Text style={[styles.subText, styles.recent]}>Recent Activity</Text>
-        <View style={{ alignItems: "center" }}>
-          <View style={styles.recentItem}>
-            <View style={styles.activityIndicator}></View>
-            <View style={{ width: 250 }}>
-              <Text
-                style={[styles.text, { color: "#41444B", fontWeight: "300" }]}>
-                Started following{" "}
-                <Text style={{ fontWeight: "400" }}>Jake Challeahe</Text> and{" "}
-                <Text style={{ fontWeight: "400" }}>Luis Poteer</Text>
-              </Text>
-            </View>
-          </View>
+      </View>
 
-          <View style={styles.recentItem}>
-            <View style={styles.activityIndicator}></View>
-            <View style={{ width: 250 }}>
-              <Text
-                style={[styles.text, { color: "#41444B", fontWeight: "300" }]}>
-                Started following{" "}
-                <Text style={{ fontWeight: "400" }}>Luke Harper</Text>
-              </Text>
-            </View>
-          </View>
+      <View style={styles.userInfoSection}>
+        <View style={styles.row}>
+          <Icon name='email' color='#777777' size={20} />
+          <Text style={{ color: "#777777", marginLeft: 20 }}>{email}</Text>
         </View>
-      </ScrollView>
-    </Screen>
+        <View style={styles.row}>
+          <Icon name='map-marker-radius' color='#777777' size={20} />
+          <Text style={{ color: "#777777", marginLeft: 20 }}>Punjab</Text>
+        </View>
+      </View>
+
+      <View style={styles.infoBoxWrapper}>
+        <View
+          style={[
+            styles.infoBox,
+            {
+              borderRightColor: "#dddddd",
+              borderRightWidth: 1,
+            },
+          ]}>
+          <Title>11</Title>
+          <Caption>Donation Successful</Caption>
+        </View>
+        <View style={styles.infoBox}>
+          <Title>12</Title>
+          <Caption>Request Pending</Caption>
+        </View>
+      </View>
+
+      <View style={styles.menuWrapper}>
+        <TouchableRipple
+          onPress={() => navigation.navigate("EditProfileDonor")}>
+          <View style={styles.menuItem}>
+            <Icon
+              name='account-edit'
+              color={Customization.color.tint}
+              size={25}
+            />
+            <Text style={styles.menuItemText}>Edit Profile</Text>
+          </View>
+        </TouchableRipple>
+        <TouchableRipple onPress={() => setIsDialogVisible(true)}>
+          <View style={styles.menuItem}>
+            <Icon
+              name='key-change'
+              color={Customization.color.tint}
+              size={25}
+            />
+            <Text style={styles.menuItemText}>Change Password</Text>
+          </View>
+        </TouchableRipple>
+        <TouchableRipple onPress={alertDelete}>
+          <View style={styles.menuItem}>
+            <AntDesign
+              name='deleteuser'
+              color={Customization.color.tint}
+              size={25}
+            />
+            <Text style={styles.menuItemText}>Delete Account</Text>
+          </View>
+        </TouchableRipple>
+        <TouchableRipple onPress={() => signOut()}>
+          <View style={styles.menuItem}>
+            <AntDesign
+              name='logout'
+              color={Customization.color.tint}
+              size={25}
+            />
+            <Text style={styles.menuItemText}>Logout</Text>
+          </View>
+        </TouchableRipple>
+        {isDialogVisible && (
+          <DialogInput
+            isDialogVisible={isDialogVisible}
+            title={"Change Password"}
+            message={"Please enter new password"}
+            hintInput={"New password"}
+            submitInput={(inputText) => {
+              changeUserPassword(inputText);
+            }}
+            closeDialog={() => {
+              setIsDialogVisible(false);
+            }}
+          />
+        )}
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
   },
-  text: {
-    fontFamily: "HelveticaNeue",
-    color: "#52575D",
+  userInfoSection: {
+    paddingHorizontal: 30,
+    marginBottom: 25,
   },
-  image: {
-    flex: 1,
-    height: undefined,
-    width: undefined,
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
   },
-  titleBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 24,
-    marginHorizontal: 16,
-  },
-  subText: {
-    fontSize: 12,
-    color: "#AEB5BC",
-    textTransform: "uppercase",
+  caption: {
+    fontSize: 14,
+    lineHeight: 14,
     fontWeight: "500",
   },
-  profileImage: {
-    width: 160,
-    height: 160,
-    borderRadius: 160 / 2,
-    overflow: "hidden",
-  },
-  dm: {
-    backgroundColor: "#41444B",
-    position: "absolute",
-    top: 20,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  active: {
-    backgroundColor: "#34FFB9",
-    position: "absolute",
-    bottom: 28,
-    left: 10,
-    padding: 4,
-    height: 20,
-    width: 20,
-    borderRadius: 10,
-  },
-  add: {
-    backgroundColor: "#41444B",
-    position: "absolute",
-    bottom: 10,
-    right: 5,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  infoContainer: {
-    alignSelf: "center",
-    alignItems: "center",
-    marginTop: 16,
-  },
-  statsContainer: {
+  row: {
     flexDirection: "row",
-    alignSelf: "center",
-    marginTop: 32,
+    marginBottom: 10,
   },
-  statsBox: {
-    alignItems: "center",
-    flex: 1,
-  },
-  mediaImageContainer: {
-    width: 180,
-    height: 200,
-    borderRadius: 12,
-    overflow: "hidden",
-    marginHorizontal: 10,
-  },
-  mediaCount: {
-    backgroundColor: "#41444B",
-    position: "absolute",
-    top: "50%",
-    marginTop: -50,
-    marginLeft: 30,
-    width: 100,
+  infoBoxWrapper: {
+    borderBottomColor: "#dddddd",
+    borderBottomWidth: 1,
+    borderTopColor: "#dddddd",
+    borderTopWidth: 1,
+    flexDirection: "row",
     height: 100,
+  },
+  infoBox: {
+    width: "50%",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 12,
-    shadowColor: "rgba(0, 0, 0, 0.38)",
-    shadowOffset: { width: 0, height: 10 },
-    shadowRadius: 20,
-    shadowOpacity: 1,
   },
-  recent: {
-    marginLeft: 78,
-    marginTop: 32,
-    marginBottom: 6,
-    fontSize: 10,
+  menuWrapper: {
+    marginTop: 10,
   },
-  recentItem: {
+  menuItem: {
     flexDirection: "row",
-    alignItems: "flex-start",
-    marginBottom: 16,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
   },
-  activityIndicator: {
-    backgroundColor: "#CABFAB",
-    padding: 4,
-    height: 12,
-    width: 12,
-    borderRadius: 6,
-    marginTop: 3,
-    marginRight: 20,
+  menuItemText: {
+    color: "#777777",
+    marginLeft: 20,
+    fontWeight: "600",
+    fontSize: 16,
+    lineHeight: 26,
   },
 });

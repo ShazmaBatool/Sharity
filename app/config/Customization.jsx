@@ -17,6 +17,7 @@ export const Customization = {
     placeholder: "#a0a0a0",
     background: "#f2f2f2",
     blue: "#3293fe",
+    errorText: "#ed2939",
   },
   fontSize: {
     title: 30,

@@ -20,10 +20,7 @@ export default function SignInScreen() {
       await firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
-        .then(async function (user) {
-          console.log("user -> SignInScreen org", user);
-          SyncStorage.set("@userEmail", user.user.email);
-          SyncStorage.set("@userPassword", password);
+        .then(async function () {
           signIn();
         });
     } catch (error) {

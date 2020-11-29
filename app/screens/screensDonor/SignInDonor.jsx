@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
 import Button from "react-native-button";
 import SyncStorage from "sync-storage";
 
@@ -26,8 +26,23 @@ export default function SignInDonor({ navigation }) {
           signIn();
         });
     } catch (error) {
-      console.log("loginUser -> error", error.toString());
+      Alert.alert(error.toString());
     }
+  };
+  const forgotPassword = () => {
+    var emailAddress = "arslanali4492@gmail.com";
+
+    firebase
+      .auth()
+      .sendPasswordResetEmail(emailAddress)
+      .then(function (res) {
+        // Email sent.
+        Alert.alert("An email sent to your Email Address");
+      })
+      .catch(function (error) {
+        // An error happened.
+        Alert.alert(error.toString());
+      });
   };
   return (
     <View style={styles.container}>
@@ -47,6 +62,7 @@ export default function SignInDonor({ navigation }) {
         <TextInput
           style={styles.body}
           secureTextEntry={true}
+          keyboardType='default'
           placeholder='Password'
           onChangeText={(text) => setPassword(text)}
           value={password}
@@ -60,6 +76,9 @@ export default function SignInDonor({ navigation }) {
         onPress={onPressLogin}>
         Log in
       </Button>
+      <Text onPress={forgotPassword} style={{ marginTop: 15 }}>
+        Forgot Password
+      </Text>
       <Text style={styles.or}>OR</Text>
       <Button
         containerStyle={styles.facebookContainer}

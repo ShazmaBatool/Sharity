@@ -8,6 +8,7 @@ import {
   TouchableRipple,
 } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+<<<<<<< HEAD
 import AntDesign from "react-native-vector-icons/AntDesign";
 import DialogInput from "react-native-dialog-input";
 import firebase from "firebase";
@@ -78,7 +79,36 @@ export default function DonorSettings({ navigation }) {
         // An error happened.
         Alert.alert(error.toString());
       });
+=======
+import firebase from "firebase";
+
+import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
+import { AuthContext } from "../../../context";
+import { Customization } from "../../config/Customization";
+
+export default function DonorSettings({ navigation }) {
+  const [displayName, setDisplayName] = React.useState("Julia");
+  const [email, setEmail] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [photoURL, setPhotoURL] = React.useState("");
+  const { signOut } = React.useContext(AuthContext);
+
+  const userInfo = () => {
+    const user = firebase.auth().currentUser;
+    setDisplayName(user.displayName);
+    setPhoneNumber(user.phoneNumber);
+    setEmail(user.email);
+    setPhotoURL(user.photoURL);
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
   };
+  React.useEffect(() => {
+    userInfo();
+    return () => {
+      null;
+    };
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -101,22 +131,40 @@ export default function DonorSettings({ navigation }) {
                   marginTop: 15,
                   marginBottom: 5,
                 },
+<<<<<<< HEAD
               ]}>
               {displayName}
             </Title>
             <Caption style={styles.caption}>{email}</Caption>
+=======
+              ]}
+            >
+              {displayName}
+            </Title>
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
           </View>
         </View>
       </View>
 
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
+<<<<<<< HEAD
           <Icon name='email' color='#777777' size={20} />
           <Text style={{ color: "#777777", marginLeft: 20 }}>{email}</Text>
         </View>
         <View style={styles.row}>
           <Icon name='map-marker-radius' color='#777777' size={20} />
           <Text style={{ color: "#777777", marginLeft: 20 }}>Punjab</Text>
+=======
+          <Icon name="email" color="#777777" size={20} />
+          <Text style={{ color: "#777777", marginLeft: 20 }}>{email}</Text>
+        </View>
+        <View style={styles.row}>
+          <Icon name="phone" color="#777777" size={20} />
+          <Text style={{ color: "#777777", marginLeft: 20 }}>
+            {phoneNumber}
+          </Text>
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
         </View>
       </View>
 
@@ -128,7 +176,12 @@ export default function DonorSettings({ navigation }) {
               borderRightColor: "#dddddd",
               borderRightWidth: 1,
             },
+<<<<<<< HEAD
           ]}>
+=======
+          ]}
+        >
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
           <Title>11</Title>
           <Caption>Donation Successful</Caption>
         </View>
@@ -140,6 +193,7 @@ export default function DonorSettings({ navigation }) {
 
       <View style={styles.menuWrapper}>
         <TouchableRipple
+<<<<<<< HEAD
           onPress={() => navigation.navigate("EditProfileDonor")}>
           <View style={styles.menuItem}>
             <Icon
@@ -167,11 +221,30 @@ export default function DonorSettings({ navigation }) {
               color={Customization.color.tint}
               size={25}
             />
+=======
+          onPress={() => navigation.navigate("EditProfileDonor")}
+        >
+          <View style={styles.menuItem}>
+            <Icon name="account-edit" color="#bb2265" size={25} />
+            <Text style={styles.menuItemText}>Edit Profile</Text>
+          </View>
+        </TouchableRipple>
+        <TouchableRipple onPress={() => navigation.navigate("ChangePassword")}>
+          <View style={styles.menuItem}>
+            <Icon name="account-edit" color="#bb2265" size={25} />
+            <Text style={styles.menuItemText}>Change Password</Text>
+          </View>
+        </TouchableRipple>
+        <TouchableRipple onPress={() => {}}>
+          <View style={styles.menuItem}>
+            <Icon name="account-check-outline" color="#bb2265" size={25} />
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
             <Text style={styles.menuItemText}>Delete Account</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={() => signOut()}>
           <View style={styles.menuItem}>
+<<<<<<< HEAD
             <AntDesign
               name='logout'
               color={Customization.color.tint}
@@ -194,6 +267,12 @@ export default function DonorSettings({ navigation }) {
             }}
           />
         )}
+=======
+            <Icon name="logout" color="#bb2265" size={25} />
+            <Text style={styles.menuItemText}>Sign Out</Text>
+          </View>
+        </TouchableRipple>
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
       </View>
     </SafeAreaView>
   );
@@ -202,6 +281,7 @@ export default function DonorSettings({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+<<<<<<< HEAD
   },
   userInfoSection: {
     paddingHorizontal: 30,
@@ -211,6 +291,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
   },
+=======
+  },
+  userInfoSection: {
+    paddingHorizontal: 30,
+    marginBottom: 25,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
   caption: {
     fontSize: 14,
     lineHeight: 14,

@@ -11,9 +11,10 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 export default function SignInDriver({ navigation }) {
-  const [email, setEmail] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = React.useState("");
   const [password, setPassword] = React.useState("");
   const { signIn } = React.useContext(AuthContext);
+<<<<<<< HEAD
   const onPressLogin = () => {
     signIn();
     // try {
@@ -27,6 +28,53 @@ export default function SignInDriver({ navigation }) {
     // } catch (error) {
     //   console.log("loginUser -> error", error.toString());
     // }
+=======
+  const [error, setError] = React.useState({
+    phoneNumber: "",
+    password: "",
+  });
+  const onPressLogin = async () => {
+    if (!error.phoneNumber && !error.password) {
+      try {
+        await firebase
+          .auth()
+          .signInWithphoneNumberAndPassword(phoneNumber, password)
+          .then(function (user) {
+            SyncStorage.set("@userphoneNumber", user.user.phoneNumber);
+            SyncStorage.set("@userPassword", password);
+            signIn();
+          });
+      } catch (error) {
+        console.log("loginUser -> error", error.toString());
+      }
+    } else {
+      Alert.alert("Please enter the correct data.");
+    }
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
+  };
+  const validatePhoneNumber = (text) => {
+    if (text === "") {
+      setError({ phoneNumber: "Phone number is required." });
+    } else if (text.length !== 11) {
+      setError({ phoneNumber: "Phone must be 11 digits." });
+    } else if (/^\d{10}$/) {
+      setError({ phoneNumber: "Phone must be 11 digits." });
+    } else {
+      setError({ phoneNumber: "" });
+      setPhone(text);
+    }
+    setPhoneNumber(text);
+  };
+  const validatePassword = (text) => {
+    if (text === "") {
+      setError({ password: "Password is required." });
+    } else if (text.length < 6) {
+      setError({ password: "Password must be greater than 6 characters." });
+    } else {
+      setError({ password: "" });
+      setPassword(text);
+    }
+    setPassword(text);
   };
   return (
     <View style={styles.container}>
@@ -34,36 +82,34 @@ export default function SignInDriver({ navigation }) {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='E-mail or phone number'
-          onChangeText={(text) => setEmail(text)}
-          value={email}
+          placeholder="Phone Number e.g. 03xxxxxxxxx"
+          value={phoneNumber}
+          keyboardType="phone-pad"
+          onChangeText={(text) => validatePhoneNumber(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid='transparent'
+          underlineColorAndroid="transparent"
         />
       </View>
+      <Text style={styles.error}>{error.phone}</Text>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
+          placeholder="Password"
           secureTextEntry={true}
-          placeholder='Password'
-          onChangeText={(text) => setPassword(text)}
           value={password}
+          keyboardType="default"
+          onChangeText={(text) => validatePassword(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid='transparent'
+          underlineColorAndroid="transparent"
         />
       </View>
+      <Text style={styles.error}>{error.password}</Text>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        onPress={onPressLogin}>
-        Log in
-      </Button>
-      <Text style={styles.or}>OR</Text>
-      <Button
-        containerStyle={styles.facebookContainer}
-        style={styles.facebookText}
-        onPress={() => navigation.navigate("SignUpDonor")}>
-        Don't have an account
+        onPress={onPressLogin}
+      >
+        Sign In
       </Button>
     </View>
   );

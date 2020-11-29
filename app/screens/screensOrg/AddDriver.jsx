@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput, Alert } from "react-native";
 import Button from "react-native-button";
 import { Customization } from "../../config/Customization";
 import firebase from "firebase";
@@ -8,17 +8,22 @@ export default function AddDriver() {
   const [name, setName] = React.useState("");
   const [contactInfo, setContactInfo] = React.useState("");
   const [vehicleID, setVehicleID] = React.useState("");
+
   const database = firebase.database();
 
   const onPressAddDriver = () => {
     if (contactInfo.length == 11) {
-      database.ref("Drivers/").push({
+      database.ref("/Users/" + "Driver").push({
         driverName: name,
         driverContactInfo: contactInfo,
         driverVehicleInfo: vehicleID,
       });
+      setName("");
+      setContactInfo("");
+      setVehicleID("");
+      Alert.alert("Driver added successfully!");
     } else if (contactInfo.length > 11 || contactInfo.length < 11) {
-      alert("Please enter 11-digits phone number.");
+      Alert.alert("Please enter 11-digits phone number.");
       return;
     }
   };
@@ -28,40 +33,41 @@ export default function AddDriver() {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='Enter name as per CNIC'
-          keyboardType='default'
+          placeholder="Enter name as per CNIC"
+          keyboardType="default"
           onChangeText={(text) => setName(text)}
           value={name}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid='transparent'
+          underlineColorAndroid="transparent"
         />
       </View>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='03xxxxxxxxx'
-          keyboardType='phone-pad'
+          placeholder="03xxxxxxxxx"
+          keyboardType="phone-pad"
           onChangeText={(text) => setContactInfo(text)}
           value={contactInfo}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid='transparent'
+          underlineColorAndroid="transparent"
         />
       </View>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='Enter the assigned vehicle ID'
-          keyboardType='default'
+          placeholder="Enter the assigned vehicle ID"
+          keyboardType="default"
           onChangeText={(text) => setVehicleID(text)}
           value={vehicleID}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid='transparent'
+          underlineColorAndroid="transparent"
         />
       </View>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        onPress={onPressAddDriver}>
+        onPress={onPressAddDriver}
+      >
         Add Driver
       </Button>
     </View>

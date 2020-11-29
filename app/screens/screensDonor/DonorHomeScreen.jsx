@@ -8,10 +8,17 @@ import {
   Alert,
   Platform,
 } from "react-native";
+<<<<<<< HEAD
 // import firebase from "firebase";
 import Button from "react-native-button";
 import DropDownPicker from "react-native-dropdown-picker";
 import AntDesign from "react-native-vector-icons/AntDesign";
+=======
+import firebase from "firebase";
+import { Customization } from "../../config/Customization";
+import Button from "react-native-button";
+import DropDownPicker from "react-native-dropdown-picker";
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as Location from "expo-location";
 import firebase from "firebase";
@@ -20,12 +27,19 @@ import { Customization } from "../../config/Customization";
 
 export default function DonorHomeScreen() {
   const [donorLoc, setDonorLoc] = React.useState("");
+<<<<<<< HEAD
   const [amount, setAmount] = React.useState("");
   const [selectCloth, setSelectCloth] = React.useState("");
   const [clothValue, setClothValue] = React.useState("");
   const [selectShoes, setSelectShoes] = React.useState("");
   const [shoesValue, setShoesValue] = React.useState("");
   const [orgList, setOrgList] = React.useState([]);
+=======
+  // const [country, setCountry] = React.useState(["Pakistan"]);
+  const [amount, setAmount] = React.useState(null);
+  // const [donationType, setDonationType] = React.useState("");
+  const [verifiedEmail, setVerifiedEmail] = React.useState(false);
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
 
   const SendRequest = () => {
     console.log("SendRequest");
@@ -34,6 +48,7 @@ export default function DonorHomeScreen() {
     console.log("Amount", amount);
     Alert.alert("Request send successful");
   };
+<<<<<<< HEAD
 
   const getCurrentLoc = async () => {
     await Location.requestPermissionsAsync()
@@ -87,6 +102,42 @@ export default function DonorHomeScreen() {
       null;
     };
   });
+=======
+  const getCurrentLoc = async () => {
+    const user = firebase.auth().currentUser;
+    console.log(user.emailVerified);
+    if (user.emailVerified == true) {
+      setVerifiedEmail(true);
+      let { status } = await Location.requestPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+
+      if (location) {
+        const loc = {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        };
+        const result = await Location.reverseGeocodeAsync(loc);
+        setDonorLoc(`${result[0].street}, ${result[0].city}`);
+      }
+    } else {
+      Alert.alert("Please verify your email first.");
+    }
+  };
+  React.useEffect(() => {
+    getCurrentLoc();
+  });
+  if (!verifiedEmail) {
+    return (
+      <View>
+        <Text> Verify your email first. </Text>
+      </View>
+    );
+  }
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
   return (
     <View style={styles.container}>
       <View style={styles.InputContainer}>
@@ -153,6 +204,48 @@ export default function DonorHomeScreen() {
           onChangeItem={(item) => setSelectCloth(item.value)}
         />
       </View>
+<<<<<<< HEAD
+=======
+      <View style={{ zIndex: Platform.OS === "ios" ? 40 : 60 }}>
+        <Text style={styles.title}>Organization List</Text>
+
+        <DropDownPicker
+          items={[
+            {
+              label: "CHILDREN",
+              value: "children",
+              icon: () => <FontAwesome name="child" size={18} color="#900" />,
+              hidden: true,
+            },
+            {
+              label: "MEN",
+              value: "men",
+              icon: () => <FontAwesome name="male" size={18} color="#900" />,
+            },
+            {
+              label: "WOMEN",
+              value: "women",
+              icon: () => <FontAwesome name="female" size={18} color="#900" />,
+            },
+          ]}
+          defaultValue=""
+          placeholder="Select Organization"
+          containerStyle={{ height: 40, width: 200 }}
+          style={{ width: 200 }}
+          itemStyle={{
+            justifyContent: "flex-start",
+          }}
+          dropDownStyle={{ backgroundColor: "#fafafa" }}
+
+          // onChangeItem={(item) =>
+          //   setState({
+          //     organization: item.value,
+          //   })
+          // }
+        />
+      </View>
+
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
       <View style={{ zIndex: Platform.OS === "ios" ? 30 : 40 }}>
         <Text style={styles.title}>Clothes</Text>
         <View style={styles.dropDownContainer}>
@@ -161,6 +254,7 @@ export default function DonorHomeScreen() {
               {
                 label: "CHILDREN",
                 value: "children",
+<<<<<<< HEAD
                 icon: () => (
                   <FontAwesome
                     name='child'
@@ -168,11 +262,15 @@ export default function DonorHomeScreen() {
                     color={Customization.color.tint}
                   />
                 ),
+=======
+                icon: () => <FontAwesome name="child" size={18} color="#900" />,
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
                 hidden: true,
               },
               {
                 label: "MEN",
                 value: "men",
+<<<<<<< HEAD
                 icon: () => (
                   <AntDesign
                     name='man'
@@ -180,11 +278,15 @@ export default function DonorHomeScreen() {
                     color={Customization.color.tint}
                   />
                 ),
+=======
+                icon: () => <FontAwesome name="male" size={18} color="#900" />,
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
               },
               {
                 label: "WOMEN",
                 value: "women",
                 icon: () => (
+<<<<<<< HEAD
                   <AntDesign
                     name='woman'
                     size={18}
@@ -195,12 +297,29 @@ export default function DonorHomeScreen() {
             ]}
             defaultValue=''
             placeholder='select gender'
+=======
+                  <FontAwesome name="female" size={18} color="#900" />
+                ),
+              },
+            ]}
+            defaultValue=""
+            containerStyle={{ height: 40, width: 150 }}
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
             style={styles.dropDown}
             itemStyle={{
               justifyContent: "flex-start",
             }}
             dropDownStyle={{ backgroundColor: "#fafafa" }}
+<<<<<<< HEAD
             onChangeItem={(item) => setSelectCloth(item.value)}
+=======
+            zIndex={30}
+            // onChangeItem={(item) =>
+            //   setState({
+            //     organization: item.value,
+            //   })
+            // }
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
           />
           <DropDownPicker
             items={[
@@ -217,9 +336,14 @@ export default function DonorHomeScreen() {
                 value: "3",
               },
             ]}
+<<<<<<< HEAD
             defaultValue=''
             placeholder='select quantity'
             containerStyle={{ height: 40 }}
+=======
+            defaultValue=""
+            containerStyle={{ height: 40, width: 150 }}
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
             style={styles.dropDown}
             itemStyle={{
               justifyContent: "flex-start",
@@ -237,6 +361,7 @@ export default function DonorHomeScreen() {
               {
                 label: "CHILDREN",
                 value: "children",
+<<<<<<< HEAD
                 icon: () => (
                   <FontAwesome
                     name='child'
@@ -244,6 +369,8 @@ export default function DonorHomeScreen() {
                     color={Customization.color.tint}
                   />
                 ),
+=======
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
               },
               {
                 label: "MEN",
@@ -312,6 +439,7 @@ export default function DonorHomeScreen() {
           <DropDownPicker
             items={[
               {
+<<<<<<< HEAD
                 label: "100",
                 value: "100",
                 icon: () => (
@@ -343,6 +471,22 @@ export default function DonorHomeScreen() {
                     color={Customization.color.tint}
                   />
                 ),
+=======
+                label: "200",
+                value: "200",
+                // icon: () => <Icon name="" size={18} color="#900" />,
+                hidden: true,
+              },
+              {
+                label: "400",
+                value: "400",
+                // icon: () => <Icon name="" size={18} color="#900" />,
+              },
+              {
+                label: "600",
+                value: "600",
+                // icon: () => <Icon name="" size={18} color="#900" />,
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
               },
             ]}
             defaultValue=''
@@ -382,9 +526,15 @@ const styles = StyleSheet.create({
     color: Customization.color.tint,
     marginTop: 20,
     textAlign: "center",
+<<<<<<< HEAD
     marginBottom: 5,
     // marginLeft: 20,
     // marginRight: 20,
+=======
+    marginBottom: 20,
+    // marginLeft: 20,
+    // marginRight: 20, For Center
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
   },
   InputContainer: {
     width: Customization.textInputWidth.main,

@@ -25,7 +25,7 @@ export default function WelcomeDriverScreen(props) {
     return (
       <ActivityIndicator
         style={styles.spinner}
-        size='large'
+        size="large"
         color={Customization.color.tint}
       />
     );
@@ -39,7 +39,12 @@ export default function WelcomeDriverScreen(props) {
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
+<<<<<<< HEAD
         onPress={() => props.navigation.navigate("SignInDriver")}>
+=======
+        onPress={() => props.navigation.navigate("SignIn")}
+      >
+>>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
         Sign In
       </Button>
     </View>

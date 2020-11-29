@@ -1,13 +1,11 @@
 import React from "react";
 import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
 import Button from "react-native-button";
-import SyncStorage from "sync-storage";
 
 import { Customization } from "../../config/Customization";
 import { AuthContext } from "../../../context";
 import firebase from "firebase";
 import firebaseConfig from "../../../Firebase";
-import { Link } from "@react-navigation/native";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -23,20 +21,6 @@ export default function SignInDonor({ navigation }) {
 
   // const database = firebase.database();
   const onPressLogin = async () => {
-<<<<<<< HEAD
-    try {
-      await firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(function (user) {
-          SyncStorage.set("@userEmail", user.user.email);
-          SyncStorage.set("@userPassword", password);
-          signIn();
-        });
-    } catch (error) {
-      Alert.alert(error.toString());
-=======
-    console.log("Click");
     if (!error.email && !error.password) {
       try {
         await firebase
@@ -66,7 +50,6 @@ export default function SignInDonor({ navigation }) {
     } else {
       setError({ email: "" });
       setEmail(text);
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
     }
     setEmail(text);
   };
@@ -100,46 +83,37 @@ export default function SignInDonor({ navigation }) {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="e.g. example@address.com"
+          placeholder='e.g. example@address.com'
           value={email}
-          keyboardType="email-address"
+          keyboardType='email-address'
           onChangeText={(text) => validateEmail(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
         />
       </View>
       <Text style={styles.error}>{error.email}</Text>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="Password"
+          placeholder='Password'
           secureTextEntry={true}
-<<<<<<< HEAD
           keyboardType='default'
           placeholder='Password'
           onChangeText={(text) => setPassword(text)}
-=======
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
           value={password}
-          keyboardType="default"
+          keyboardType='default'
           onChangeText={(text) => validatePassword(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
         />
       </View>
       <Text style={styles.error}>{error.password}</Text>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        onPress={onPressLogin}
-      >
+        onPress={onPressLogin}>
         Sign In
       </Button>
-<<<<<<< HEAD
-      <Text onPress={forgotPassword} style={{ marginTop: 15 }}>
-        Forgot Password
-=======
-
       <Text
         onPress={() => navigation.navigate("ForgotPassword")}
         styles={{
@@ -147,17 +121,14 @@ export default function SignInDonor({ navigation }) {
           fontStyle: "italic",
           textDecorationLine: "underline",
           borderBottomWidth: 1,
-        }}
-      >
+        }}>
         FORGOT YOUR PASSWORD?
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
       </Text>
       <Text style={styles.or}>OR</Text>
       <Button
         containerStyle={styles.facebookContainer}
         style={styles.facebookText}
-        onPress={() => navigation.navigate("SignUpDonor")}
-      >
+        onPress={() => navigation.navigate("SignUpDonor")}>
         Don't have an account?
       </Button>
     </View>

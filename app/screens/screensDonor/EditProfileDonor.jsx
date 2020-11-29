@@ -1,6 +1,5 @@
 import React from "react";
 import {
-<<<<<<< HEAD
   Alert,
   Image,
   KeyboardAvoidingView,
@@ -16,23 +15,6 @@ import {
 import firebase from "firebase";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-=======
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  TextInput,
-  Image,
-  ScrollView,
-  TouchableHighlight,
-  Alert,
-} from "react-native";
-import firebase from "firebase";
-// import admin from "firebase-admin";
-import { Ionicons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -42,11 +24,7 @@ import Screen from "../../common/Screen";
 import { Customization } from "../../config/Customization";
 
 export default function EditProfileDonor({ navigation }) {
-<<<<<<< HEAD
   const [displayName, setDisplayName] = React.useState("Julia");
-=======
-  const [displayName, setDisplayName] = React.useState("");
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
   const [email, setEmail] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -68,11 +46,7 @@ export default function EditProfileDonor({ navigation }) {
   const userInfo = () => {
     const user = firebase.auth().currentUser;
     setDisplayName(user.displayName);
-<<<<<<< HEAD
     setPhoneNumber(user.phoneNumber);
-=======
-    // setPhoneNumber(user.phoneNumber);
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
     setEmail(user.email);
     setPhotoURL(user.photoURL);
   };
@@ -85,7 +59,6 @@ export default function EditProfileDonor({ navigation }) {
 
   const handleSubmit = () => {
     var user = firebase.auth().currentUser;
-<<<<<<< HEAD
 
     user
       .updateEmail(email)
@@ -107,37 +80,6 @@ export default function EditProfileDonor({ navigation }) {
           });
       })
       .catch(function (error) {
-=======
-    // admin
-    //   .auth()
-    //   .updateUser(user.uid, {
-    //     email: email,
-    //     phoneNumber: phoneNumber,
-    //     displayName: displayName,
-    //     photoURL: photoURL,
-    //   })
-    //   .then((userRecord) => {
-    //     // See the UserRecord reference doc for the contents of userRecord.
-    //     console.log("Successfully updated user", userRecord.toJSON());
-    //   })
-    //   .catch((error) => {
-    //     console.log("Error updating user:", error);
-    //   });
-    // user.updatePhoneNumber(phoneNumber);
-    user
-      .updateProfile({
-        displayName: displayName,
-        email: email,
-        photoURL: photoURL,
-      })
-      .then(function () {
-        // Update successful.
-        Alert.alert("Updated successfully!");
-        navigation.navigate("Settings");
-      })
-      .catch(function (error) {
-        // An error happened.
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
         Alert.alert(error.toString());
       });
   };
@@ -145,15 +87,9 @@ export default function EditProfileDonor({ navigation }) {
     <Screen style={styles.container}>
       <View style={styles.titleBar}>
         <Ionicons
-<<<<<<< HEAD
           name='ios-arrow-back'
           size={24}
           color='#52575D'
-=======
-          name="ios-arrow-back"
-          size={24}
-          color="#52575D"
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
           onPress={() => navigation.goBack()}
         />
         <Text size={24} color={Customization.color.tint} onPress={handleSubmit}>
@@ -170,7 +106,6 @@ export default function EditProfileDonor({ navigation }) {
                 : "https://res.cloudinary.com/wfdns6x2g6/image/upload/v1509007989/user_psolwi.png",
             }}
             style={styles.image}
-<<<<<<< HEAD
             resizeMode='cover'
           />
         </View>
@@ -180,17 +115,6 @@ export default function EditProfileDonor({ navigation }) {
             name='ios-add'
             size={40}
             color='#DFD8C8'
-=======
-            resizeMode="cover"
-          />
-        </View>
-        {/* <View style={styles.active} /> */}
-        <View style={styles.add}>
-          <Ionicons
-            name="ios-add"
-            size={40}
-            color="#bb2265"
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
             onPress={handleEditPic}
           />
         </View>
@@ -199,28 +123,16 @@ export default function EditProfileDonor({ navigation }) {
       <View style={styles.infoContainer}>
         <TouchableHighlight
           activeOpacity={0.6}
-<<<<<<< HEAD
           underlayColor='#01010abf'
           onPress={() => alert("Pressed!")}>
-=======
-          underlayColor="#01010abf"
-          onPress={() => alert("Pressed!")}
-        >
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
           <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
             {displayName}
           </Text>
         </TouchableHighlight>
         <TouchableHighlight
           activeOpacity={0.6}
-<<<<<<< HEAD
           underlayColor='#01010abf'
           onPress={() => alert("Pressed!")}>
-=======
-          underlayColor="#01010abf"
-          onPress={() => alert("Pressed!")}
-        >
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
           <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
             {email}
           </Text>
@@ -230,7 +142,6 @@ export default function EditProfileDonor({ navigation }) {
         <View
           style={{
             margin: 20,
-<<<<<<< HEAD
           }}>
           <View style={styles.action}>
             <FontAwesome name='user-o' size={20} />
@@ -241,24 +152,10 @@ export default function EditProfileDonor({ navigation }) {
               autoCorrect={false}
               value={displayName}
               onChangeText={(text) => setDisplayName(text)}
-=======
-          }}
-        >
-          <View style={styles.action}>
-            <Feather name="phone" color="#bb2265" size={20} />
-            <TextInput
-              placeholder="Phone Number"
-              placeholderTextColor="#666666"
-              keyboardType="number-pad"
-              autoCorrect={false}
-              value={phoneNumber}
-              onChangeText={(text) => setPhoneNumber(text)}
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
               style={styles.textInput}
             />
           </View>
           <View style={styles.action}>
-<<<<<<< HEAD
             <Feather name='phone' size={20} />
             <TextInput
               placeholder='Phone'
@@ -267,21 +164,10 @@ export default function EditProfileDonor({ navigation }) {
               autoCorrect={false}
               value={phoneNumber}
               onChangeText={(text) => setPhoneNumber(text)}
-=======
-            <FontAwesome name="envelope-o" color="#bb2265" size={20} />
-            <TextInput
-              placeholder="Email"
-              placeholderTextColor="#666666"
-              keyboardType="email-address"
-              value={email}
-              onChangeText={(text) => setEmail(text)}
-              autoCorrect={false}
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
               style={styles.textInput}
             />
           </View>
           <View style={styles.action}>
-<<<<<<< HEAD
             <FontAwesome name='envelope-o' size={20} />
             <TextInput
               placeholder='Email'
@@ -289,47 +175,24 @@ export default function EditProfileDonor({ navigation }) {
               keyboardType='email-address'
               value={email}
               onChangeText={(text) => setEmail(text)}
-=======
-            <FontAwesome name="key" color="#bb2265" size={20} />
-            <TextInput
-              placeholder="Password"
-              placeholderTextColor="#666666"
-              keyboardType="visible-password"
-              value={password}
-              onChangeText={(text) => setPassword(text)}
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
               autoCorrect={false}
               style={styles.textInput}
             />
           </View>
           <View style={styles.action}>
-<<<<<<< HEAD
             <FontAwesome name='globe' size={20} />
             <TextInput
               placeholder='Country'
               placeholderTextColor='#666666'
-=======
-            <FontAwesome name="globe" color="#bb2265" size={20} />
-            <TextInput
-              placeholder="Country"
-              placeholderTextColor="#666666"
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
               autoCorrect={false}
               style={styles.textInput}
             />
           </View>
           <View style={styles.action}>
-<<<<<<< HEAD
             <Icon name='map-marker-outline' size={20} />
             <TextInput
               placeholder='City'
               placeholderTextColor='#666666'
-=======
-            <Icon name="map-marker-outline" color="#bb2265" size={20} />
-            <TextInput
-              placeholder="City"
-              placeholderTextColor="#666666"
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
               autoCorrect={false}
               style={styles.textInput}
             />
@@ -416,11 +279,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-<<<<<<< HEAD
     marginTop: Platform.OS === "ios" ? 0 : -12,
-=======
-    // marginTop: Platform.OS === "ios" ? 0 : -12,
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
     paddingLeft: 10,
     color: "#05375a",
   },

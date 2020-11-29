@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
 import Button from "react-native-button";
 
 import { Customization } from "../../config/Customization";
@@ -12,45 +12,34 @@ if (!firebase.apps.length) {
 }
 export default function SignInDriver({ navigation }) {
   const [phoneNumber, setPhoneNumber] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const { signIn } = React.useContext(AuthContext);
-<<<<<<< HEAD
-  const onPressLogin = () => {
-    signIn();
-    // try {
-    //   await firebase
-    //     .auth()
-    //     .signInWithEmailAndPassword(email, password)
-    //     .then(function (user) {
-    //       console.log(user);
-    //       signIn();
-    //     });
-    // } catch (error) {
-    //   console.log("loginUser -> error", error.toString());
-    // }
-=======
   const [error, setError] = React.useState({
     phoneNumber: "",
     password: "",
   });
-  const onPressLogin = async () => {
-    if (!error.phoneNumber && !error.password) {
-      try {
-        await firebase
-          .auth()
-          .signInWithphoneNumberAndPassword(phoneNumber, password)
-          .then(function (user) {
-            SyncStorage.set("@userphoneNumber", user.user.phoneNumber);
-            SyncStorage.set("@userPassword", password);
-            signIn();
-          });
-      } catch (error) {
-        console.log("loginUser -> error", error.toString());
-      }
-    } else {
-      Alert.alert("Please enter the correct data.");
-    }
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0
+  const database = firebase.database();
+  const { signIn } = React.useContext(AuthContext);
+  const onPressLogin = () => {
+    database
+      .ref("/Users/Driver/")
+      .once("value")
+      .then(function (snapshot) {
+        var result = Object.values(snapshot.val());
+        var driverArray = result.filter((object) => {
+          var s = object.driverContactInfo === phoneNumber;
+          return s;
+        });
+        console.log("array length", driverArray.length);
+        if (driverArray.length === 0) {
+          Alert.alert(
+            "No phone number match with record please contact your Organization."
+          );
+        } else {
+          signIn();
+        }
+      })
+      .catch(function (error) {
+        Alert.alert(error.toString());
+      });
   };
   const validatePhoneNumber = (text) => {
     if (text === "") {
@@ -65,50 +54,25 @@ export default function SignInDriver({ navigation }) {
     }
     setPhoneNumber(text);
   };
-  const validatePassword = (text) => {
-    if (text === "") {
-      setError({ password: "Password is required." });
-    } else if (text.length < 6) {
-      setError({ password: "Password must be greater than 6 characters." });
-    } else {
-      setError({ password: "" });
-      setPassword(text);
-    }
-    setPassword(text);
-  };
   return (
     <View style={styles.container}>
       <Text style={[styles.title, styles.leftTitle]}>Sign In</Text>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="Phone Number e.g. 03xxxxxxxxx"
+          placeholder='Phone Number e.g. 03xxxxxxxxx'
           value={phoneNumber}
-          keyboardType="phone-pad"
+          keyboardType='number-pad'
           onChangeText={(text) => validatePhoneNumber(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
         />
       </View>
       <Text style={styles.error}>{error.phone}</Text>
-      <View style={styles.InputContainer}>
-        <TextInput
-          style={styles.body}
-          placeholder="Password"
-          secureTextEntry={true}
-          value={password}
-          keyboardType="default"
-          onChangeText={(text) => validatePassword(text)}
-          placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
-        />
-      </View>
-      <Text style={styles.error}>{error.password}</Text>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        onPress={onPressLogin}
-      >
+        onPress={onPressLogin}>
         Sign In
       </Button>
     </View>
@@ -180,5 +144,10 @@ const styles = StyleSheet.create({
   },
   facebookText: {
     color: Customization.color.white,
+  },
+  error: {
+    marginRight: "auto",
+    marginLeft: 70,
+    color: Customization.color.errorText,
   },
 });

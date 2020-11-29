@@ -2,7 +2,6 @@ import React from "react";
 import firebase from "firebase";
 import Button from "react-native-button";
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import SyncStorage from "sync-storage";
 
 import { Customization } from "../../config/Customization";
 import { AuthContext } from "../../../context";
@@ -22,30 +21,16 @@ export default function SignInOrg() {
   });
 
   const onPressLogin = async () => {
-<<<<<<< HEAD:app/screens/screensOrg/SignInScreen.jsx
-    try {
-      await firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(async function () {
-          signIn();
-        });
-    } catch (error) {
-      console.log("loginUser -> error", error.toString());
-=======
     if (!error.email && !error.password) {
       try {
         await firebase
           .auth()
           .signInWithEmailAndPassword(email, password)
           .then(async function (user) {
-            console.log("user -> SignInScreen org", user);
-            SyncStorage.set("@userEmail", user.user.email);
-            SyncStorage.set("@userPassword", password);
             signIn();
           });
       } catch (error) {
-        console.log("loginUser -> error", error.toString());
+        Alert.alert(error.toString());
       }
     } else {
       Alert.alert("Please enter the correct data.");
@@ -60,7 +45,6 @@ export default function SignInOrg() {
     } else {
       setError({ email: "" });
       setEmail(text);
->>>>>>> f21caf030278b14ba3a42a64e74103899aafada0:app/screens/screensOrg/SignInOrg.jsx
     }
     setEmail(text);
   };
@@ -80,12 +64,12 @@ export default function SignInOrg() {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="E-mail Address"
+          placeholder='E-mail Address'
           value={email}
-          keyboardType="email-address"
+          keyboardType='email-address'
           onChangeText={(text) => validateEmail(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
         />
       </View>
       <Text style={styles.error}>{error.email}</Text>
@@ -93,20 +77,19 @@ export default function SignInOrg() {
         <TextInput
           style={styles.body}
           secureTextEntry={true}
-          placeholder="Password"
+          placeholder='Password'
           onChangeText={(text) => validatePassword(text)}
           value={password}
-          keyboardType="default"
+          keyboardType='default'
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
         />
       </View>
       <Text style={styles.error}>{error.password}</Text>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        onPress={onPressLogin}
-      >
+        onPress={onPressLogin}>
         Sign In
       </Button>
     </View>

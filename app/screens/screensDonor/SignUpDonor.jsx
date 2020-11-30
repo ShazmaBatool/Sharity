@@ -71,12 +71,15 @@ export default function SignUpDonor({ navigation }) {
   };
 
   const validateUserName = (text) => {
+    var letters = /^[A-Za-z]+$/;
     if (text === "") {
       setError({ fullName: "Name is required." });
     } else if (text.length < 3) {
       setError({ fullName: "Name must be greater than 3 characters." });
     } else if (text.length > 35) {
       setError({ fullName: "Name must be less than 35 characters." });
+    } else if (!letters.test(text)) {
+      setError({ fullName: "Input must contains alphabets only." });
     } else {
       setError({ fullName: "" });
       setFullName(text);
@@ -87,9 +90,9 @@ export default function SignUpDonor({ navigation }) {
     if (text === "") {
       setError({ phone: "Phone number is required." });
     } else if (text.length < 11) {
-      setError({ phone: "Phone must be greater than 11 digits." });
-    } else if (text.length !== 11) {
-      setError({ phone: "Phone must be less than 11 digits." });
+      setError({ phone: "Phone must be 11 digits." });
+    } else if (text.length > 11) {
+      setError({ phone: "Phone must be 11 digits." });
     } else if (text.lenght === 11) {
       setError({ phone: "" });
       setPhone(text);

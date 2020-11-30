@@ -75,8 +75,8 @@ export default function SignUpDonor({ navigation }) {
       setError({ fullName: "Name is required." });
     } else if (text.length < 3) {
       setError({ fullName: "Name must be greater than 3 characters." });
-    } else if (text.length > 10) {
-      setError({ fullName: "Name must be less than 10 characters." });
+    } else if (text.length > 35) {
+      setError({ fullName: "Name must be less than 35 characters." });
     } else {
       setError({ fullName: "" });
       setFullName(text);
@@ -86,9 +86,11 @@ export default function SignUpDonor({ navigation }) {
   const validatePhone = (text) => {
     if (text === "") {
       setError({ phone: "Phone number is required." });
+    } else if (text.length < 11) {
+      setError({ phone: "Phone must be greater than 11 digits." });
     } else if (text.length !== 11) {
-      setError({ phone: "Phone must be 11 characters." });
-    } else {
+      setError({ phone: "Phone must be less than 11 digits." });
+    } else if (text.lenght === 11) {
       setError({ phone: "" });
       setPhone(text);
     }
@@ -125,49 +127,49 @@ export default function SignUpDonor({ navigation }) {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='Full Name'
+          placeholder="Full Name"
           value={fullName}
-          keyboardType='default'
+          keyboardType="default"
           onChangeText={(text) => validateUserName(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid='transparent'
+          underlineColorAndroid="transparent"
         />
       </View>
       <Text style={styles.error}>{error.fullName}</Text>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='Phone Number'
+          placeholder="Phone Number"
           value={phone}
-          keyboardType='phone-pad'
+          keyboardType="phone-pad"
           onChangeText={(text) => validatePhone(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid='transparent'
+          underlineColorAndroid="transparent"
         />
       </View>
       <Text style={styles.error}>{error.phone}</Text>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='E-mail Address'
+          placeholder="E-mail Address"
           value={email}
-          keyboardType='email-address'
+          keyboardType="email-address"
           onChangeText={(text) => validateEmail(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid='transparent'
+          underlineColorAndroid="transparent"
         />
       </View>
       <Text style={styles.error}>{error.email}</Text>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='Password'
+          placeholder="Password"
           secureTextEntry={true}
           value={password}
-          keyboardType='default'
+          keyboardType="default"
           onChangeText={(text) => validatePassword(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid='transparent'
+          underlineColorAndroid="transparent"
         />
       </View>
       <Text style={styles.error}>{error.password}</Text>
@@ -188,12 +190,14 @@ export default function SignUpDonor({ navigation }) {
       <Button
         containerStyle={[styles.facebookContainer, { marginTop: 50 }]}
         style={styles.facebookText}
-        onPress={handleSignUp}>
+        onPress={handleSignUp}
+      >
         Sign Up
       </Button>
       <Text
         style={styles.or}
-        onPress={() => navigation.navigate("SignInDonor")}>
+        onPress={() => navigation.navigate("SignInDonor")}
+      >
         Already have an account, Sign In here!
       </Text>
     </KeyboardAvoidingView>

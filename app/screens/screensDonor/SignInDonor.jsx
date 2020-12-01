@@ -35,7 +35,7 @@ export default function SignInDonor({ navigation }) {
         Alert.alert(error.toString());
       }
     } else {
-      Alert.alert("Please enter the correct data.");
+      Alert.alert("Please enter correct data.");
     }
   };
   const validateEmail = (text) => {
@@ -70,7 +70,9 @@ export default function SignInDonor({ navigation }) {
       .sendPasswordResetEmail(emailAddress)
       .then(function (res) {
         // Email sent.
-        Alert.alert("An email sent to your Email Address");
+        Alert.alert(
+          "A password reset link has been sent to your email address"
+        );
       })
       .catch(function (error) {
         // An error happened.
@@ -83,7 +85,7 @@ export default function SignInDonor({ navigation }) {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='e.g. example@address.com'
+          placeholder='Enter email e.g. example@address.com'
           value={email}
           keyboardType='email-address'
           onChangeText={(text) => validateEmail(text)}
@@ -96,11 +98,8 @@ export default function SignInDonor({ navigation }) {
         <TextInput
           style={styles.body}
           placeholder='Password'
-          secureTextEntry={true}
-          keyboardType='default'
-          placeholder='Password'
-          onChangeText={(text) => setPassword(text)}
           value={password}
+          secureTextEntry={true}
           keyboardType='default'
           onChangeText={(text) => validatePassword(text)}
           placeholderTextColor={Customization.color.grey}
@@ -114,7 +113,9 @@ export default function SignInDonor({ navigation }) {
         onPress={onPressLogin}>
         Sign In
       </Button>
-      <Text onPress={() => navigation.navigate("ForgotPassword")}>
+      <Text
+        onPress={() => navigation.navigate("ForgotPassword")}
+        style={styles.forgotPassword}>
         FORGOT YOUR PASSWORD?
       </Text>
       <Text style={styles.or}>OR</Text>
@@ -201,5 +202,10 @@ const styles = StyleSheet.create({
     marginRight: "auto",
     marginLeft: 70,
     color: Customization.color.errorText,
+  },
+  forgotPassword: {
+    marginBottom: 12,
+    color: "#0000FF",
+    borderBottomWidth: 1,
   },
 });

@@ -40,11 +40,14 @@ export default function SignInOrg() {
     }
   };
   const validateEmail = (text) => {
-    var pattern = new RegExp(
-      /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+))|("[\w-\s]+")([\w-]+(?:\.[\w-]+)))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
-    );
     if (text === "") {
       setError({ email: "email is required." });
+    } else if (
+      !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+        text
+      )
+    ) {
+      setError({ email: "Please enter valid email-address" });
     } else {
       setError({ email: "" });
       setEmail(text);
@@ -67,12 +70,12 @@ export default function SignInOrg() {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='E-mail Address'
+          placeholder="Enter email e.g. example@address.com "
           value={email}
-          keyboardType='email-address'
+          keyboardType="email-address"
           onChangeText={(text) => validateEmail(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid='transparent'
+          underlineColorAndroid="transparent"
         />
       </View>
       <Text style={styles.error}>{error.email}</Text>
@@ -80,19 +83,20 @@ export default function SignInOrg() {
         <TextInput
           style={styles.body}
           secureTextEntry={true}
-          placeholder='Password'
+          placeholder="Password"
           onChangeText={(text) => validatePassword(text)}
           value={password}
-          keyboardType='default'
+          keyboardType="default"
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid='transparent'
+          underlineColorAndroid="transparent"
         />
       </View>
       <Text style={styles.error}>{error.password}</Text>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        onPress={onPressLogin}>
+        onPress={onPressLogin}
+      >
         Sign In
       </Button>
     </View>

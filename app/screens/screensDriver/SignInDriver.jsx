@@ -25,10 +25,8 @@ export default function SignInDriver({ navigation }) {
       .then(function (snapshot) {
         var result = Object.values(snapshot.val());
         var driverArray = result.filter((object) => {
-          var s = object.driverContactInfo === phoneNumber;
-          return s;
+          return object.driverContactInfo === phoneNumber;
         });
-        console.log("array length", driverArray.length);
         if (driverArray.length === 0) {
           Alert.alert(
             "No phone number match with record please contact your Organization."

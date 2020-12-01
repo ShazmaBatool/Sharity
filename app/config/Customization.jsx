@@ -21,6 +21,7 @@ export const Customization = {
   },
   fontSize: {
     title: 30,
+    smallTitle: 25,
     content: 20,
     normal: 16,
   },

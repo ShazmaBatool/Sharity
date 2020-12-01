@@ -1,7 +1,7 @@
 import React from "react";
 import firebase from "firebase";
 import Button from "react-native-button";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
 
 import { Customization } from "../../config/Customization";
 import { AuthContext } from "../../../context";
@@ -26,8 +26,11 @@ export default function SignInOrg() {
         await firebase
           .auth()
           .signInWithEmailAndPassword(email, password)
-          .then(async function (user) {
+          .then(function (user) {
             signIn();
+          })
+          .catch(function (error) {
+            Alert.alert(error.toString());
           });
       } catch (error) {
         Alert.alert(error.toString());
@@ -167,5 +170,10 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 150 / 2,
+  },
+  error: {
+    marginRight: "auto",
+    marginLeft: 70,
+    color: Customization.color.errorText,
   },
 });

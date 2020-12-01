@@ -114,14 +114,7 @@ export default function SignInDonor({ navigation }) {
         onPress={onPressLogin}>
         Sign In
       </Button>
-      <Text
-        onPress={() => navigation.navigate("ForgotPassword")}
-        styles={{
-          marginBottom: 12,
-          fontStyle: "italic",
-          textDecorationLine: "underline",
-          borderBottomWidth: 1,
-        }}>
+      <Text onPress={() => navigation.navigate("ForgotPassword")}>
         FORGOT YOUR PASSWORD?
       </Text>
       <Text style={styles.or}>OR</Text>
@@ -171,6 +164,7 @@ const styles = StyleSheet.create({
     borderRadius: Customization.borderRadius.main,
     padding: 10,
     marginTop: 30,
+    marginBottom: 10,
   },
   loginText: {
     color: Customization.color.white,

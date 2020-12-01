@@ -30,14 +30,14 @@ export default function DriversDetails({ navigation }) {
       <Image
         source={require("../../assets/donate.png")}
         style={{ width: "80%", height: "30%" }}
-        resizeMode="contain"
+        resizeMode='contain'
       />
       <ScrollView style={styles.scrollView}>
         {driverData.map((driver) => (
           <View style={styles.detailsContainer} key={driver.driverName}>
             <View style={styles.rightContainer}>
               <Icon
-                name="trash-alt"
+                name='trash-alt'
                 size={24}
                 color={Customization.color.tint}
                 // onPress={handleSubmit}
@@ -56,8 +56,7 @@ export default function DriversDetails({ navigation }) {
               <Button
                 containerStyle={styles.loginContainer}
                 style={styles.loginText}
-                onPress={onPressAddDriver}
-              >
+                onPress={onPressAddDriver}>
                 Assign Task
               </Button>
             </View>
@@ -96,15 +95,13 @@ const styles = StyleSheet.create({
   },
 
   loginContainer: {
-    width: "30%",
-    flexDirection: "row-reverse",
+    width: "35%",
     backgroundColor: Customization.color.tint,
     borderRadius: Customization.borderRadius.main,
   },
   loginText: {
     color: Customization.color.white,
     fontSize: 13,
-    padding: 5,
   },
 });
 // Status of Drivers: Available/ Busy

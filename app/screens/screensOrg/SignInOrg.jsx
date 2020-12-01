@@ -27,6 +27,7 @@ export default function SignInOrg() {
           .auth()
           .signInWithEmailAndPassword(email, password)
           .then(function (user) {
+            console.log("🚀 ~ file: SignInOrg.jsx ~ line 30 ~ user", user);
             signIn();
           })
           .catch(function (error) {
@@ -70,12 +71,12 @@ export default function SignInOrg() {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="Enter email e.g. example@address.com "
+          placeholder='e.g. example@address.com '
           value={email}
-          keyboardType="email-address"
+          keyboardType='email-address'
           onChangeText={(text) => validateEmail(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
         />
       </View>
       <Text style={styles.error}>{error.email}</Text>
@@ -83,20 +84,19 @@ export default function SignInOrg() {
         <TextInput
           style={styles.body}
           secureTextEntry={true}
-          placeholder="Password"
+          placeholder='Password'
           onChangeText={(text) => validatePassword(text)}
           value={password}
-          keyboardType="default"
+          keyboardType='default'
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
         />
       </View>
       <Text style={styles.error}>{error.password}</Text>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        onPress={onPressLogin}
-      >
+        onPress={onPressLogin}>
         Sign In
       </Button>
     </View>

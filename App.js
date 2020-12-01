@@ -35,7 +35,7 @@ export default function App() {
     authListener();
     setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 1000);
   }, []);
   if (isLoading) {
     return <SplashScreen />;

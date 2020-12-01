@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
 import Button from "react-native-button";
+import SyncStorage from "sync-storage";
 
 import { Customization } from "../../config/Customization";
 import { AuthContext } from "../../../context";
@@ -33,6 +34,7 @@ export default function SignInDriver({ navigation }) {
           );
         } else {
           signIn();
+          SyncStorage.set("@driverPhone", phoneNumber);
         }
       })
       .catch(function (error) {

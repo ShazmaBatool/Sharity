@@ -11,6 +11,7 @@ import firebase from "firebase";
 import { Picker } from "@react-native-community/picker";
 
 import { Customization } from "../config/Customization";
+import SplashScreen from "../screens/SplashScreen";
 
 export default function WelcomeScreen({ navigation }) {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -22,32 +23,26 @@ export default function WelcomeScreen({ navigation }) {
       database.ref("UserType/").set({
         userType: user,
       });
-      navigation.replace("Donor");
+      navigation.navigate("Donor");
     } else if (user === "org") {
       database.ref("UserType/").set({
         userType: user,
       });
-      navigation.replace("Org");
+      navigation.navigate("Org");
     } else {
       database.ref("UserType/").set({
         userType: user,
       });
-      navigation.replace("Driver");
+      navigation.navigate("Driver");
     }
   };
   React.useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 1000);
   }, []);
   if (isLoading == true) {
-    return (
-      <ActivityIndicator
-        style={styles.spinner}
-        size="large"
-        color={Customization.color.tint}
-      />
-    );
+    return <SplashScreen />;
   }
   return (
     <View style={styles.container}>
@@ -57,18 +52,29 @@ export default function WelcomeScreen({ navigation }) {
       <View style={styles.buttonContainer}>
         <Picker
           selectedValue={user}
-          style={{ width: 150 }}
-          onValueChange={(itemValue) => setUser(itemValue)}
-        >
-          <Picker.Item label="Donor" value="donor" color="#bb2265" />
-          <Picker.Item label="Organization" value="org" color="#bb2265" />
-          <Picker.Item label="Driver" value="driver" color="#bb2265" />
+          style={{ width: 170 }}
+          onValueChange={(itemValue) => setUser(itemValue)}>
+          <Picker.Item
+            label='Donor'
+            value='donor'
+            color={Customization.color.tint}
+          />
+          <Picker.Item
+            label='Organization'
+            value='org'
+            color={Customization.color.tint}
+          />
+          <Picker.Item
+            label='Driver'
+            value='driver'
+            color={Customization.color.tint}
+          />
         </Picker>
         <Button
           containerStyle={styles.loginContainer}
           style={styles.loginText}
-          title="NEXT"
-          color="#bb2265"
+          title='NEXT'
+          color={Customization.color.tint}
           onPress={handleClick}
         />
       </View>

@@ -5,38 +5,69 @@ import {
   View,
   Image,
   TouchableHighlight,
+  TouchableOpacity,
 } from "react-native";
 import firebase from "firebase";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import { Customization } from "../../config/Customization";
+
 import Screen from "../../common/Screen";
 
 export default function EditProfileOrg({ navigation }) {
-  const [imageUri, setImageUri] = React.useState("");
+  const [displayName, setDisplayName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [photoURL, setPhotoURL] = React.useState("");
   const handleEditPic = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 0.5,
       });
-      if (!result.cancelled) setImageUri(result.uri);
+      if (!result.cancelled) setPhotoURL(result.uri);
     } catch (error) {
-      console.log("handleEditPic -> error", error);
+      Alert.alert(error.toString());
     }
   };
-  const user = async () =>
-    await firebase.auth().onAuthStateChanged(function (user) {
-      console.log("EditProfileOrg -> user", user);
-    });
+  const handleSubmit = () => {
+    var user = firebase.auth().currentUser;
+    user
+      .updateProfile({
+        photoURL: photoURL,
+      })
+      .then(function () {
+        // Update successful.
+        Alert.alert("Image updated successfully.");
+        navigation.navigate("Settings");
+      })
+      .catch(function (error) {
+        // An error happened.
+        Alert.alert(error.toString());
+      });
+  };
+  const user = () => {
+    const user = firebase.auth().currentUser;
+    const database = firebase.database();
+    database
+      .ref("Users/Organization")
+      .once("value")
+      .then(function (snapshot) {
+        var result = Object.values(snapshot.val());
+        var newArr = result.filter((obj) => obj.OrgEmail === user.email);
+        setDisplayName(newArr[0].OrgName);
+      });
+    setEmail(user.email);
+    setPhotoURL(user.photoURL);
+  };
   React.useEffect(() => user());
 
   return (
     <Screen style={styles.container}>
       <View style={styles.titleBar}>
         <Ionicons
-          name="ios-arrow-back"
+          name='ios-arrow-back'
           size={24}
-          color="#52575D"
+          color='#52575D'
           onPress={() => navigation.goBack()}
         />
       </View>
@@ -45,20 +76,20 @@ export default function EditProfileOrg({ navigation }) {
         <View style={styles.profileImage}>
           <Image
             source={{
-              uri: imageUri
-                ? imageUri
+              uri: photoURL
+                ? photoURL
                 : "https://res.cloudinary.com/wfdns6x2g6/image/upload/v1509007989/user_psolwi.png",
             }}
             style={styles.image}
-            resizeMode="cover"
+            resizeMode='cover'
           />
         </View>
 
         <View style={styles.add}>
           <Ionicons
-            name="ios-add"
+            name='ios-add'
             size={40}
-            color="#DFD8C8"
+            color='#DFD8C8'
             onPress={handleEditPic}
           />
         </View>
@@ -67,22 +98,30 @@ export default function EditProfileOrg({ navigation }) {
       <View style={styles.infoContainer}>
         <TouchableHighlight
           activeOpacity={0.6}
-          underlayColor="#01010abf"
-          onPress={() => alert("Pressed!")}
-        >
+          underlayColor='#01010abf'
+          onPress={() => alert("Pressed!")}>
           <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
-            Julie
+            {displayName}
           </Text>
         </TouchableHighlight>
         <TouchableHighlight
           activeOpacity={0.6}
-          underlayColor="#01010abf"
-          onPress={() => alert("Pressed!")}
-        >
+          underlayColor='#01010abf'
+          onPress={() => alert("Pressed!")}>
           <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
-            Julie@gmail.com
+            {email}
           </Text>
         </TouchableHighlight>
+      </View>
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: 60,
+        }}>
+        <TouchableOpacity style={styles.commandButton} onPress={handleSubmit}>
+          <Text style={styles.submitButton}>Update</Text>
+        </TouchableOpacity>
       </View>
     </Screen>
   );
@@ -131,12 +170,12 @@ const styles = StyleSheet.create({
   },
   commandButton: {
     padding: 15,
+    width: 150,
     borderRadius: 10,
-    backgroundColor: "#FF6347",
+    backgroundColor: Customization.color.tint,
     alignItems: "center",
     marginTop: 10,
   },
-
   submitButton: {
     fontSize: 17,
     fontWeight: "bold",

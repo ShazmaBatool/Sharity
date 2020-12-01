@@ -7,20 +7,46 @@ import {
   Text,
   TouchableRipple,
 } from "react-native-paper";
+import firebase from "firebase";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { AuthContext } from "../../../context";
+import { Customization } from "../../config/Customization";
 
 export default function SettingsOrgScreen({ navigation }) {
-  const { signOut } = React.useContext(AuthContext);
+  const [displayName, setDisplayName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [photoURL, setPhotoURL] = React.useState("");
+
+  const userInfo = () => {
+    const user = firebase.auth().currentUser;
+    const database = firebase.database();
+    database
+      .ref("Users/Organization")
+      .once("value")
+      .then(function (snapshot) {
+        var result = Object.values(snapshot.val());
+        var newArr = result.filter((obj) => obj.OrgEmail === user.email);
+        setDisplayName(newArr[0].OrgName);
+      });
+    setEmail(user.email);
+    setPhotoURL(user.photoURL);
+  };
+  React.useEffect(() => {
+    userInfo();
+    return () => {
+      null;
+    };
+  });
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.userInfoSection}>
         <View style={{ flexDirection: "row", marginTop: 15 }}>
           <Avatar.Image
             source={{
-              uri:
-                "https://res.cloudinary.com/wfdns6x2g6/image/upload/v1509007989/user_psolwi.png",
+              uri: photoURL
+                ? photoURL
+                : "https://res.cloudinary.com/wfdns6x2g6/image/upload/v1509007989/user_psolwi.png",
             }}
             size={80}
           />
@@ -33,14 +59,14 @@ export default function SettingsOrgScreen({ navigation }) {
                   marginBottom: 5,
                 },
               ]}>
-              John Doe
+              {displayName ? displayName : ""}
             </Title>
-            <Caption style={styles.caption}>@j_doe</Caption>
+            <Caption style={styles.caption}>{email ? email : ""}</Caption>
           </View>
         </View>
       </View>
 
-      <View style={styles.userInfoSection}>
+      {/* <View style={styles.userInfoSection}>
         <View style={styles.row}>
           <Icon name='map-marker-radius' color='#777777' size={20} />
           <Text style={{ color: "#777777", marginLeft: 20 }}>
@@ -59,9 +85,9 @@ export default function SettingsOrgScreen({ navigation }) {
             john_doe@email.com
           </Text>
         </View>
-      </View>
+      </View> */}
 
-      <View style={styles.infoBoxWrapper}>
+      {/* <View style={styles.infoBoxWrapper}>
         <View
           style={[
             styles.infoBox,
@@ -77,24 +103,23 @@ export default function SettingsOrgScreen({ navigation }) {
           <Title>12</Title>
           <Caption>Request Pending</Caption>
         </View>
-      </View>
+      </View> */}
 
       <View style={styles.menuWrapper}>
         <TouchableRipple onPress={() => navigation.navigate("EditProfile")}>
           <View style={styles.menuItem}>
-            <Icon name='account-edit' color='#FF6347' size={25} />
+            <Icon
+              name='account-edit'
+              color={Customization.color.tint}
+              size={25}
+            />
             <Text style={styles.menuItemText}>Edit Profile</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => {}}>
+
+        <TouchableRipple onPress={() => firebase.auth().signOut()}>
           <View style={styles.menuItem}>
-            <Icon name='account-check-outline' color='#FF6347' size={25} />
-            <Text style={styles.menuItemText}>Support</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={() => signOut()}>
-          <View style={styles.menuItem}>
-            <Icon name='logout' color='#FF6347' size={25} />
+            <Icon name='logout' color={Customization.color.tint} size={25} />
             <Text style={styles.menuItemText}>Logout</Text>
           </View>
         </TouchableRipple>

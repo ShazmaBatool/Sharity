@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, Alert } from "react-native";
 import firebase from "firebase";
 import Button from "react-native-button";
 import Icon from "react-native-vector-icons/FontAwesome5";
+
 import { Customization } from "../../config/Customization";
 
 export default function DriversDetails({ navigation }) {
@@ -23,8 +24,26 @@ export default function DriversDetails({ navigation }) {
     return () => {
       null;
     };
-  }, []);
-  const onPressAddDriver = () => {};
+  });
+  const handleAssign = (driver) => {
+    console.log(
+      "🚀 ~ file: DriversDetails.jsx ~ line 28 ~ onPressAssign ~ driver",
+      driver
+    );
+    // Alert.alert(driver);
+  };
+  const handleDelete = (driver) => {
+    var userRef = database
+      .ref("Users/Driver")
+      .once("value")
+      .then(function (snapshot) {
+        var result = Object.values(snapshot.val());
+        var findDriver = result.filter((el) => el.driverContactInfo === driver);
+        // return findDriver;
+      });
+    // userRef.remove();
+    // Alert.alert(driver);
+  };
   return (
     <View style={styles.container}>
       <Image
@@ -40,7 +59,7 @@ export default function DriversDetails({ navigation }) {
                 name='trash-alt'
                 size={24}
                 color={Customization.color.tint}
-                // onPress={handleSubmit}
+                onPress={() => handleDelete(driver.driverContactInfo)}
               />
             </View>
             <Text style={styles.detailsText}>
@@ -56,7 +75,7 @@ export default function DriversDetails({ navigation }) {
               <Button
                 containerStyle={styles.loginContainer}
                 style={styles.loginText}
-                onPress={onPressAddDriver}>
+                onPress={() => handleAssign(driver.driverContactInfo)}>
                 Assign Task
               </Button>
             </View>

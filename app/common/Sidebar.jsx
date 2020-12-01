@@ -11,6 +11,7 @@ import {
 import firebase from "firebase";
 import { Ionicons } from "@expo/vector-icons";
 import Icons from "react-native-vector-icons/FontAwesome";
+import SyncStorage from "sync-storage";
 
 import { AuthContext } from "../../context";
 import { Customization } from "../config/Customization";
@@ -18,16 +19,46 @@ import { Customization } from "../config/Customization";
 const Sidebar = ({ navigation, routes }) => {
   const [displayName, setDisplayName] = React.useState("");
   const [email, setEmail] = React.useState("");
-  const [phoneNumber, setPhoneNumber] = React.useState("");
   const [photoURL, setPhotoURL] = React.useState("");
-  const { signOut } = React.useContext(AuthContext);
 
   const userInfo = () => {
     const user = firebase.auth().currentUser;
-    setDisplayName(user.displayName);
-    setPhoneNumber(user.phoneNumber);
-    setPhotoURL(user.photoURL);
-    setEmail(user.email);
+    const database = firebase.database();
+    database
+      .ref("UserType")
+      .once("value")
+      .then(function (snapshot) {
+        var result = snapshot.val();
+        if (result.userType === "org") {
+          database
+            .ref("Users/Organization")
+            .once("value")
+            .then(function (snapshot) {
+              var result = Object.values(snapshot.val());
+              var newArr = result.filter((obj) => obj.OrgEmail === user.email);
+              setDisplayName(newArr[0].OrgName);
+              setPhotoURL(user.photoURL);
+              setEmail(user.email);
+            });
+        } else if (result.userType === "driver") {
+          database
+            .ref("Users/Driver")
+            .once("value")
+            .then(function (snapshot) {
+              var result = Object.values(snapshot.val());
+              var phoneNumber = SyncStorage.get("@driverPhone");
+              var newArr = result.filter(
+                (obj) => obj.driverContactInfo === phoneNumber
+              );
+              setDisplayName(newArr[0].driverName);
+              setEmail(newArr[0].driverContactInfo);
+            });
+        } else {
+          setDisplayName(user.displayName);
+          setPhotoURL(user.photoURL);
+          setEmail(user.email);
+        }
+      });
   };
   React.useEffect(() => {
     userInfo();
@@ -35,6 +66,9 @@ const Sidebar = ({ navigation, routes }) => {
       null;
     };
   });
+  const leaveTheApp = () => {
+    firebase.auth().signOut();
+  };
 
   return (
     <View style={styles.container}>
@@ -48,9 +82,6 @@ const Sidebar = ({ navigation, routes }) => {
       />
       <Text style={{ fontWeight: "bold", fontSize: 16, marginTop: 10 }}>
         {displayName}
-      </Text>
-      <Text style={{ color: "gray", marginBottom: 10 }}>
-        {phoneNumber ? phoneNumber : ""}
       </Text>
       <Text style={{ color: "gray", marginBottom: 10 }}>{email}</Text>
       <View style={styles.sidebarDivider}></View>
@@ -76,7 +107,9 @@ const Sidebar = ({ navigation, routes }) => {
               },
               {
                 text: "Yes",
-                onPress: () => signOut(),
+                onPress: () => {
+                  leaveTheApp();
+                },
               },
             ],
             { cancelable: false }

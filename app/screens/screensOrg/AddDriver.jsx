@@ -4,16 +4,21 @@ import Button from "react-native-button";
 import { Customization } from "../../config/Customization";
 import firebase from "firebase";
 
-export default function AddDriver() {
+export default function AddDriver({ navigation }) {
   const [name, setName] = React.useState("");
   const [contactInfo, setContactInfo] = React.useState("");
   const [vehicleID, setVehicleID] = React.useState("");
+  const [error, setError] = React.useState({
+    fullName: "",
+    phone: "",
+    vehicle: "",
+  });
 
   const database = firebase.database();
 
   const onPressAddDriver = () => {
     if (contactInfo.length == 11) {
-      database.ref("/Users/" + "Driver").push({
+      database.ref("/Users/Driver").push({
         driverName: name,
         driverContactInfo: contactInfo,
         driverVehicleInfo: vehicleID,
@@ -22,10 +27,40 @@ export default function AddDriver() {
       setContactInfo("");
       setVehicleID("");
       Alert.alert("Driver added successfully!");
+      navigation.navigate("Driver Details");
     } else if (contactInfo.length > 11 || contactInfo.length < 11) {
       Alert.alert("Please enter 11-digits phone number.");
       return;
     }
+  };
+  const validateUserName = (text) => {
+    var letters = /^[A-Za-z\s]+$/;
+    if (text === "") {
+      setError({ fullName: "Name is required." });
+    } else if (text.length < 4) {
+      setError({ fullName: "Name must be greater than 3 characters." });
+    } else if (text.length > 35) {
+      setError({ fullName: "Name must be less than 35 characters." });
+    } else if (!letters.test(text)) {
+      setError({ fullName: "Input must contains alphabets only." });
+    } else {
+      setError({ fullName: "" });
+      setName(text);
+    }
+    setName(text);
+  };
+  const validateVehicle = (text) => {
+    if (text === "") {
+      setError({ vehicle: "Vehicle is required." });
+    } else if (text.length < 4) {
+      setError({ vehicle: "Name must be greater than 3 characters." });
+    } else if (text.length > 6) {
+      setError({ vehicle: "Name must be less than 6 characters." });
+    } else {
+      setError({ vehicle: "" });
+      setVehicleID(text);
+    }
+    setVehicleID(text);
   };
   return (
     <View style={styles.container}>
@@ -33,41 +68,42 @@ export default function AddDriver() {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="Enter name as per CNIC"
-          keyboardType="default"
-          onChangeText={(text) => setName(text)}
+          placeholder='Enter name as per CNIC'
+          keyboardType='default'
+          onChangeText={(text) => validateUserName(text)}
           value={name}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
         />
       </View>
+      <Text style={styles.error}>{error.fullName}</Text>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="03xxxxxxxxx"
-          keyboardType="phone-pad"
+          placeholder='03xxxxxxxxx'
+          keyboardType='phone-pad'
           onChangeText={(text) => setContactInfo(text)}
           value={contactInfo}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
         />
       </View>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="Enter the assigned vehicle ID"
-          keyboardType="default"
-          onChangeText={(text) => setVehicleID(text)}
+          placeholder='Enter the assigned vehicle ID'
+          keyboardType='default'
+          onChangeText={(text) => validateVehicle(text)}
           value={vehicleID}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
         />
       </View>
+      <Text style={styles.error}>{error.vehicle}</Text>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        onPress={onPressAddDriver}
-      >
+        onPress={onPressAddDriver}>
         Add Driver
       </Button>
     </View>
@@ -140,5 +176,10 @@ const styles = StyleSheet.create({
   },
   facebookText: {
     color: Customization.color.white,
+  },
+  error: {
+    marginRight: "auto",
+    marginLeft: 70,
+    color: Customization.color.errorText,
   },
 });

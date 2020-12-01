@@ -263,7 +263,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
   },
-
   submitButton: {
     fontSize: 17,
     fontWeight: "bold",

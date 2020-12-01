@@ -59,19 +59,20 @@ export default function ForgotPassword({ navigation }) {
     <View style={styles.container}>
       <View style={styles.titleBar}>
         <Ionicons
-          name='ios-arrow-back'
-          size={24}
-          color='#52575D'
+          name="ios-arrow-back"
+          size={30}
+          color="#52575D"
           onPress={() => navigation.goBack()}
         />
       </View>
       <View style={{ alignItems: "center", justifyContent: "center" }}>
         <View style={styles.action}>
-          <FontAwesome name='envelope-o' color='#bb2265' size={20} />
+          <FontAwesome name="envelope-o" color="#bb2265" size={20} />
           <TextInput
-            placeholder='Email Address e.g. ...@gmail.com'
-            placeholderTextColor='#666666'
-            keyboardType='email-address'
+            placeholder="Enter email to send you the reset link."
+            placeholderTextColor="#666666"
+            underlineColorAndroid="transparent"
+            keyboardType="email-address"
             value={email}
             onChangeText={(text) => validateEmail(text)}
             autoCorrect={false}

@@ -71,7 +71,7 @@ export default function SignUpDonor({ navigation }) {
   };
 
   const validateUserName = (text) => {
-    var letters = /^[A-Za-z]+$/;
+    var letters = /^[A-Za-z\s]+$/;
     if (text === "") {
       setError({ fullName: "Name is required." });
     } else if (text.length < 3) {
@@ -93,7 +93,7 @@ export default function SignUpDonor({ navigation }) {
       setError({ phone: "Phone must be 11 digits." });
     } else if (text.length > 11) {
       setError({ phone: "Phone must be 11 digits." });
-    } else if (text.lenght === 11) {
+    } else if (text.length === 11) {
       setError({ phone: "" });
       setPhone(text);
     }

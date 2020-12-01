@@ -35,7 +35,7 @@ export default function SignInDonor({ navigation }) {
         Alert.alert(error.toString());
       }
     } else {
-      Alert.alert("Please enter the correct data.");
+      Alert.alert("Please enter correct data.");
     }
   };
   const validateEmail = (text) => {
@@ -70,7 +70,9 @@ export default function SignInDonor({ navigation }) {
       .sendPasswordResetEmail(emailAddress)
       .then(function (res) {
         // Email sent.
-        Alert.alert("An email sent to your Email Address");
+        Alert.alert(
+          "A password reset link has been sent to your email address"
+        );
       })
       .catch(function (error) {
         // An error happened.
@@ -83,52 +85,47 @@ export default function SignInDonor({ navigation }) {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='e.g. example@address.com'
+          placeholder="Enter email e.g. example@address.com"
           value={email}
-          keyboardType='email-address'
+          keyboardType="email-address"
           onChangeText={(text) => validateEmail(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid='transparent'
+          underlineColorAndroid="transparent"
         />
       </View>
       <Text style={styles.error}>{error.email}</Text>
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='Password'
-          secureTextEntry={true}
-          keyboardType='default'
-          placeholder='Password'
-          onChangeText={(text) => setPassword(text)}
+          placeholder="Password"
           value={password}
-          keyboardType='default'
+          secureTextEntry={true}
+          keyboardType="default"
           onChangeText={(text) => validatePassword(text)}
           placeholderTextColor={Customization.color.grey}
-          underlineColorAndroid='transparent'
+          underlineColorAndroid="transparent"
         />
       </View>
       <Text style={styles.error}>{error.password}</Text>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        onPress={onPressLogin}>
+        onPress={onPressLogin}
+      >
         Sign In
       </Button>
       <Text
         onPress={() => navigation.navigate("ForgotPassword")}
-        styles={{
-          marginBottom: 12,
-          fontStyle: "italic",
-          textDecorationLine: "underline",
-          borderBottomWidth: 1,
-        }}>
+        style={styles.forgotPassword}
+      >
         FORGOT YOUR PASSWORD?
       </Text>
       <Text style={styles.or}>OR</Text>
       <Button
         containerStyle={styles.facebookContainer}
         style={styles.facebookText}
-        onPress={() => navigation.navigate("SignUpDonor")}>
+        onPress={() => navigation.navigate("SignUpDonor")}
+      >
         Don't have an account?
       </Button>
     </View>
@@ -207,5 +204,10 @@ const styles = StyleSheet.create({
     marginRight: "auto",
     marginLeft: 70,
     color: Customization.color.errorText,
+  },
+  forgotPassword: {
+    marginBottom: 12,
+    color: "#0000FF",
+    borderBottomWidth: 1,
   },
 });

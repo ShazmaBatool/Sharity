@@ -17,7 +17,7 @@ import { Customization } from "../../config/Customization";
 
 export default function DonorSettings({ navigation }) {
   const [displayName, setDisplayName] = React.useState("Julia");
-  const [email, setEmail] = React.useState("");
+  const [phone, setPhone] = React.useState("");
   const [photoURL, setPhotoURL] = React.useState("");
   const [isDialogVisible, setIsDialogVisible] = React.useState(false);
   const { signOut } = React.useContext(AuthContext);
@@ -25,7 +25,7 @@ export default function DonorSettings({ navigation }) {
   const userInfo = () => {
     const user = firebase.auth().currentUser;
     setDisplayName(user.displayName);
-    setEmail(user.email);
+    setPhone(user.phone);
     setPhotoURL(user.photoURL);
   };
   React.useEffect(() => {
@@ -107,23 +107,24 @@ export default function DonorSettings({ navigation }) {
                   marginTop: 15,
                   marginBottom: 5,
                 },
-              ]}>
+              ]}
+            >
               {displayName}
             </Title>
-            <Caption style={styles.caption}>{email}</Caption>
+            <Caption style={styles.caption}>{phone}</Caption>
           </View>
         </View>
       </View>
 
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
-          <Icon name='email' color='#777777' size={20} />
-          <Text style={{ color: "#777777", marginLeft: 20 }}>{email}</Text>
+          <Icon name="phone" color="#777777" size={20} />
+          <Text style={{ color: "#777777", marginLeft: 20 }}>{phone}</Text>
         </View>
-        <View style={styles.row}>
+        {/* <View style={styles.row}>
           <Icon name='map-marker-radius' color='#777777' size={20} />
           <Text style={{ color: "#777777", marginLeft: 20 }}>Punjab</Text>
-        </View>
+        </View> */}
       </View>
 
       <View style={styles.infoBoxWrapper}>
@@ -134,7 +135,8 @@ export default function DonorSettings({ navigation }) {
               borderRightColor: "#dddddd",
               borderRightWidth: 1,
             },
-          ]}>
+          ]}
+        >
           <Title>11</Title>
           <Caption>Donation Successful</Caption>
         </View>
@@ -146,10 +148,11 @@ export default function DonorSettings({ navigation }) {
 
       <View style={styles.menuWrapper}>
         <TouchableRipple
-          onPress={() => navigation.navigate("EditProfileDonor")}>
+          onPress={() => navigation.navigate("EditProfileDonor")}
+        >
           <View style={styles.menuItem}>
             <Icon
-              name='account-edit'
+              name="account-edit"
               color={Customization.color.tint}
               size={25}
             />
@@ -159,7 +162,7 @@ export default function DonorSettings({ navigation }) {
         <TouchableRipple onPress={() => setIsDialogVisible(true)}>
           <View style={styles.menuItem}>
             <Icon
-              name='key-change'
+              name="key-change"
               color={Customization.color.tint}
               size={25}
             />
@@ -169,7 +172,7 @@ export default function DonorSettings({ navigation }) {
         <TouchableRipple onPress={alertDelete}>
           <View style={styles.menuItem}>
             <AntDesign
-              name='deleteuser'
+              name="deleteuser"
               color={Customization.color.tint}
               size={25}
             />
@@ -179,7 +182,7 @@ export default function DonorSettings({ navigation }) {
         <TouchableRipple onPress={() => signOut()}>
           <View style={styles.menuItem}>
             <AntDesign
-              name='logout'
+              name="logout"
               color={Customization.color.tint}
               size={25}
             />

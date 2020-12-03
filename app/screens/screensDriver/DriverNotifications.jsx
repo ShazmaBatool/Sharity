@@ -1,10 +1,10 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 
 export default function DriverNotifications() {
   return (
-    <div>
+    <View>
       <Text> Notifications of task assigned by the Organization</Text>
-    </div>
+    </View>
   );
 }

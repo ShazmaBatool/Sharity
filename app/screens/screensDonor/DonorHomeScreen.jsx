@@ -30,11 +30,14 @@ export default function DonorHomeScreen() {
   const database = firebase.database();
 
   const SendRequest = () => {
-    console.log("Cloth", selectCloth);
-    console.log("Shoes", selectShoes);
-    console.log("Amount", amount);
-    console.log("Org", orgSelect);
-    alert(orgSelect);
+    // database.ref("NewRequest/Donor").push({
+    //   organizationName: orgSelect,
+    //   donateClothes: selectCloth,
+    //   amountOfClothes: clothValue,
+    //   donateShoes: selectShoes,
+    //   amountOfShoes: shoesValue,
+    //   donateMoney: amount,
+    // });
   };
 
   const getCurrentLoc = async () => {
@@ -159,7 +162,7 @@ export default function DonorHomeScreen() {
                   value: "men",
                   icon: () => (
                     <AntDesign
-                      name='male'
+                      name='man'
                       size={18}
                       color={Customization.color.tint}
                     />
@@ -170,7 +173,7 @@ export default function DonorHomeScreen() {
                   value: "women",
                   icon: () => (
                     <AntDesign
-                      name='female'
+                      name='woman'
                       size={18}
                       color={Customization.color.tint}
                     />

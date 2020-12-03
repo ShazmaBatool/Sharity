@@ -63,7 +63,7 @@ export default function SignInDonor({ navigation }) {
     setPassword(text);
   };
   const forgotPassword = () => {
-    var emailAddress = "arslanali4492@gmail.com";
+    var emailAddress = "";
 
     firebase
       .auth()
@@ -85,7 +85,7 @@ export default function SignInDonor({ navigation }) {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='Enter email e.g. example@address.com'
+          placeholder='e.g. example@address.com'
           value={email}
           keyboardType='email-address'
           onChangeText={(text) => validateEmail(text)}

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, SafeAreaView, StyleSheet } from "react-native";
+import { View, SafeAreaView, StyleSheet, Alert } from "react-native";
 import {
   Avatar,
   Title,
@@ -7,11 +7,44 @@ import {
   Text,
   TouchableRipple,
 } from "react-native-paper";
+import firebase from "firebase";
+import SyncStorage from "sync-storage";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { AuthContext } from "../../../context";
+
+import { Customization } from "../../config/Customization";
 
 export default function DriverSettings({ navigation }) {
-  const { signOut } = React.useContext(AuthContext);
+  const [displayName, setDisplayName] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [vehicleNum, setVehicleNum] = React.useState("");
+  const [photoURL, setPhotoURL] = React.useState("");
+
+  const userInfo = () => {
+    const user = firebase.auth().currentUser;
+    const database = firebase.database();
+    database
+      .ref("Users/Driver")
+      .once("value")
+      .then(function (snapshot) {
+        var result = Object.values(snapshot.val());
+        var phoneNumber = SyncStorage.get("@driverPhone");
+        var newArr = result.filter(
+          (obj) => obj.driverContactInfo === phoneNumber
+        );
+        setDisplayName(newArr[0].driverName);
+        setPhone(newArr[0].driverContactInfo);
+        setVehicleNum(newArr[0].driverVehicleInfo);
+      })
+      .catch(function (error) {
+        Alert.alert(error.toString());
+      });
+  };
+  React.useEffect(() => {
+    userInfo();
+    return () => {
+      null;
+    };
+  });
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.userInfoSection}>
@@ -31,33 +64,28 @@ export default function DriverSettings({ navigation }) {
                   marginTop: 15,
                   marginBottom: 5,
                 },
-              ]}
-            >
-              Hassan Akbar
+              ]}>
+              {displayName}
             </Title>
-            <Caption style={styles.caption}>@j_doe</Caption>
+            <Caption style={styles.caption}>{phone}</Caption>
           </View>
         </View>
       </View>
 
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
-          <Icon name="map-marker-radius" color="#777777" size={20} />
+          <Icon name='map-marker-radius' color='#777777' size={20} />
           <Text style={{ color: "#777777", marginLeft: 20 }}>
             Rawalpindi, Pakistan
           </Text>
         </View>
         <View style={styles.row}>
-          <Icon name="phone" color="#777777" size={20} />
-          <Text style={{ color: "#777777", marginLeft: 20 }}>
-            +92-3xx xxxxxxx
-          </Text>
+          <Icon name='phone' color='#777777' size={20} />
+          <Text style={{ color: "#777777", marginLeft: 20 }}>{phone}</Text>
         </View>
         <View style={styles.row}>
-          <Icon name="email" color="#777777" size={20} />
-          <Text style={{ color: "#777777", marginLeft: 20 }}>
-            john_doe@email.com
-          </Text>
+          <Icon name='motorbike' color='#777777' size={20} />
+          <Text style={{ color: "#777777", marginLeft: 20 }}>{vehicleNum}</Text>
         </View>
       </View>
 
@@ -69,8 +97,7 @@ export default function DriverSettings({ navigation }) {
               borderRightColor: "#dddddd",
               borderRightWidth: 1,
             },
-          ]}
-        >
+          ]}>
           <Title>11</Title>
           <Caption>Donation Successful</Caption>
         </View>
@@ -83,19 +110,17 @@ export default function DriverSettings({ navigation }) {
       <View style={styles.menuWrapper}>
         <TouchableRipple onPress={() => navigation.navigate("EditProfile")}>
           <View style={styles.menuItem}>
-            <Icon name="account-edit" color="#FF6347" size={25} />
+            <Icon
+              name='account-edit'
+              color={Customization.color.tint}
+              size={25}
+            />
             <Text style={styles.menuItemText}>Edit Profile</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => {}}>
+        <TouchableRipple onPress={() => firebase.auth().signOut()}>
           <View style={styles.menuItem}>
-            <Icon name="account-check-outline" color="#FF6347" size={25} />
-            <Text style={styles.menuItemText}>Support</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={() => signOut()}>
-          <View style={styles.menuItem}>
-            <Icon name="logout" color="#FF6347" size={25} />
+            <Icon name='logout' color={Customization.color.tint} size={25} />
             <Text style={styles.menuItemText}>Sign Out</Text>
           </View>
         </TouchableRipple>

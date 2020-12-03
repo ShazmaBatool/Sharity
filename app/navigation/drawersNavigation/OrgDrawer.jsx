@@ -53,7 +53,6 @@ export default function OrgDrawer() {
       <DrawerStack.Screen name='Donation Count' component={DonationsCount} />
       <DrawerStack.Screen name='Driver Details' component={DriversDetails} />
       <DrawerStack.Screen name='Add Driver' component={AddDriver} />
-
       <DrawerStack.Screen
         name='EditProfile'
         component={EditProfileOrg}

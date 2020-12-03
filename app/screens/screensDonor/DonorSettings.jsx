@@ -107,8 +107,7 @@ export default function DonorSettings({ navigation }) {
                   marginTop: 15,
                   marginBottom: 5,
                 },
-              ]}
-            >
+              ]}>
               {displayName}
             </Title>
             <Caption style={styles.caption}>{phone}</Caption>
@@ -118,7 +117,7 @@ export default function DonorSettings({ navigation }) {
 
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
-          <Icon name="phone" color="#777777" size={20} />
+          <Icon name='phone' color='#777777' size={20} />
           <Text style={{ color: "#777777", marginLeft: 20 }}>{phone}</Text>
         </View>
         {/* <View style={styles.row}>
@@ -135,8 +134,7 @@ export default function DonorSettings({ navigation }) {
               borderRightColor: "#dddddd",
               borderRightWidth: 1,
             },
-          ]}
-        >
+          ]}>
           <Title>11</Title>
           <Caption>Donation Successful</Caption>
         </View>
@@ -148,11 +146,10 @@ export default function DonorSettings({ navigation }) {
 
       <View style={styles.menuWrapper}>
         <TouchableRipple
-          onPress={() => navigation.navigate("EditProfileDonor")}
-        >
+          onPress={() => navigation.navigate("EditProfileDonor")}>
           <View style={styles.menuItem}>
             <Icon
-              name="account-edit"
+              name='account-edit'
               color={Customization.color.tint}
               size={25}
             />
@@ -162,7 +159,7 @@ export default function DonorSettings({ navigation }) {
         <TouchableRipple onPress={() => setIsDialogVisible(true)}>
           <View style={styles.menuItem}>
             <Icon
-              name="key-change"
+              name='key-change'
               color={Customization.color.tint}
               size={25}
             />
@@ -172,17 +169,17 @@ export default function DonorSettings({ navigation }) {
         <TouchableRipple onPress={alertDelete}>
           <View style={styles.menuItem}>
             <AntDesign
-              name="deleteuser"
+              name='deleteuser'
               color={Customization.color.tint}
               size={25}
             />
             <Text style={styles.menuItemText}>Delete Account</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => signOut()}>
+        <TouchableRipple onPress={() => firebase.auth().signOut()}>
           <View style={styles.menuItem}>
             <AntDesign
-              name="logout"
+              name='logout'
               color={Customization.color.tint}
               size={25}
             />

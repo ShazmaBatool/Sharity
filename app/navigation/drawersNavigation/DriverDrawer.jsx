@@ -37,7 +37,7 @@ export default function DriverDrawer() {
   return (
     <DrawerStack.Navigator
       overlayColor='#01010abf'
-      initialRouteName='MapScreen'
+      initialRouteName='Map'
       headerMode='none'
       drawerContent={(props) => <Sidebar {...props} routes={routes} />}>
       <DrawerStack.Screen name='Home' component={DriverHomeScreen} />

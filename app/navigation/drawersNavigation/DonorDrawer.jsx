@@ -8,10 +8,15 @@ import Sidebar from "../../common/Sidebar";
 import EditProfileDonor from "../../screens/screensDonor/EditProfileDonor";
 import DonationsCount from "../../screens/screensDonor/DonationsCount";
 import DonationsDetails from "../../screens/screensDonor/DonationsDetails";
+import DonorEmailVerification from "../../screens/screensDonor/DonorEmailVerification";
 
 export default function DonorDrawer() {
   const DrawerStack = createDrawerNavigator();
   const [routes] = React.useState([
+    {
+      name: "Home",
+      icon: "home",
+    },
     {
       name: "Notifications",
       icon: "bell",
@@ -33,14 +38,19 @@ export default function DonorDrawer() {
   return (
     <DrawerStack.Navigator
       overlayColor='#01010abf'
-      initialRouteName='DonorHomeScreen'
+      initialRouteName='Home'
       headerMode='none'
       drawerContent={(props) => <Sidebar {...props} routes={routes} />}>
-      <DrawerStack.Screen name='DonorHomeScreen' component={DonorHomeScreen} />
       <DrawerStack.Screen
-        name='Donor Notifications'
-        component={DonorNotifications}
+        name='Home'
+        component={DonorHomeScreen}
+        options={{ headerTitle: "Home" }}
       />
+      <DrawerStack.Screen
+        name='EmailVerificationScreen'
+        component={DonorEmailVerification}
+      />
+      <DrawerStack.Screen name='Notifications' component={DonorNotifications} />
       <DrawerStack.Screen
         name='Donation Details'
         component={DonationsDetails}

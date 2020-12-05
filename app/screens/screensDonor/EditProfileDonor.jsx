@@ -156,18 +156,6 @@ export default function EditProfileDonor({ navigation }) {
             />
           </View>
           <View style={styles.action}>
-            <Feather name='phone' size={20} />
-            <TextInput
-              placeholder='Phone'
-              placeholderTextColor='#666666'
-              keyboardType='number-pad'
-              autoCorrect={false}
-              value={phoneNumber}
-              onChangeText={(text) => setPhoneNumber(text)}
-              style={styles.textInput}
-            />
-          </View>
-          <View style={styles.action}>
             <FontAwesome name='envelope-o' size={20} />
             <TextInput
               placeholder='Email'

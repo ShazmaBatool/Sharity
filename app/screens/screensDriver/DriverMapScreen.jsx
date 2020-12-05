@@ -4,16 +4,22 @@ import { SearchBar } from "react-native-elements";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import * as Location from "expo-location";
+import axios from "axios";
 
 export default function DriverMapScreen() {
-  const [latitude, setLatitude] = React.useState(33.639267);
-  const [longitude, setLongitude] = React.useState(73.087999);
+  const [latitude, setLatitude] = React.useState(33.6);
+  const [longitude, setLongitude] = React.useState(73.0);
   const [search, setSearch] = React.useState("");
   const [markers, setMarkers] = React.useState([]);
   const [category, setCategory] = React.useState("mypat");
-  const [lat, setLat] = React.useState(33.720001);
-  const [long, setLong] = React.useState(73.059998);
-  const GOOGLE_MAPS_APIKEY = "AIzaSyCBQ4IiB4i3USwpYwN03O7YjeOy8dJFqzc";
+  const [lat, setLat] = React.useState(33.7);
+  const [long, setLong] = React.useState(73.0);
+  const [routeForMap, setRouteForMap] = React.useState([]);
+  const [summary, setSummary] = React.useState();
+  // const GOOGLE_MAPS_APIKEY = "AIzaSyCBQ4IiB4i3USwpYwN03O7YjeOy8dJFqzc";
+  const GOOGLE_MAPS_APIKEY = "AIzaSyCYvMpmVhFc0ydILEuXGJNYNGFnBoKPCL8";
+  const YOUR_API_KEY = "UGsHAH9dlC3hI6bmfxjHN_DcMt-u84Z8gLhFOkyMw7U";
+  const PUT_YOUR_APP_CODE_HERE = "rcz6ByZuZUl54OHikIm0";
 
   const getCurrentLoc = async () => {
     await Location.requestPermissionsAsync()
@@ -38,6 +44,7 @@ export default function DriverMapScreen() {
   };
 
   React.useEffect(() => {
+    // _getRoute();
     if (category === "mypath") {
       getCurrentLoc();
     } else {
@@ -47,6 +54,7 @@ export default function DriverMapScreen() {
 
   const getCoordinates = () => {
     getCurrentLoc();
+    _getRoute();
     var marker = [
       {
         title: "My Location",
@@ -66,16 +74,43 @@ export default function DriverMapScreen() {
     ];
     setMarkers(marker);
   };
+  const _getRoute = () => {
+    let from_lat = parseFloat(latitude);
+    let from_long = parseFloat(longitude);
+    let to_lat = parseFloat(lat);
+    let to_long = parseFloat(long);
+    // we will save all Polyline coordinates in this array
+    let route_coordinates = [];
+    axios
+      .get(
+        `https://route.ls.hereapi.com/routing/7.2/calculateroute.json?apikey=${YOUR_API_KEY}&waypoint0=geo!${latitude},${longitude}&waypoint1=geo!${lat},${long}&mode=fastest;car;traffic:disabled&legAttributes=shape`
+      )
+      .then((res) => {
+        // here we are getting all route coordinates from API response
+        res.data.response.route[0].leg[0].shape.map((m) => {
+          let latlong = m.split(",");
+          let latitude = parseFloat(latlong[0]);
+          let longitude = parseFloat(latlong[1]);
+          route_coordinates.push({ latitude: latitude, longitude: longitude });
+        });
+        var summary = res.data.response.route[0].summary;
+        setRouteForMap(route_coordinates);
+        setSummary(summary);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <View style={styles.container}>
       {latitude ? (
         <>
-          <SearchBar
+          {/* <SearchBar
             placeholder='Type Here...'
             onChangeText={(search) => setSearch(search)}
             value={search}
-          />
-          <MapView
+          /> */}
+          {/* <MapView
             style={styles.mapStyle}
             region={{
               latitude: latitude,
@@ -85,7 +120,7 @@ export default function DriverMapScreen() {
             }}
             showsUserLocation={true}
             zoomEnabled={true}
-            onUserLocationChange={(event) => console.log(event.nativeEvent)}
+            // onUserLocationChange={(event) => console.log(event.nativeEvent)}
             followUserLocation={true}>
             <MapViewDirections
               origin={{ latitude: 33.639267, longitude: 73.087999 }}
@@ -107,6 +142,36 @@ export default function DriverMapScreen() {
                 />
               );
             })}
+          </MapView> */}
+          <MapView
+            style={styles.mapStyle}
+            region={{
+              latitude: lat,
+              longitude: long,
+              latitudeDelta: 0.04,
+              longitudeDelta: 0.05,
+            }}
+            showsUserLocation={true}>
+            <Polyline
+              coordinates={routeForMap}
+              strokeWidth={2}
+              strokeColors={["red", "black"]}
+              // geodesic={true}
+            />
+            <Marker
+              coordinate={{
+                latitude: lat,
+                longitude: long,
+              }}
+              title='Starting location'
+            />
+            <Marker
+              coordinate={{
+                latitude: latitude,
+                longitude: longitude,
+              }}
+              title='Finishlocation'
+            />
           </MapView>
         </>
       ) : (

@@ -17,7 +17,7 @@ import { Customization } from "../../config/Customization";
 
 export default function DonorSettings({ navigation }) {
   const [displayName, setDisplayName] = React.useState("Julia");
-  const [phone, setPhone] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [photoURL, setPhotoURL] = React.useState("");
   const [isDialogVisible, setIsDialogVisible] = React.useState(false);
   const { signOut } = React.useContext(AuthContext);
@@ -25,15 +25,9 @@ export default function DonorSettings({ navigation }) {
   const userInfo = () => {
     const user = firebase.auth().currentUser;
     setDisplayName(user.displayName);
-    setPhone(user.phone);
+    setEmail(user.email);
     setPhotoURL(user.photoURL);
   };
-  React.useEffect(() => {
-    userInfo();
-    return () => {
-      null;
-    };
-  });
 
   const alertDelete = () => {
     Alert.alert(
@@ -84,7 +78,7 @@ export default function DonorSettings({ navigation }) {
     return () => {
       null;
     };
-  }, []);
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -110,15 +104,15 @@ export default function DonorSettings({ navigation }) {
               ]}>
               {displayName}
             </Title>
-            <Caption style={styles.caption}>{phone}</Caption>
+            <Caption style={styles.caption}>{email}</Caption>
           </View>
         </View>
       </View>
 
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
-          <Icon name='phone' color='#777777' size={20} />
-          <Text style={{ color: "#777777", marginLeft: 20 }}>{phone}</Text>
+          <Icon name='email' color='#777777' size={20} />
+          <Text style={{ color: "#777777", marginLeft: 20 }}>{email}</Text>
         </View>
         {/* <View style={styles.row}>
           <Icon name='map-marker-radius' color='#777777' size={20} />

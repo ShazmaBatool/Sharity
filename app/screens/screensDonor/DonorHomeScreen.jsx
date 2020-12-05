@@ -14,68 +14,77 @@ import * as Location from "expo-location";
 import DropDownPicker from "react-native-dropdown-picker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import Constants from "expo-constants";
 
 import { Customization } from "../../config/Customization";
+import DonorEmailVerification from "./DonorEmailVerification";
+import { cos } from "react-native-reanimated";
 
-export default function DonorHomeScreen() {
+export default function DonorHomeScreen({ navigation }) {
   const [donorLoc, setDonorLoc] = React.useState("");
+  const [donorEmail, setDonorEmail] = React.useState("");
   const [orgSelect, setOrgSelect] = React.useState("");
-  const [amount, setAmount] = React.useState("");
+  const [amount, setAmount] = React.useState(0);
   const [selectCloth, setSelectCloth] = React.useState("");
-  const [verifiedEmail, setVerifiedEmail] = React.useState("");
-  const [clothValue, setClothValue] = React.useState("");
+  const [clothValue, setClothValue] = React.useState(0);
   const [selectShoes, setSelectShoes] = React.useState("");
-  const [shoesValue, setShoesValue] = React.useState("");
+  const [shoesValue, setShoesValue] = React.useState(0);
   const [orgList, setOrgList] = React.useState([]);
+  const [verifiedEmail, setVerifiedEmail] = React.useState("");
+  const [latlng, setLatlng] = React.useState("");
   const database = firebase.database();
 
   const SendRequest = () => {
-    // database.ref("NewRequest/Donor").push({
-    //   organizationName: orgSelect,
-    //   donateClothes: selectCloth,
-    //   amountOfClothes: clothValue,
-    //   donateShoes: selectShoes,
-    //   amountOfShoes: shoesValue,
-    //   donateMoney: amount,
-    // });
+    database.ref("NewRequest/Donor").push({
+      organizationName: orgSelect,
+      donorEmail: donorEmail,
+      donateClothes: selectCloth,
+      amountOfClothes: clothValue,
+      donateShoes: selectShoes,
+      amountOfShoes: shoesValue,
+      donateMoney: amount,
+      donateLatlng: latlng,
+      requestStatus: "Pending",
+    });
   };
 
   const getCurrentLoc = async () => {
     const user = firebase.auth().currentUser;
-    // if (user.emailVerified == true) {
-    setVerifiedEmail(true);
-    await Location.requestPermissionsAsync()
-      .then(async function ({ status }) {
-        if (status !== "granted") {
-          setErrorMsg("Permission to access location was denied");
-        }
-        await Location.getCurrentPositionAsync({})
-          .then(async function ({ coords }) {
-            if (coords) {
-              const loc = {
-                latitude: coords.latitude,
-                longitude: coords.longitude,
-              };
-              await Location.reverseGeocodeAsync(loc)
-                .then(function (obj) {
-                  setDonorLoc(`${obj[0].street}, ${obj[0].city}`);
-                })
-                .catch(function (error) {
-                  Alert.alert(error.toString());
-                });
-            }
-          })
-          .catch(function (error) {
-            Alert.alert(error.toString());
-          });
-      })
-      .catch(function (error) {
-        Alert.alert(error.toString());
-      });
-
-    // } else {
-    //   Alert.alert("Please verify your email first.");
-    // }
+    if (user.emailVerified == true) {
+      setVerifiedEmail(true);
+      setDonorEmail(user.email);
+      await Location.requestPermissionsAsync()
+        .then(async function ({ status }) {
+          if (status !== "granted") {
+            setErrorMsg("Permission to access location was denied");
+          }
+          await Location.getCurrentPositionAsync({})
+            .then(async function ({ coords }) {
+              if (coords) {
+                const loc = {
+                  latitude: coords.latitude,
+                  longitude: coords.longitude,
+                };
+                setLatlng(loc);
+                await Location.reverseGeocodeAsync(loc)
+                  .then(function (obj) {
+                    setDonorLoc(`${obj[0].street}, ${obj[0].city}`);
+                  })
+                  .catch(function (error) {
+                    Alert.alert(error.toString());
+                  });
+              }
+            })
+            .catch(function (error) {
+              Alert.alert(error.toString());
+            });
+        })
+        .catch(function (error) {
+          Alert.alert(error.toString());
+        });
+    } else {
+      // Alert.alert("Please verify your email first.");
+    }
   };
 
   const getOrganizationList = () => {
@@ -100,11 +109,7 @@ export default function DonorHomeScreen() {
   }, []);
 
   if (!verifiedEmail) {
-    return (
-      <View>
-        <Text> Verify your email first. </Text>
-      </View>
-    );
+    return <DonorEmailVerification />;
   }
   return (
     <View style={styles.container}>

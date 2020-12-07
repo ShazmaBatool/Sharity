@@ -14,16 +14,16 @@ import * as Location from "expo-location";
 import DropDownPicker from "react-native-dropdown-picker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import Constants from "expo-constants";
 
 import { Customization } from "../../config/Customization";
 import DonorEmailVerification from "./DonorEmailVerification";
-import { cos } from "react-native-reanimated";
+
+import AppPicker from "../../components/AppPicker";
 
 export default function DonorHomeScreen({ navigation }) {
   const [donorLoc, setDonorLoc] = React.useState("");
   const [donorEmail, setDonorEmail] = React.useState("");
-  const [orgSelect, setOrgSelect] = React.useState("");
+  const [orgSelect, setOrgSelect] = React.useState();
   const [amount, setAmount] = React.useState(0);
   const [selectCloth, setSelectCloth] = React.useState("");
   const [clothValue, setClothValue] = React.useState(0);
@@ -32,7 +32,28 @@ export default function DonorHomeScreen({ navigation }) {
   const [orgList, setOrgList] = React.useState([]);
   const [verifiedEmail, setVerifiedEmail] = React.useState("");
   const [latlng, setLatlng] = React.useState("");
+  const [category, setCategory] = React.useState();
   const database = firebase.database();
+
+  const personsList = [
+    { label: "Children", value: 1 },
+    { label: "Men", value: 2 },
+    { label: "Women", value: 3 },
+  ];
+  const amountList = [
+    { label: "100", value: 1 },
+    { label: "300", value: 2 },
+    { label: "500", value: 3 },
+    { label: "1000", value: 4 },
+    { label: "2000", value: 5 },
+  ];
+  const itemsList = [
+    { label: "1", value: 1 },
+    { label: "2", value: 2 },
+    { label: "3", value: 3 },
+    { label: "5", value: 4 },
+    { label: "10", value: 5 },
+  ];
 
   const SendRequest = () => {
     database.ref("NewRequest/Donor").push({
@@ -127,205 +148,75 @@ export default function DonorHomeScreen({ navigation }) {
           underlineColorAndroid='transparent'
         />
       </View>
-      <View style={{ marginTop: 10, zIndex: Platform.OS === "ios" ? 80 : 80 }}>
-        <View
-          style={{
-            zIndex: Platform.OS === "ios" ? 60 : 60,
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          marginLeft: 10,
+          marginRight: 10,
+        }}>
+        <View>
           <Text style={styles.title}>Organization List</Text>
-          <DropDownPicker
+          <AppPicker
+            style={{ backgroundColor: "#fff" }}
+            selectedItem={orgSelect}
+            onSelectItem={(item) => setOrgSelect(item)}
             items={orgList}
-            containerStyle={{ height: 40, width: 200 }}
-            style={{ backgroundColor: "#fafafa", width: 200 }}
-            itemStyle={{
-              justifyContent: "flex-start",
-            }}
-            dropDownStyle={{ backgroundColor: "#fafafa" }}
-            onChangeItem={(item) => setOrgSelect(item.value)}
+            icon='account-group'
+            placeholder='Organizations'
           />
         </View>
-        <View style={{ zIndex: Platform.OS === "ios" ? 40 : 40 }}>
-          <Text style={styles.title}>Clothes</Text>
-          <View style={styles.dropDownContainer}>
-            <DropDownPicker
-              items={[
-                {
-                  label: "CHILDREN",
-                  value: "children",
-                  icon: () => (
-                    <FontAwesome
-                      name='child'
-                      size={18}
-                      color={Customization.color.tint}
-                    />
-                  ),
-                },
-                {
-                  label: "MEN",
-                  value: "men",
-                  icon: () => (
-                    <AntDesign
-                      name='man'
-                      size={18}
-                      color={Customization.color.tint}
-                    />
-                  ),
-                },
-                {
-                  label: "WOMEN",
-                  value: "women",
-                  icon: () => (
-                    <AntDesign
-                      name='woman'
-                      size={18}
-                      color={Customization.color.tint}
-                    />
-                  ),
-                },
-              ]}
-              defaultValue=''
-              placeholder='select gender'
-              containerStyle={{ height: 40, width: 150 }}
-              style={styles.dropDown}
-              itemStyle={{
-                justifyContent: "flex-start",
-              }}
-              dropDownStyle={{ backgroundColor: "#fafafa" }}
-              onChangeItem={(item) => setSelectCloth(item.value)}
+        <Text style={styles.title}>Clothes</Text>
+        <View style={styles.dropDownContainer}>
+          <View style={styles.listView}>
+            <AppPicker
+              selectedItem={selectCloth}
+              onSelectItem={(item) => setSelectCloth(item)}
+              items={personsList}
+              icon='gender-male-female'
+              placeholder='Gender'
             />
-            <DropDownPicker
-              items={[
-                {
-                  label: "1",
-                  value: "1",
-                },
-                {
-                  label: "2",
-                  value: "2",
-                },
-                {
-                  label: "3",
-                  value: "3",
-                },
-              ]}
-              defaultValue=''
-              placeholder='select quantity'
-              containerStyle={{ height: 40, width: 150 }}
-              style={styles.dropDown}
-              itemStyle={{
-                justifyContent: "flex-start",
-              }}
-              dropDownStyle={{ backgroundColor: "#fafafa" }}
-              onChangeItem={(item) => setClothValue(item.value)}
+          </View>
+          <View style={styles.listView}>
+            <AppPicker
+              selectedItem={clothValue}
+              onSelectItem={(item) => setClothValue(item)}
+              items={itemsList}
+              icon='numeric'
+              placeholder='Quantity'
             />
           </View>
         </View>
-        <View style={{ zIndex: Platform.OS === "ios" ? 30 : 30 }}>
-          <Text style={styles.title}>Shoes</Text>
-          <View style={styles.dropDownContainer}>
-            <DropDownPicker
-              items={[
-                {
-                  label: "CHILDREN",
-                  value: "children",
-                  icon: () => (
-                    <FontAwesome
-                      name='child'
-                      size={18}
-                      color={Customization.color.tint}
-                    />
-                  ),
-                },
-                {
-                  label: "MEN",
-                  value: "men",
-                  icon: () => (
-                    <AntDesign
-                      name='man'
-                      size={18}
-                      color={Customization.color.tint}
-                    />
-                  ),
-                },
-                {
-                  label: "WOMEN",
-                  value: "women",
-                  icon: () => (
-                    <AntDesign
-                      name='woman'
-                      size={18}
-                      color={Customization.color.tint}
-                    />
-                  ),
-                },
-              ]}
-              defaultValue=''
-              placeholder='select gender'
-              containerStyle={{ height: 40, width: 150 }}
-              style={styles.dropDown}
-              itemStyle={{
-                justifyContent: "flex-start",
-              }}
-              dropDownStyle={{ backgroundColor: "#fafafa" }}
-              onChangeItem={(item) => setSelectShoes(item.value)}
+        <Text style={styles.title}>Shoes</Text>
+        <View style={styles.dropDownContainer}>
+          <View style={styles.listView}>
+            <AppPicker
+              selectedItem={selectShoes}
+              onSelectItem={(item) => setSelectShoes(item)}
+              items={personsList}
+              icon='gender-male-female'
+              placeholder='Gender'
             />
-
-            <DropDownPicker
-              items={[
-                {
-                  label: "1",
-                  value: "1",
-                },
-                {
-                  label: "2",
-                  value: "2",
-                },
-                {
-                  label: "3",
-                  value: "3",
-                },
-              ]}
-              defaultValue=''
-              placeholder='select quantity'
-              containerStyle={{ height: 40, width: 150 }}
-              style={styles.dropDown}
-              itemStyle={{
-                justifyContent: "flex-start",
-              }}
-              dropDownStyle={{ backgroundColor: "#fafafa" }}
-              onChangeItem={(item) => setShoesValue(item.value)}
+          </View>
+          <View style={styles.listView}>
+            <AppPicker
+              selectedItem={shoesValue}
+              onSelectItem={(item) => setShoesValue(item)}
+              items={itemsList}
+              icon='numeric'
+              placeholder='Quantity'
             />
           </View>
         </View>
-        <View style={{ zIndex: Platform.OS === "ios" ? 20 : 20 }}>
-          <Text style={styles.title}>Amount</Text>
-          <View style={{ alignItems: "center" }}>
-            <DropDownPicker
-              items={[
-                {
-                  label: "200",
-                  value: "200",
-                },
-                {
-                  label: "400",
-                  value: "400",
-                },
-                {
-                  label: "600",
-                  value: "600",
-                },
-              ]}
-              defaultValue=''
-              placeholder='select an amount'
-              containerStyle={{ height: 40, width: 170 }}
-              style={{ backgroundColor: "#fafafa", width: 170 }}
-              itemStyle={{
-                justifyContent: "flex-start",
-              }}
-              dropDownStyle={{ backgroundColor: "#fafafa" }}
-              onChangeItem={(item) => setAmount(item.value)}
+        <Text style={styles.title}>Amount</Text>
+        <View style={styles.dropDownContainer}>
+          <View style={styles.listView}>
+            <AppPicker
+              selectedItem={amount}
+              onSelectItem={(item) => setAmount(item)}
+              items={amountList}
+              icon='numeric'
+              placeholder='Amount in Rs.'
             />
           </View>
         </View>
@@ -347,6 +238,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    backgroundColor: "#f8f4f4",
   },
   title: {
     fontSize: Customization.fontSize.smallTitle,
@@ -354,11 +246,10 @@ const styles = StyleSheet.create({
     color: Customization.color.tint,
     marginTop: 10,
     textAlign: "center",
-    marginBottom: 10,
   },
   InputContainer: {
     width: Customization.textInputWidth.main,
-    marginTop: 30,
+    marginTop: 15,
     borderBottomWidth: 1,
     flexDirection: "row",
   },
@@ -368,6 +259,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     color: Customization.color.text,
   },
+  listView: { flex: 1, marginRight: 3 },
   dropDown: {
     backgroundColor: "#fafafa",
     width: 150,
@@ -381,14 +273,14 @@ const styles = StyleSheet.create({
   requestButton: {
     flex: 1,
     justifyContent: "flex-end",
-    marginBottom: 50,
+    marginBottom: 40,
   },
   loginContainer: {
     width: Customization.buttonWidth.main,
     backgroundColor: Customization.color.tint,
     borderRadius: Customization.borderRadius.main,
-    padding: 15,
-    marginTop: 30,
+    padding: 9,
+    marginTop: 20,
   },
   loginText: {
     color: Customization.color.white,

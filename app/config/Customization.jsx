@@ -18,6 +18,8 @@ export const Customization = {
     background: "#f2f2f2",
     blue: "#3293fe",
     errorText: "#ed2939",
+    medium: "#6e6969",
+    light: "#f8f4f4",
   },
   fontSize: {
     title: 30,

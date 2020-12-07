@@ -9,6 +9,7 @@ import SplashScreen from "./app/screens/SplashScreen";
 export default function App() {
   const [isAuth, setIsAuth] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
+
   const authListener = () => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -40,6 +41,7 @@ export default function App() {
   if (isLoading) {
     return <SplashScreen />;
   }
+
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>

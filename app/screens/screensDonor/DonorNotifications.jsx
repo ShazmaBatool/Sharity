@@ -27,10 +27,7 @@ export default function DonorNotifications() {
         setDonateArray(result);
       })
       .catch(function (error) {
-        console.log(
-          "🚀 ~ file: DonorNotifications.jsx ~ line 22 ~ error",
-          error
-        );
+        Alert.alert(error.toString());
       });
   };
   React.useEffect(() => {
@@ -101,15 +98,21 @@ export default function DonorNotifications() {
               </Text>
             </View>
 
-            <Divider
-              style={{ backgroundColor: "#dfe6e9", marginVertical: 20 }}
-            />
-
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={styles.notes}>Gender</Text>
-              <Text style={styles.notes}>{donate.donateClothes}</Text>
-            </View>
+            {!donate.donateMoney && (
+              <>
+                <Divider
+                  style={{ backgroundColor: "#dfe6e9", marginVertical: 20 }}
+                />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}>
+                  <Text style={styles.notes}>Gender</Text>
+                  <Text style={styles.notes}>{donate.donateClothes}</Text>
+                </View>
+              </>
+            )}
           </Card>
         ))}
       </ScrollView>

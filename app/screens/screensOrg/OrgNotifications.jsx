@@ -10,6 +10,7 @@ import {
   Divider,
 } from "react-native-elements";
 import firebase from "firebase";
+import SyncStorage from "sync-storage";
 
 export default function OrgNotifications() {
   const [donateType, setDonateType] = React.useState();
@@ -19,18 +20,24 @@ export default function OrgNotifications() {
   const database = firebase.database();
 
   const gettingNotifications = () => {
+    var organizationName = SyncStorage.get("@organizationName");
     database
-      .ref("/NewRequest/Donor/")
+      .ref("NewRequest/Donor")
       .once("value")
       .then(function (snapshot) {
         var result = Object.values(snapshot.val());
-        setDonateArray(result);
+        console.log(
+          "🚀 ~ file: OrgNotifications.jsx ~ line 29 ~ result",
+          result
+        );
+
+        var filterOrg = result.filter(
+          (el) => el.organizationName === organizationName
+        );
+        setDonateArray(filterOrg);
       })
       .catch(function (error) {
-        console.log(
-          "🚀 ~ file: DonorNotifications.jsx ~ line 22 ~ error",
-          error
-        );
+        Alert.alert(error.toString());
       });
   };
   React.useEffect(() => {
@@ -38,80 +45,91 @@ export default function OrgNotifications() {
     return () => {
       null;
     };
-  });
+  }, []);
   return (
     <View style={styles.container}>
       <ScrollView style={{ marginBottom: 7 }}>
-        {donateArray.map((donate, index) => (
-          <Card containerStyle={styles.card} key={index}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}>
-              <Text style={styles.notes}>{donate.organizationName}</Text>
-              <Badge
-                containerStyle={{
-                  position: "absolute",
-                  top: -4,
-                  right: -4,
-                }}
-                style={styles.request}
-                status='warning'
-                value={
-                  <Text
-                    style={{ color: "#fff", paddingLeft: 5, paddingRight: 5 }}>
-                    {donate.requestStatus}
-                  </Text>
-                }
-              />
-            </View>
+        {donateArray &&
+          donateArray.map((donate, index) => (
+            <Card containerStyle={styles.card} key={index}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}>
+                <Text style={styles.notes}>{donate.donorEmail}</Text>
+                <Badge
+                  containerStyle={{
+                    position: "absolute",
+                    top: -4,
+                    right: -4,
+                  }}
+                  style={styles.request}
+                  status='warning'
+                  value={
+                    <Text
+                      style={{
+                        color: "#fff",
+                        paddingLeft: 5,
+                        paddingRight: 5,
+                      }}>
+                      {donate.requestStatus}
+                    </Text>
+                  }
+                />
+              </View>
 
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}>
-              <Image
-                style={{ width: 50, height: 50 }}
-                source={
-                  donate.donateClothes !== ""
-                    ? require("../../assets/clothes2.png")
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}>
+                <Image
+                  style={{ width: 50, height: 50 }}
+                  source={
+                    donate.donateClothes !== ""
+                      ? require("../../assets/clothes2.png")
+                      : donate.donateShoes !== ""
+                      ? require("../../assets/high-heel.png")
+                      : donate.donateMoney !== "" &&
+                        require("../../assets/wallet.png")
+                  }
+                />
+                <Text style={styles.time}>
+                  {donate.donateClothes !== ""
+                    ? "Clothes"
                     : donate.donateShoes !== ""
-                    ? require("../../assets/high-heel.png")
-                    : donate.donateMoney !== "" &&
-                      require("../../assets/wallet.png")
-                }
-              />
-              <Text style={styles.time}>
-                {donate.donateClothes !== ""
-                  ? "Clothes"
-                  : donate.donateShoes !== ""
-                  ? "Shoes"
-                  : donate.donateMoney !== "" && "Amount"}
-              </Text>
-              <Text style={styles.amount}>
-                {donate.amountOfClothes !== 0
-                  ? donate.amountOfClothes
-                  : donate.amountOfShoes !== 0
-                  ? donate.amountOfShoes
-                  : donate.donateMoney !== 0 && donate.donateMoney}
-              </Text>
-            </View>
+                    ? "Shoes"
+                    : donate.donateMoney !== "" && "Amount"}
+                </Text>
+                <Text style={styles.amount}>
+                  {donate.amountOfClothes !== 0
+                    ? donate.amountOfClothes
+                    : donate.amountOfShoes !== 0
+                    ? donate.amountOfShoes
+                    : donate.donateMoney !== 0 && donate.donateMoney}
+                </Text>
+              </View>
 
-            <Divider
-              style={{ backgroundColor: "#dfe6e9", marginVertical: 20 }}
-            />
-
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={styles.notes}>Gender</Text>
-              <Text style={styles.notes}>{donate.donateClothes}</Text>
-            </View>
-          </Card>
-        ))}
+              {!donate.donateMoney && (
+                <>
+                  <Divider
+                    style={{ backgroundColor: "#dfe6e9", marginVertical: 20 }}
+                  />
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}>
+                    <Text style={styles.notes}>Gender</Text>
+                    <Text style={styles.notes}>{donate.donateClothes}</Text>
+                  </View>
+                </>
+              )}
+            </Card>
+          ))}
       </ScrollView>
     </View>
   );

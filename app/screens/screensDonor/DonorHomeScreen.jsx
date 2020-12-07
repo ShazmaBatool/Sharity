@@ -56,17 +56,25 @@ export default function DonorHomeScreen({ navigation }) {
   ];
 
   const SendRequest = () => {
-    database.ref("NewRequest/Donor").push({
-      organizationName: orgSelect,
-      donorEmail: donorEmail,
-      donateClothes: selectCloth,
-      amountOfClothes: clothValue,
-      donateShoes: selectShoes,
-      amountOfShoes: shoesValue,
-      donateMoney: amount,
-      donateLatlng: latlng,
-      requestStatus: "Pending",
-    });
+    database
+      .ref("NewRequest/Donor")
+      .push({
+        organizationName: orgSelect,
+        donorEmail: donorEmail,
+        donateClothes: selectCloth,
+        amountOfClothes: clothValue,
+        donateShoes: selectShoes,
+        amountOfShoes: shoesValue,
+        donateMoney: amount,
+        donateLatlng: latlng,
+        requestStatus: "Pending",
+      })
+      .then(function (response) {
+        if (response) Alert.alert("Your Request has been sent.");
+      })
+      .catch(function (error) {
+        Alert.alert(error.toString());
+      });
   };
 
   const getCurrentLoc = async () => {
@@ -160,7 +168,7 @@ export default function DonorHomeScreen({ navigation }) {
           <AppPicker
             style={{ backgroundColor: "#fff" }}
             selectedItem={orgSelect}
-            onSelectItem={(item) => setOrgSelect(item)}
+            onSelectItem={(item) => setOrgSelect(item.label)}
             items={orgList}
             icon='account-group'
             placeholder='Organizations'
@@ -171,7 +179,7 @@ export default function DonorHomeScreen({ navigation }) {
           <View style={styles.listView}>
             <AppPicker
               selectedItem={selectCloth}
-              onSelectItem={(item) => setSelectCloth(item)}
+              onSelectItem={(item) => setSelectCloth(item.label)}
               items={personsList}
               icon='gender-male-female'
               placeholder='Gender'
@@ -180,7 +188,7 @@ export default function DonorHomeScreen({ navigation }) {
           <View style={styles.listView}>
             <AppPicker
               selectedItem={clothValue}
-              onSelectItem={(item) => setClothValue(item)}
+              onSelectItem={(item) => setClothValue(item.label)}
               items={itemsList}
               icon='numeric'
               placeholder='Quantity'
@@ -192,7 +200,7 @@ export default function DonorHomeScreen({ navigation }) {
           <View style={styles.listView}>
             <AppPicker
               selectedItem={selectShoes}
-              onSelectItem={(item) => setSelectShoes(item)}
+              onSelectItem={(item) => setSelectShoes(item.label)}
               items={personsList}
               icon='gender-male-female'
               placeholder='Gender'
@@ -201,7 +209,7 @@ export default function DonorHomeScreen({ navigation }) {
           <View style={styles.listView}>
             <AppPicker
               selectedItem={shoesValue}
-              onSelectItem={(item) => setShoesValue(item)}
+              onSelectItem={(item) => setShoesValue(item.label)}
               items={itemsList}
               icon='numeric'
               placeholder='Quantity'
@@ -213,7 +221,7 @@ export default function DonorHomeScreen({ navigation }) {
           <View style={styles.listView}>
             <AppPicker
               selectedItem={amount}
-              onSelectItem={(item) => setAmount(item)}
+              onSelectItem={(item) => setAmount(item.label)}
               items={amountList}
               icon='numeric'
               placeholder='Amount in Rs.'

@@ -36,6 +36,7 @@ const Sidebar = ({ navigation, routes }) => {
             .then(function (snapshot) {
               var result = Object.values(snapshot.val());
               var newArr = result.filter((obj) => obj.OrgEmail === user.email);
+              SyncStorage.set("@organizationName", newArr[0].OrgName);
               setDisplayName(newArr[0].OrgName);
               setPhotoURL(user.photoURL);
               setEmail(user.email);

@@ -29,7 +29,7 @@ function AppPicker({ icon, items, onSelectItem, selectedItem, placeholder }) {
             />
           )}
           <Text style={styles.text}>
-            {selectedItem ? selectedItem.label : placeholder}
+            {selectedItem ? selectedItem : placeholder}
           </Text>
           <MaterialCommunityIcons
             name='chevron-down'

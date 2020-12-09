@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Image, ScrollView, Alert } from "react-native";
 import firebase from "firebase";
 import Button from "react-native-button";
-import Icon from "react-native-vector-icons/FontAwesome5";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 import { Customization } from "../../config/Customization";
 

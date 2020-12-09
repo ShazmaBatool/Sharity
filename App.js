@@ -1,4 +1,5 @@
 import React from "react";
+import { StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import firebase from "firebase";
 
@@ -44,6 +45,7 @@ export default function App() {
 
   return (
     <AuthContext.Provider value={authContext}>
+      <StatusBar barStyle='light-content' />
       <NavigationContainer>
         <AppNavigator isAuth={isAuth} />
       </NavigationContainer>

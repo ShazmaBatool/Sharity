@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, View, StyleSheet, ScrollView } from "react-native";
+import { Dimensions, Image, View, StyleSheet, ScrollView } from "react-native";
 import {
   Avatar,
   Badge,
@@ -9,14 +9,20 @@ import {
   Card,
   Divider,
 } from "react-native-elements";
+import Button from "react-native-button";
+import Dialog from "react-native-dialog";
 import firebase from "firebase";
 import SyncStorage from "sync-storage";
+import MapView, { Marker, Polyline } from "react-native-maps";
+
+import { Customization } from "../../config/Customization";
 
 export default function OrgNotifications() {
-  const [donateType, setDonateType] = React.useState();
-  const [donateAmount, setDonateAmount] = React.useState();
-  const [donateGender, setDonateGender] = React.useState();
+  const [donorLat, setDonorLat] = React.useState("");
+  const [donorLong, setDonorLong] = React.useState("");
+  const [donorEmail, setDonorEmail] = React.useState("");
   const [donateArray, setDonateArray] = React.useState([]);
+  const [dialogVisible, setDialogVisible] = React.useState(false);
   const database = firebase.database();
 
   const gettingNotifications = () => {
@@ -26,11 +32,6 @@ export default function OrgNotifications() {
       .once("value")
       .then(function (snapshot) {
         var result = Object.values(snapshot.val());
-        console.log(
-          "🚀 ~ file: OrgNotifications.jsx ~ line 29 ~ result",
-          result
-        );
-
         var filterOrg = result.filter(
           (el) => el.organizationName === organizationName
         );
@@ -46,6 +47,12 @@ export default function OrgNotifications() {
       null;
     };
   }, []);
+  const handleDetails = (donate) => {
+    setDialogVisible(true);
+    setDonorEmail(donate.donorEmail);
+    setDonorLat(donate.donateLatlng.latitude);
+    setDonorLong(donate.donateLatlng.longitude);
+  };
   return (
     <View style={styles.container}>
       <ScrollView style={{ marginBottom: 7 }}>
@@ -112,22 +119,78 @@ export default function OrgNotifications() {
                     : donate.donateMoney !== 0 && donate.donateMoney}
                 </Text>
               </View>
-
-              {!donate.donateMoney && (
-                <>
-                  <Divider
-                    style={{ backgroundColor: "#dfe6e9", marginVertical: 20 }}
-                  />
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginTop: 5,
+                }}>
+                {!donate.donateMoney && (
+                  <>
                     <Text style={styles.notes}>Gender</Text>
                     <Text style={styles.notes}>{donate.donateClothes}</Text>
+                  </>
+                )}
+              </View>
+              <Divider
+                style={{ backgroundColor: "#dfe6e9", marginVertical: 20 }}
+              />
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}>
+                <Button
+                  containerStyle={styles.loginContainer}
+                  style={styles.loginText}
+                  color={Customization.color.tint}
+                  onPress={() => handleDetails(donate)}>
+                  Details
+                </Button>
+                <Button
+                  containerStyle={styles.loginContainer}
+                  style={styles.loginText}
+                  color={Customization.color.tint}>
+                  Assign Job
+                </Button>
+              </View>
+              <Dialog.Container visible={dialogVisible}>
+                <Dialog.Title>Donor Details</Dialog.Title>
+                <Dialog.Description>
+                  <View
+                    style={{
+                      justifyContent: "center",
+                      width: 250,
+                      height: 100,
+                    }}>
+                    <Text>Email: {donorEmail}</Text>
+                    <MapView
+                      style={styles.mapStyle}
+                      region={{
+                        latitude: donorLat,
+                        longitude: donorLong,
+                        latitudeDelta: 0.002,
+                        longitudeDelta: 0.005,
+                      }}
+                      showsUserLocation
+                      followUserLocation
+                      zoomEnabled>
+                      <Marker
+                        coordinate={{
+                          latitude: donorLat,
+                          longitude: donorLong,
+                        }}
+                        title='Starting location'
+                      />
+                    </MapView>
                   </View>
-                </>
-              )}
+                </Dialog.Description>
+                <Dialog.Button
+                  label='Cancel'
+                  onPress={() => setDialogVisible(false)}
+                />
+              </Dialog.Container>
             </Card>
           ))}
       </ScrollView>
@@ -167,5 +230,21 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: "#fff",
     marginBottom: 10,
+  },
+  loginContainer: {
+    width: Customization.buttonWidth.middle,
+    backgroundColor: Customization.color.tint,
+    borderRadius: Customization.borderRadius.main,
+    padding: 5,
+  },
+  loginText: {
+    color: Customization.color.white,
+  },
+  mapStyle: {
+    flex: 1,
+    width: 250,
+    height: 100,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

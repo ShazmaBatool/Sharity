@@ -29,6 +29,7 @@ export const Customization = {
   },
   buttonWidth: {
     main: "70%",
+    middle: "35%",
   },
   textInputWidth: {
     main: "80%",

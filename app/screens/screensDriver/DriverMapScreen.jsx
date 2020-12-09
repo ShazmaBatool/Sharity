@@ -16,7 +16,6 @@ export default function DriverMapScreen() {
   const [long, setLong] = React.useState(73.0);
   const [routeForMap, setRouteForMap] = React.useState([]);
   const [summary, setSummary] = React.useState();
-  // const GOOGLE_MAPS_APIKEY = "AIzaSyCBQ4IiB4i3USwpYwN03O7YjeOy8dJFqzc";
   const GOOGLE_MAPS_APIKEY = "AIzaSyCYvMpmVhFc0ydILEuXGJNYNGFnBoKPCL8";
   const YOUR_API_KEY = "UGsHAH9dlC3hI6bmfxjHN_DcMt-u84Z8gLhFOkyMw7U";
   const PUT_YOUR_APP_CODE_HERE = "rcz6ByZuZUl54OHikIm0";

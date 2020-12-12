@@ -33,20 +33,20 @@ export default function EditProfileOrg({ navigation }) {
     }
   };
   const handleSubmit = () => {
-    // var user = firebase.auth().currentUser;
-    // user
-    //   .updateProfile({
-    //     photoURL: photoURL,
-    //   })
-    //   .then(function () {
-    //     // Update successful.
-    //     Alert.alert("Image updated successfully.");
-    //     navigation.navigate("Settings");
-    //   })
-    //   .catch(function (error) {
-    //     // An error happened.
-    //     Alert.alert(error.toString());
-    //   });
+    var user = firebase.auth().currentUser;
+    user
+      .updateProfile({
+        photoURL: photoURL,
+      })
+      .then(function () {
+        // Update successful.
+        Alert.alert("Image updated successfully.");
+        navigation.navigate("Settings");
+      })
+      .catch(function (error) {
+        // An error happened.
+        Alert.alert(error.toString());
+      });
   };
   const user = () => {
     const user = firebase.auth().currentUser;

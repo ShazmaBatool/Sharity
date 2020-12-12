@@ -40,6 +40,7 @@ export default function WelcomeScreen({ navigation }) {
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
+    return () => null;
   }, []);
   if (isLoading == true) {
     return <SplashScreen />;

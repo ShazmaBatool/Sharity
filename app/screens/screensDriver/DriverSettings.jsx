@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, SafeAreaView, StyleSheet, Alert } from "react-native";
 import {
   Avatar,
@@ -11,25 +11,31 @@ import firebase from "firebase";
 import SyncStorage from "sync-storage";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
+import { AuthContext } from "../../../context";
 import { Customization } from "../../config/Customization";
 
 export default function DriverSettings({ navigation }) {
-  const [displayName, setDisplayName] = React.useState("");
-  const [phone, setPhone] = React.useState("");
-  const [vehicleNum, setVehicleNum] = React.useState("");
-  const [photoURL, setPhotoURL] = React.useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [vehicleNum, setVehicleNum] = useState("");
+  const [photoURL, setPhotoURL] = useState("");
+  const { signOut } = useContext(AuthContext);
 
   const userInfo = () => {
     const user = firebase.auth().currentUser;
+    console.log(
+      "🚀 ~ file: DriverSettings.jsx ~ line 26 ~ userInfo ~ user",
+      user.phoneNumber
+    );
     const database = firebase.database();
     database
       .ref("Users/Driver")
       .once("value")
       .then(function (snapshot) {
         var result = Object.values(snapshot.val());
-        var phoneNumber = SyncStorage.get("@driverPhone");
+        // var phoneNumber = SyncStorage.get("@driverPhone");
         var newArr = result.filter(
-          (obj) => obj.driverContactInfo === phoneNumber
+          (obj) => obj.driverContactInfo === user.phoneNumber
         );
         setDisplayName(newArr[0].driverName);
         setPhone(newArr[0].driverContactInfo);
@@ -39,7 +45,7 @@ export default function DriverSettings({ navigation }) {
         Alert.alert(error.toString());
       });
   };
-  React.useEffect(() => {
+  useEffect(() => {
     userInfo();
     return () => {
       null;
@@ -118,7 +124,7 @@ export default function DriverSettings({ navigation }) {
             <Text style={styles.menuItemText}>Edit Profile</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => firebase.auth().signOut()}>
+        <TouchableRipple onPress={() => signOut()}>
           <View style={styles.menuItem}>
             <Icon name='logout' color={Customization.color.tint} size={25} />
             <Text style={styles.menuItemText}>Sign Out</Text>

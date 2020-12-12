@@ -44,19 +44,33 @@ export default function DonorDrawer() {
       <DrawerStack.Screen
         name='Home'
         component={DonorHomeScreen}
-        options={{ headerTitle: "Home" }}
+        options={{ headerTitle: "Home", headerShown: true }}
       />
       <DrawerStack.Screen
         name='EmailVerificationScreen'
         component={DonorEmailVerification}
+        options={{ headerShown: true }}
       />
-      <DrawerStack.Screen name='Notifications' component={DonorNotifications} />
+      <DrawerStack.Screen
+        name='Notifications'
+        component={DonorNotifications}
+        options={{ headerShown: true }}
+      />
       <DrawerStack.Screen
         name='Donation Details'
         component={DonationsDetails}
+        options={{ headerShown: true }}
       />
-      <DrawerStack.Screen name='Donation Count' component={DonationsCount} />
-      <DrawerStack.Screen name='Settings' component={DonorSettings} />
+      <DrawerStack.Screen
+        name='Donation Count'
+        component={DonationsCount}
+        options={{ headerShown: true }}
+      />
+      <DrawerStack.Screen
+        name='Settings'
+        component={DonorSettings}
+        options={{ headerShown: true }}
+      />
       <DrawerStack.Screen
         name='EditProfileDonor'
         component={EditProfileDonor}

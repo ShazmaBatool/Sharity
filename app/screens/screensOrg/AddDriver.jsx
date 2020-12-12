@@ -17,7 +17,7 @@ export default function AddDriver({ navigation }) {
   const database = firebase.database();
 
   const onPressAddDriver = () => {
-    if (contactInfo.length == 11) {
+    if (contactInfo.length == 13) {
       database.ref("/Users/Driver").push({
         driverName: name,
         driverContactInfo: contactInfo,
@@ -80,7 +80,7 @@ export default function AddDriver({ navigation }) {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder='03xxxxxxxxx'
+          placeholder='+923xxxxxxxxx'
           keyboardType='phone-pad'
           onChangeText={(text) => setContactInfo(text)}
           value={contactInfo}

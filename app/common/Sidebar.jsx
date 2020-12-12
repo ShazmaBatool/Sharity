@@ -15,11 +15,13 @@ import SyncStorage from "sync-storage";
 
 import { AuthContext } from "../../context";
 import { Customization } from "../config/Customization";
+import { cos } from "react-native-reanimated";
 
 const Sidebar = ({ navigation, routes }) => {
   const [displayName, setDisplayName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [photoURL, setPhotoURL] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = React.useState("");
   const database = firebase.database();
   const { signOut } = useContext(AuthContext);
 
@@ -44,17 +46,19 @@ const Sidebar = ({ navigation, routes }) => {
               setEmail(user.email);
             });
         } else if (result.userType === "driver") {
+          // setDisplayName(user.displayName);
+          setPhotoURL(user.photoURL);
+          setPhoneNumber(user.phoneNumber);
           database
             .ref("Users/Driver")
             .once("value")
             .then(function (snapshot) {
               var result = Object.values(snapshot.val());
-              var phoneNumber = SyncStorage.get("@driverPhone");
+              // var phoneNumber = SyncStorage.get("@driverPhone");
               var newArr = result.filter(
                 (obj) => obj.driverContactInfo === phoneNumber
               );
               setDisplayName(newArr[0].driverName);
-              setEmail(newArr[0].driverContactInfo);
             });
         } else {
           setDisplayName(user.displayName);
@@ -70,21 +74,22 @@ const Sidebar = ({ navigation, routes }) => {
     };
   });
   const leaveTheApp = () => {
-    database
-      .ref("UserType")
-      .once("value")
-      .then(function (snapshot) {
-        var result = snapshot.val();
+    firebase.auth().signOut();
+    // database
+    //   .ref("UserType")
+    //   .once("value")
+    //   .then(function (snapshot) {
+    //     var result = snapshot.val();
 
-        if (result.userType == "driver") {
-          signOut();
-        } else {
-          firebase.auth().signOut();
-        }
-      })
-      .catch(function (error) {
-        Alert.alert(error.toString());
-      });
+    //     if (result.userType == "driver") {
+    //       signOut();
+    //     } else {
+    //       firebase.auth().signOut();
+    //     }
+    //   })
+    //   .catch(function (error) {
+    //     Alert.alert(error.toString());
+    //   });
   };
 
   return (
@@ -100,7 +105,9 @@ const Sidebar = ({ navigation, routes }) => {
       <Text style={{ fontWeight: "bold", fontSize: 16, marginTop: 10 }}>
         {displayName}
       </Text>
-      <Text style={{ color: "gray", marginBottom: 10 }}>{email}</Text>
+      <Text style={{ color: "gray", marginBottom: 10 }}>
+        {email ? email : phoneNumber}
+      </Text>
       <View style={styles.sidebarDivider}></View>
       <FlatList
         style={{ width: "100%", marginLeft: 30 }}

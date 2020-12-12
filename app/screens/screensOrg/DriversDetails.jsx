@@ -24,12 +24,32 @@ export default function DriversDetails({ navigation, route }) {
     return () => {
       null;
     };
-  });
+  }, []);
   const handleAssign = (driver) => {
-    console.log(
-      "🚀 ~ file: DriversDetails.jsx ~ line 28 ~ onPressAssign ~ driver",
-      route.params
-    );
+    const donorEmail = route.params.donate.donorEmail;
+    const donorOrg = route.params.donate.organizationName;
+    // let userRef = database.ref("NewRequest/Donor/");
+    // userRef.child("0");
+    // console.log(
+    //   "🚀 ~ file: DriversDetails.jsx ~ line 37 ~ handleAssign ~ userRef",
+    //   userRef
+    // );
+    // database
+    //   .ref("NewRequest/Donor")
+    //   .once("value")
+    //   .then(function (snapshot) {
+    //     var result = Object.values(snapshot.val());
+    //     var reqObject = result.filter(
+    //       (el) =>
+    //         el.donorEmail === donorEmail && el.organizationName === donorOrg
+    //     );
+    //     reqObject[0].requestStatus = "Rider";
+    //     console.log(
+    //       "🚀 ~ file: DriversDetails.jsx ~ line 38 ~ result",
+    //       reqObject
+    //     );
+    //     // setDriverData(result);
+    //   });
     // Alert.alert(driver);
   };
   const handleDelete = (driver) => {

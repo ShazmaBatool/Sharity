@@ -62,6 +62,8 @@ export default function OrgNotifications({ navigation }) {
   const handleDetails = (donate) => {
     setDialogVisible(true);
     setDonorEmail(donate.donorEmail);
+    setDonorLat(donate.donateLatlng.latitude);
+    setDonorLong(donate.donateLatlng.longitude);
   };
 
   const handleAssign = (donate) => {

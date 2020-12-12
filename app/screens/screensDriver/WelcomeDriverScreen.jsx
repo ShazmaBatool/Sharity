@@ -39,7 +39,7 @@ export default function WelcomeDriverScreen(props) {
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        onPress={() => props.navigation.navigate("SignInDriver")}>
+        onPress={() => props.navigation.navigate("PhoneSignIn")}>
         Sign In
       </Button>
     </View>

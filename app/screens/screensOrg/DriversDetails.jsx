@@ -2,11 +2,11 @@ import React from "react";
 import { View, Text, StyleSheet, Image, ScrollView, Alert } from "react-native";
 import firebase from "firebase";
 import Button from "react-native-button";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 import { Customization } from "../../config/Customization";
 
-export default function DriversDetails({ navigation }) {
+export default function DriversDetails({ navigation, route }) {
   const [driverData, setDriverData] = React.useState([]);
   const database = firebase.database();
   const gettingDriverData = () => {
@@ -28,7 +28,7 @@ export default function DriversDetails({ navigation }) {
   const handleAssign = (driver) => {
     console.log(
       "🚀 ~ file: DriversDetails.jsx ~ line 28 ~ onPressAssign ~ driver",
-      driver
+      route.params
     );
     // Alert.alert(driver);
   };

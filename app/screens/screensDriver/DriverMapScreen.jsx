@@ -145,8 +145,8 @@ export default function DriverMapScreen() {
           <MapView
             style={styles.mapStyle}
             region={{
-              latitude: lat,
-              longitude: long,
+              latitude: latitude,
+              longitude: longitude,
               latitudeDelta: 0.04,
               longitudeDelta: 0.05,
             }}
@@ -159,17 +159,17 @@ export default function DriverMapScreen() {
             />
             <Marker
               coordinate={{
-                latitude: lat,
-                longitude: long,
+                latitude: latitude,
+                longitude: longitude,
               }}
               title='Starting location'
             />
             <Marker
               coordinate={{
-                latitude: latitude,
-                longitude: longitude,
+                latitude: lat,
+                longitude: long,
               }}
-              title='Finishlocation'
+              title='Finish location'
             />
           </MapView>
         </>

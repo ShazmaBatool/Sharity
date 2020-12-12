@@ -38,6 +38,7 @@ export default function App() {
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
+    return () => null;
   }, []);
   if (isLoading) {
     return <SplashScreen />;
@@ -45,7 +46,7 @@ export default function App() {
 
   return (
     <AuthContext.Provider value={authContext}>
-      <StatusBar barStyle='light-content' />
+      <StatusBar barStyle='dark-content' />
       <NavigationContainer>
         <AppNavigator isAuth={isAuth} />
       </NavigationContainer>

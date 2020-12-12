@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import firebase from "firebase";
 import { Ionicons } from "@expo/vector-icons";
-import Icons from "react-native-vector-icons/FontAwesome";
+import Icons from "react-native-vector-icons/FontAwesome5";
 import SyncStorage from "sync-storage";
 
 import { AuthContext } from "../../context";

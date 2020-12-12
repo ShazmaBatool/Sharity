@@ -42,17 +42,38 @@ export default function OrgDrawer() {
   return (
     <DrawerStack.Navigator
       overlayColor='#01010abf'
-      initialRouteName='Driver Details'
+      initialRouteName='Notifications'
       drawerContent={(props) => <Sidebar {...props} routes={routes} />}>
-      <DrawerStack.Screen name='OrgHomeScreen' component={DonationsCount} />
-      <DrawerStack.Screen name='Notifications' component={OrgNotifications} />
+      <DrawerStack.Screen
+        name='OrgHomeScreen'
+        component={DonationsCount}
+        options={{ headerShown: true }}
+      />
+      <DrawerStack.Screen
+        name='Notifications'
+        component={OrgNotifications}
+        options={{ headerShown: true }}
+      />
       <DrawerStack.Screen
         name='Donation Details'
         component={DonationsDetails}
+        options={{ headerShown: true }}
       />
-      <DrawerStack.Screen name='Donation Count' component={DonationsCount} />
-      <DrawerStack.Screen name='Driver Details' component={DriversDetails} />
-      <DrawerStack.Screen name='Add Driver' component={AddDriver} />
+      <DrawerStack.Screen
+        name='Donation Count'
+        component={DonationsCount}
+        options={{ headerShown: true }}
+      />
+      <DrawerStack.Screen
+        name='Driver Details'
+        component={DriversDetails}
+        options={{ headerShown: true }}
+      />
+      <DrawerStack.Screen
+        name='Add Driver'
+        component={AddDriver}
+        options={{ headerShown: true }}
+      />
       <DrawerStack.Screen
         name='EditProfile'
         component={EditProfileOrg}

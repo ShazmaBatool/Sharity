@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Alert,
   View,
@@ -20,10 +20,12 @@ const Sidebar = ({ navigation, routes }) => {
   const [displayName, setDisplayName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [photoURL, setPhotoURL] = React.useState("");
+  const database = firebase.database();
+  const { signOut } = useContext(AuthContext);
 
   const userInfo = () => {
     const user = firebase.auth().currentUser;
-    const database = firebase.database();
+    // database = firebase.database();
     database
       .ref("UserType")
       .once("value")
@@ -68,7 +70,21 @@ const Sidebar = ({ navigation, routes }) => {
     };
   });
   const leaveTheApp = () => {
-    firebase.auth().signOut();
+    database
+      .ref("UserType")
+      .once("value")
+      .then(function (snapshot) {
+        var result = snapshot.val();
+
+        if (result.userType == "driver") {
+          signOut();
+        } else {
+          firebase.auth().signOut();
+        }
+      })
+      .catch(function (error) {
+        Alert.alert(error.toString());
+      });
   };
 
   return (

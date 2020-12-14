@@ -24,46 +24,85 @@ export default function DriversDetails({ navigation, route }) {
     return () => {
       null;
     };
-  }, []);
+  });
   const handleAssign = (driver) => {
-    const donorEmail = route.params.donate.donorEmail;
-    const donorOrg = route.params.donate.organizationName;
-    // let userRef = database.ref("NewRequest/Donor/");
-    // userRef.child("0");
-    // console.log(
-    //   "🚀 ~ file: DriversDetails.jsx ~ line 37 ~ handleAssign ~ userRef",
-    //   userRef
-    // );
-    // database
-    //   .ref("NewRequest/Donor")
-    //   .once("value")
-    //   .then(function (snapshot) {
-    //     var result = Object.values(snapshot.val());
-    //     var reqObject = result.filter(
-    //       (el) =>
-    //         el.donorEmail === donorEmail && el.organizationName === donorOrg
-    //     );
-    //     reqObject[0].requestStatus = "Rider";
-    //     console.log(
-    //       "🚀 ~ file: DriversDetails.jsx ~ line 38 ~ result",
-    //       reqObject
-    //     );
-    //     // setDriverData(result);
-    //   });
-    // Alert.alert(driver);
+    let donorEmail = route.params.donate.donorEmail;
+    let donorOrg = route.params.donate.organizationName;
+    let donateClothes = route.params.donate.donateClothes;
+    let donateShoes = route.params.donate.donateShoes;
+    let donateMoney = route.params.donate.donateMoney;
+    database
+      .ref("/NewRequest/Donor/")
+      .once("value")
+      .then(function (snapshot) {
+        var status = "";
+        snapshot.forEach((el) => {
+          if (
+            el.val().donorEmail === donorEmail &&
+            el.val().organizationName === donorOrg &&
+            el.val().donateClothes === donateClothes &&
+            el.val().donateShoes === donateShoes &&
+            el.val().donateMoney === donateMoney
+          ) {
+            status = el.key;
+          }
+          database
+            .ref("NewRequest/Donor/" + status)
+            .update({ requestStatus: "Ready to pickup" });
+          database
+            .ref("NewRequest/Driver")
+            .push(route.params.donate)
+            .then(function (response) {
+              if (response)
+                Alert.alert("Your Request has been sent to driver.");
+            })
+            .catch(function (error) {
+              Alert.alert(error.toString());
+            });
+        });
+      });
   };
+
   const handleDelete = (driver) => {
-    var userRef = database
+    database
       .ref("Users/Driver")
       .once("value")
       .then(function (snapshot) {
-        var result = Object.values(snapshot.val());
-        var findDriver = result.filter((el) => el.driverContactInfo === driver);
+        var status = "";
+        snapshot.forEach((el) => {
+          if (el.val().driverContactInfo === driver) {
+            status = el.key;
+          }
+        });
+        database.ref("Users/Driver/" + status).remove();
+        gettingDriverData();
+        Alert.alert("Driver removed Successfully.");
+
         // return findDriver;
       });
     // userRef.remove();
-    // Alert.alert(driver);
   };
+
+  const alertDelete = (driver) => {
+    Alert.alert(
+      "Delete Driver",
+      "This action cannot be undone.",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {
+            return null;
+          },
+        },
+        {
+          text: "Confirm",
+          onPress: () => handleDelete(driver),
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Image
@@ -79,7 +118,7 @@ export default function DriversDetails({ navigation, route }) {
                 name='trash-alt'
                 size={24}
                 color={Customization.color.tint}
-                onPress={() => handleDelete(driver.driverContactInfo)}
+                onPress={() => alertDelete(driver.driverContactInfo)}
               />
             </View>
             <Text style={styles.detailsText}>

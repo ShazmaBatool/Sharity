@@ -75,21 +75,6 @@ const Sidebar = ({ navigation, routes }) => {
   });
   const leaveTheApp = () => {
     firebase.auth().signOut();
-    // database
-    //   .ref("UserType")
-    //   .once("value")
-    //   .then(function (snapshot) {
-    //     var result = snapshot.val();
-
-    //     if (result.userType == "driver") {
-    //       signOut();
-    //     } else {
-    //       firebase.auth().signOut();
-    //     }
-    //   })
-    //   .catch(function (error) {
-    //     Alert.alert(error.toString());
-    //   });
   };
 
   return (

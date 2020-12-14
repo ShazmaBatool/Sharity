@@ -18,8 +18,8 @@ import MapView, { Marker, Polyline } from "react-native-maps";
 import { Customization } from "../../config/Customization";
 
 export default function OrgNotifications({ navigation }) {
-  const [donorLat, setDonorLat] = React.useState("");
-  const [donorLong, setDonorLong] = React.useState("");
+  const [donorLat, setDonorLat] = React.useState(33.6);
+  const [donorLong, setDonorLong] = React.useState(73.0);
   const [donorEmail, setDonorEmail] = React.useState("");
   const [donateArray, setDonateArray] = React.useState([]);
   const [driversArray, setDriversArray] = React.useState([]);
@@ -57,21 +57,17 @@ export default function OrgNotifications({ navigation }) {
     return () => {
       isMounted = false;
     };
-  }, []);
+  });
 
   const handleDetails = (donate) => {
     setDialogVisible(true);
     setDonorEmail(donate.donorEmail);
-    setDonorLat(donate.donateLatlng.latitude);
-    setDonorLong(donate.donateLatlng.longitude);
+    setDonorLat(parseInt(donate.donateLatlng.latitude));
+    setDonorLong(parseInt(donate.donateLatlng.longitude));
   };
 
   const handleAssign = (donate) => {
     navigation.navigate("Driver Details", { donate });
-    // setDialogAssign(true);
-    // setDonorEmail(donate.donorEmail);
-    // setDonorLat(donate.donateLatlng.latitude);
-    // setDonorLong(donate.donateLatlng.longitude);
   };
 
   return (
@@ -94,13 +90,13 @@ export default function OrgNotifications({ navigation }) {
                     right: -4,
                   }}
                   style={styles.request}
-                  status='warning'
+                  status='primary'
                   value={
                     <Text
                       style={{
                         color: "#fff",
-                        paddingLeft: 5,
-                        paddingRight: 5,
+                        paddingLeft: 6,
+                        paddingRight: 6,
                       }}>
                       {donate.requestStatus}
                     </Text>

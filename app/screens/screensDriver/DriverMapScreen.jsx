@@ -58,8 +58,8 @@ export default function DriverMapScreen() {
       {
         title: "My Location",
         coordinates: {
-          latitude: latitude,
-          longitude: longitude,
+          latitude: parseInt(latitude),
+          longitude: parseInt(longitude),
         },
       },
       {
@@ -159,15 +159,15 @@ export default function DriverMapScreen() {
             />
             <Marker
               coordinate={{
-                latitude: latitude,
-                longitude: longitude,
+                latitude: parseInt(latitude),
+                longitude: parseInt(longitude),
               }}
               title='Starting location'
             />
             <Marker
               coordinate={{
-                latitude: lat,
-                longitude: long,
+                latitude: parseInt(lat),
+                longitude: parseInt(long),
               }}
               title='Finish location'
             />

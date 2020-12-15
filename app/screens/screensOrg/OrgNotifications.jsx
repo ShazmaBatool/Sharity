@@ -175,8 +175,9 @@ export default function OrgNotifications({ navigation }) {
               </View>
               <Dialog.Container visible={dialogVisible}>
                 <Dialog.Title>Donor Details</Dialog.Title>
-                <Dialog.Description>
-                  <View
+                <View>
+                  Email: {donorEmail}
+                  {/* <View
                     style={{
                       justifyContent: "center",
                       width: 250,
@@ -202,23 +203,11 @@ export default function OrgNotifications({ navigation }) {
                         title='Starting location'
                       />
                     </MapView>
-                  </View>
-                </Dialog.Description>
+                  </View> */}
+                </View>
                 <Dialog.Button
                   label='Cancel'
                   onPress={() => setDialogVisible(false)}
-                />
-              </Dialog.Container>
-              <Dialog.Container visible={dialogAssign}>
-                <Dialog.Title>Driver Details</Dialog.Title>
-                <Dialog.Description>
-                  {driversArray.map((driver) => (
-                    <Text key={driver}>Email: {driver.driverName}</Text>
-                  ))}
-                </Dialog.Description>
-                <Dialog.Button
-                  label='Cancel'
-                  onPress={() => setDialogAssign(false)}
                 />
               </Dialog.Container>
             </Card>

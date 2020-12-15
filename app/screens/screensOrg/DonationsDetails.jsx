@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export default function DonationsDetails() {
+export default function DonationsDetails({ route }) {
   return (
     <View>
       <Text>

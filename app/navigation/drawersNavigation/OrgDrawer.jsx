@@ -42,7 +42,7 @@ export default function OrgDrawer() {
   return (
     <DrawerStack.Navigator
       overlayColor='#01010abf'
-      initialRouteName='Notifications'
+      initialRouteName='OrgHomeScreen'
       drawerContent={(props) => <Sidebar {...props} routes={routes} />}>
       <DrawerStack.Screen
         name='OrgHomeScreen'
@@ -79,7 +79,11 @@ export default function OrgDrawer() {
         component={EditProfileOrg}
         options={{ headerShown: false }}
       />
-      <DrawerStack.Screen name='Settings' component={SettingsOrgScreen} />
+      <DrawerStack.Screen
+        name='Settings'
+        component={SettingsOrgScreen}
+        options={{ headerShown: true }}
+      />
     </DrawerStack.Navigator>
   );
 }

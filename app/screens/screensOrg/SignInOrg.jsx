@@ -27,7 +27,7 @@ export default function SignInOrg() {
           .auth()
           .signInWithEmailAndPassword(email, password)
           .then(function (user) {
-            console.log("🚀 ~ file: SignInOrg.jsx ~ line 30 ~ user", user);
+            // console.log("🚀 ~ file: SignInOrg.jsx ~ line 30 ~ user", user);
             // signIn();
           })
           .catch(function (error) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Dimensions, Image, View, StyleSheet, ScrollView } from "react-native";
 import {
   Avatar,
@@ -18,24 +18,33 @@ import MapView, { Marker, Polyline } from "react-native-maps";
 import { Customization } from "../../config/Customization";
 
 export default function OrgNotifications({ navigation }) {
-  const [donorLat, setDonorLat] = React.useState(33.6);
-  const [donorLong, setDonorLong] = React.useState(73.0);
-  const [donorEmail, setDonorEmail] = React.useState("");
-  const [donateArray, setDonateArray] = React.useState([]);
-  const [driversArray, setDriversArray] = React.useState([]);
-  const [dialogVisible, setDialogVisible] = React.useState(false);
-  const [dialogAssign, setDialogAssign] = React.useState(false);
+  const [displayName, setDisplayName] = useState("");
+  const [donorLat, setDonorLat] = useState(33.6);
+  const [donorLong, setDonorLong] = useState(73.0);
+  const [donorEmail, setDonorEmail] = useState("");
+  const [donateArray, setDonateArray] = useState([]);
+  const [driversArray, setDriversArray] = useState([]);
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [dialogAssign, setDialogAssign] = useState(false);
   const database = firebase.database();
 
   const gettingNotifications = () => {
-    var organizationName = SyncStorage.get("@organizationName");
+    const user = firebase.auth().currentUser;
+    database
+      .ref("Users/Organization")
+      .once("value")
+      .then(function (snapshot) {
+        var result = Object.values(snapshot.val());
+        var newArr = result.filter((obj) => obj.OrgEmail === user.email);
+        setDisplayName(newArr[0].OrgName);
+      });
     database
       .ref("NewRequest/Donor")
       .once("value")
       .then(function (snapshot) {
         var result = Object.values(snapshot.val());
         var filterOrg = result.filter(
-          (el) => el.organizationName === organizationName
+          (el) => el.organizationName === displayName
         );
         setDonateArray(filterOrg);
       })
@@ -51,12 +60,8 @@ export default function OrgNotifications({ navigation }) {
       });
   };
 
-  React.useEffect(() => {
-    let isMounted = true;
+  useEffect(() => {
     gettingNotifications();
-    return () => {
-      isMounted = false;
-    };
   });
 
   const handleDetails = (donate) => {
@@ -162,7 +167,9 @@ export default function OrgNotifications({ navigation }) {
                   containerStyle={styles.loginContainer}
                   style={styles.loginText}
                   color={Customization.color.tint}
-                  onPress={() => handleDetails(donate)}>
+                  onPress={() =>
+                    navigation.navigate("Donation Details", { donate })
+                  }>
                   Details
                 </Button>
                 <Button
@@ -173,11 +180,10 @@ export default function OrgNotifications({ navigation }) {
                   Assign Job
                 </Button>
               </View>
-              <Dialog.Container visible={dialogVisible}>
+              {/* <Dialog.Container visible={dialogVisible}>
                 <Dialog.Title>Donor Details</Dialog.Title>
-                <View>
-                  Email: {donorEmail}
-                  {/* <View
+                <Dialog.Description>Email: </Dialog.Description>
+                <View
                     style={{
                       justifyContent: "center",
                       width: 250,
@@ -203,13 +209,12 @@ export default function OrgNotifications({ navigation }) {
                         title='Starting location'
                       />
                     </MapView>
-                  </View> */}
-                </View>
+                  </View>
                 <Dialog.Button
                   label='Cancel'
                   onPress={() => setDialogVisible(false)}
                 />
-              </Dialog.Container>
+              </Dialog.Container> */}
             </Card>
           ))}
       </ScrollView>
